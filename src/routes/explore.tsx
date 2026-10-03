@@ -17,7 +17,7 @@ export const Route = createFileRoute("/explore")({
 });
 
 function Explore() {
-  const [sel, setSel] = useState(regions[0].name);
+  const [sel, setSel] = useState(regions[0]!.name);
   const region = regions.find((r) => r.name === sel)!;
   const list = recipes.filter((r) => r.region === sel);
 

@@ -21,4 +21,4 @@ export function useStore() {
 
 /** Map onboarding labels to recipe allergen tags */
 export const matchesAllergy = (allergen: string, allergies: string[]) =>
-  allergies.some((a) => a.includes(allergen) || allergen.includes(a.split(" ")[0]));
+  allergies.some((a) => a.includes(allergen) || allergen.includes(a.split(" ")[0] ?? a));
