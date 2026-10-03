@@ -122,7 +122,7 @@ function RecipePage() {
         )}
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 border-t bg-card/95 p-4 backdrop-blur">
+      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t bg-card/95 p-4 backdrop-blur md:bottom-6 md:rounded-b-[2.5rem]">
         <Link to="/grocery" className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 font-semibold text-primary-foreground">
           <ShoppingCart className="h-5 w-5" /> تسوّق المكونات الناقصة · قارن الأسعار
         </Link>

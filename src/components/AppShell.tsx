@@ -16,7 +16,7 @@ export function AppShell({ children, nav: showNav = true, dark = false }: { chil
       <div className={`relative mx-auto min-h-screen max-w-md overflow-hidden md:min-h-[860px] md:rounded-[2.5rem] md:shadow-soft ${dark ? "bg-ink text-ink-foreground" : "bg-background"}`}>
         <div className={showNav ? "pb-24" : ""}>{children}</div>
         {showNav && (
-          <nav className="absolute inset-x-0 bottom-0 z-30 border-t bg-card/95 px-2 pb-3 pt-2 backdrop-blur">
+          <nav className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md md:bottom-6 md:rounded-b-[2.5rem] border-t bg-card/95 px-2 pb-3 pt-2 backdrop-blur">
             <ul className="grid grid-cols-5">
               {nav.map(({ to, label, icon: Icon }) => (
                 <li key={to}>

@@ -10,33 +10,154 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as FutureRouteImport } from './routes/future'
+import { Route as GroceryRouteImport } from './routes/grocery'
+import { Route as HomeRouteImport } from './routes/home'
+import { Route as ImportRouteImport } from './routes/import'
+import { Route as PantryRouteImport } from './routes/pantry'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ChefIdRouteImport } from './routes/chef.$id'
+import { Route as RecipeIdRouteImport } from './routes/recipe.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FutureRoute = FutureRouteImport.update({
+  id: '/future',
+  path: '/future',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GroceryRoute = GroceryRouteImport.update({
+  id: '/grocery',
+  path: '/grocery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportRoute = ImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PantryRoute = PantryRouteImport.update({
+  id: '/pantry',
+  path: '/pantry',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChefIdRoute = ChefIdRouteImport.update({
+  id: '/chef/$id',
+  path: '/chef/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecipeIdRoute = RecipeIdRouteImport.update({
+  id: '/recipe/$id',
+  path: '/recipe/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
+  '/future': typeof FutureRoute
+  '/grocery': typeof GroceryRoute
+  '/home': typeof HomeRoute
+  '/import': typeof ImportRoute
+  '/pantry': typeof PantryRoute
+  '/profile': typeof ProfileRoute
+  '/chef/$id': typeof ChefIdRoute
+  '/recipe/$id': typeof RecipeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
+  '/future': typeof FutureRoute
+  '/grocery': typeof GroceryRoute
+  '/home': typeof HomeRoute
+  '/import': typeof ImportRoute
+  '/pantry': typeof PantryRoute
+  '/profile': typeof ProfileRoute
+  '/chef/$id': typeof ChefIdRoute
+  '/recipe/$id': typeof RecipeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
+  '/future': typeof FutureRoute
+  '/grocery': typeof GroceryRoute
+  '/home': typeof HomeRoute
+  '/import': typeof ImportRoute
+  '/pantry': typeof PantryRoute
+  '/profile': typeof ProfileRoute
+  '/chef/$id': typeof ChefIdRoute
+  '/recipe/$id': typeof RecipeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/explore'
+    | '/future'
+    | '/grocery'
+    | '/home'
+    | '/import'
+    | '/pantry'
+    | '/profile'
+    | '/chef/$id'
+    | '/recipe/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/explore'
+    | '/future'
+    | '/grocery'
+    | '/home'
+    | '/import'
+    | '/pantry'
+    | '/profile'
+    | '/chef/$id'
+    | '/recipe/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/explore'
+    | '/future'
+    | '/grocery'
+    | '/home'
+    | '/import'
+    | '/pantry'
+    | '/profile'
+    | '/chef/$id'
+    | '/recipe/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExploreRoute: typeof ExploreRoute
+  FutureRoute: typeof FutureRoute
+  GroceryRoute: typeof GroceryRoute
+  HomeRoute: typeof HomeRoute
+  ImportRoute: typeof ImportRoute
+  PantryRoute: typeof PantryRoute
+  ProfileRoute: typeof ProfileRoute
+  ChefIdRoute: typeof ChefIdRoute
+  RecipeIdRoute: typeof RecipeIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +169,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/future': {
+      id: '/future'
+      path: '/future'
+      fullPath: '/future'
+      preLoaderRoute: typeof FutureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grocery': {
+      id: '/grocery'
+      path: '/grocery'
+      fullPath: '/grocery'
+      preLoaderRoute: typeof GroceryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/import': {
+      id: '/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof ImportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pantry': {
+      id: '/pantry'
+      path: '/pantry'
+      fullPath: '/pantry'
+      preLoaderRoute: typeof PantryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chef/$id': {
+      id: '/chef/$id'
+      path: '/chef/$id'
+      fullPath: '/chef/$id'
+      preLoaderRoute: typeof ChefIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipe/$id': {
+      id: '/recipe/$id'
+      path: '/recipe/$id'
+      fullPath: '/recipe/$id'
+      preLoaderRoute: typeof RecipeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExploreRoute: ExploreRoute,
+  FutureRoute: FutureRoute,
+  GroceryRoute: GroceryRoute,
+  HomeRoute: HomeRoute,
+  ImportRoute: ImportRoute,
+  PantryRoute: PantryRoute,
+  ProfileRoute: ProfileRoute,
+  ChefIdRoute: ChefIdRoute,
+  RecipeIdRoute: RecipeIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
