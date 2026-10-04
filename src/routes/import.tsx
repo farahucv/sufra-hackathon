@@ -91,7 +91,7 @@ function ImportPage() {
         )}
 
         {phase === "done" && (
-          <article className="animate-float-up overflow-hidden rounded-2xl bg-card shadow-soft">
+          <article className="animate-in fade-in duration-150 overflow-hidden rounded-2xl bg-card shadow-soft">
             <div className="relative h-48">
               <img src={r.img} alt={t(r.title)} className="h-full w-full object-cover" loading="lazy" />
               <div className="absolute inset-0 scrim" />
@@ -123,7 +123,7 @@ function ImportPage() {
               </div>
               <div className="flex gap-2">
                 <Link to="/recipe/$id" params={{ id: r.id }} className="press flex-1 rounded-2xl bg-primary py-3 text-center font-semibold text-primary-foreground">{t("خصّص وابدأ")}</Link>
-                <button onClick={() => { if (!s.saved.includes(r.id)) toggleIn("saved", r.id); toast.success("حُفظت في وصفاتك"); }} className="press grid w-12 place-items-center rounded-2xl border" aria-label={t("حفظ")}><Bookmark className="h-5 w-5" /></button>
+                <button onClick={() => { if (!s.saved.includes(r.id)) toggleIn("saved", r.id); toast.success(t("حُفظت في وصفاتك")); }} className="press grid w-12 place-items-center rounded-2xl border" aria-label={t("حفظ")}><Bookmark className="h-5 w-5" /></button>
                 <button onClick={() => { setPhase("idle"); setUrl(""); }} className="press grid w-12 place-items-center rounded-2xl border" aria-label={t("استيراد آخر")}><RotateCcw className="h-5 w-5" /></button>
               </div>
             </div>

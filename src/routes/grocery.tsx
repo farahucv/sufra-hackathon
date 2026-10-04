@@ -145,7 +145,7 @@ function Grocery() {
                 <div className="flex justify-between pt-2 text-lg font-bold"><span>{t("الإجمالي")}</span><span className="tabular-nums text-primary">{sar(subtotal + delivery)}</span></div>
                 <p className="text-xs text-olive">{t("توفّر")} {sar(Math.max(0, worst - subtotal))} {t("مقارنة بأغلى متجر")}</p>
               </div>
-              <button onClick={() => toast("الطلب المباشر قادم قريباً", { description: t("نعمل على الربط مع تطبيقات التوصيل في المرحلة القادمة.") })}
+              <button onClick={() => toast(t("الطلب المباشر قادم قريباً"), { description: t("نعمل على الربط مع تطبيقات التوصيل في المرحلة القادمة.") })}
                 className="press mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 font-semibold text-primary-foreground">
                 <Truck className="h-5 w-5" /> {t("اطلب السلة")}
               </button>

@@ -58,9 +58,9 @@ function HomePage() {
           <p className="text-sm text-muted-foreground">{hour < 12 ? t("صباح الخير") : t("مساء الخير")}{t("،")} {t(s.name)}</p>
           <h1 className="text-3xl">{t("وش نطبخ اليوم؟")}</h1>
         </div>
-        <button onClick={() => { startJourney(); toast("بدأت رحلة العرض", { description: t("٤ خطوات قصيرة تشرح الفكرة كاملة.") }); }}
+        <button onClick={() => { startJourney(); toast(t("بدأت رحلة العرض"), { description: t("٥ خطوات قصيرة تشرح الفكرة كاملة.") }); }}
           className="press inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] text-muted-foreground hover:bg-muted">
-          <RouteIcon className="h-3.5 w-3.5" /> Demo Journey
+          <RouteIcon className="h-3.5 w-3.5" /> {t("رحلة العرض")}
         </button>
       </header>
       <p className="px-5 text-sm text-muted-foreground lg:hidden">{hour < 12 ? t("صباح الخير") : t("مساء الخير")}{t("،")} {t(s.name)} — {t("وش نطبخ اليوم؟")}</p>
@@ -121,10 +121,10 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
   const liked = s.liked.includes(r.id), saved = s.saved.includes(r.id);
   const share = async () => {
     const url = `${t(location.origin)}/recipe/${r.id}`;
-    try { await navigator.clipboard.writeText(url); toast.success("تم نسخ رابط الوصفة"); } catch { toast("رابط الوصفة", { description: url }); }
+    try { await navigator.clipboard.writeText(url); toast.success(t("تم نسخ رابط الوصفة")); } catch { toast(t("رابط الوصفة"), { description: url }); }
   };
   return (
-    <article className={`relative h-[460px] overflow-hidden rounded-2xl bg-muted lg:h-[520px] ${idx < 2 ? "animate-float-up" : ""}`}>
+    <article className={`relative h-[460px] overflow-hidden rounded-2xl bg-muted lg:h-[520px]`}>
       <Link to="/recipe/$id" params={{ id: r.id }} aria-label={t(r.title)} className="absolute inset-0">
         <img src={r.img} alt={t(r.title)} className="h-full w-full object-cover" loading={idx ? "lazy" : "eager"} fetchPriority={idx ? "auto" : "high"} decoding="async" width={768} height={1024} />
         <div className="absolute inset-0 scrim" />

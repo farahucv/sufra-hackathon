@@ -44,7 +44,7 @@ function Future() {
             </li>
           ))}
         </ol>
-        <button onClick={() => toast.success("سجّلنا اهتمامك", { description: t("سنخبرك عند إطلاق المرحلة القادمة.") })} className="press mt-6 w-full rounded-2xl bg-primary py-4 font-semibold text-primary-foreground">{t("أبلغني عند الإطلاق")}</button>
+        <button onClick={() => toast.success(t("سجّلنا اهتمامك"), { description: t("سنخبرك عند إطلاق المرحلة القادمة.") })} className="press mt-6 w-full rounded-2xl bg-primary py-4 font-semibold text-primary-foreground">{t("أبلغني عند الإطلاق")}</button>
       </div>
     </AppShell>
   );

@@ -98,7 +98,7 @@ function Profile() {
             <p className="mt-2 text-xs">{s.synced ? t("✓ متزامن مع السحابة") : t("جارِ المزامنة…")}</p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               <button onClick={() => startJourney()} className="press flex items-center justify-center gap-1 rounded-xl border py-2 text-xs"><RouteIcon className="h-3.5 w-3.5" /> {t("رحلة العرض")}</button>
-              <button onClick={() => { setStore(() => ({ ...defaults, onboarded: true, lang: s.lang })); toast.success("أُعيد ضبط البيانات التجريبية"); }} className="press flex items-center justify-center gap-1 rounded-xl border py-2 text-xs"><RotateCcw className="h-3.5 w-3.5" /> {t("إعادة الضبط")}</button>
+              <button onClick={() => { setStore(() => ({ ...defaults, onboarded: true, lang: s.lang })); toast.success(t("أُعيد ضبط البيانات التجريبية")); }} className="press flex items-center justify-center gap-1 rounded-xl border py-2 text-xs"><RotateCcw className="h-3.5 w-3.5" /> {t("إعادة الضبط")}</button>
             </div>
           </div>
 

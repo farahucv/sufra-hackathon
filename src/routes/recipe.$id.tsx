@@ -58,7 +58,7 @@ function RecipePage() {
     const next = { ...chosen };
     flagged.forEach((i) => { if (i.subs?.length && next[i.key] === undefined) next[i.key] = 0; });
     setChosen(next);
-    toast.success("طُبّقت البدائل الآمنة", { description: t("أصبحت الوصفة مناسبة لملفك الغذائي.") });
+    toast.success(t("طُبّقت البدائل الآمنة"), { description: t("أصبحت الوصفة مناسبة لملفك الغذائي.") });
   };
 
   return (
@@ -248,7 +248,7 @@ function CookMode({ steps, title, onClose }: { steps: { t: string; min?: number 
         <button onClick={onClose} aria-label={t("إغلاق")} className="press grid h-10 w-10 place-items-center rounded-full bg-ink-foreground/10"><X className="h-5 w-5" /></button>
       </div>
       <div className="mx-auto mt-6 flex w-full max-w-2xl gap-1.5">{steps.map((_, n) => <span key={n} className={`h-1 flex-1 rounded-full ${n <= i ? "bg-gold" : "bg-ink-foreground/15"}`} />)}</div>
-      <div key={i} className="animate-float-up mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center">
+      <div key={i} className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center">
         <p className="font-display text-7xl text-gold">{i + 1}</p>
         <p className="mt-6 text-3xl leading-relaxed">{t(st.t)}</p>
         {st.min && <p className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-ink-foreground/10 px-4 py-2 text-sm"><Timer className="h-4 w-4" /> {t("مؤقّت مقترح:")} {st.min} {t("دقيقة")}</p>}
@@ -257,7 +257,7 @@ function CookMode({ steps, title, onClose }: { steps: { t: string; min?: number 
         <button disabled={i === 0} onClick={() => setI(i - 1)} className="press rounded-2xl border border-ink-foreground/20 px-6 py-4 disabled:opacity-30">{t("السابق")}</button>
         {i < steps.length - 1
           ? <button onClick={() => setI(i + 1)} className="press flex-1 rounded-2xl bg-gold py-4 font-semibold text-ink">{t("الخطوة التالية")}</button>
-          : <button onClick={() => { onClose(); toast.success("صحتين وعافية! 🍽️", { description: t("قيّم الوصفة لتساعد الآخرين.") }); }} className="press flex-1 rounded-2xl bg-gold py-4 font-semibold text-ink">{t("انتهيت")}</button>}
+          : <button onClick={() => { onClose(); toast.success(t("صحتين وعافية! 🍽️"), { description: t("قيّم الوصفة لتساعد الآخرين.") }); }} className="press flex-1 rounded-2xl bg-gold py-4 font-semibold text-ink">{t("انتهيت")}</button>}
       </div>
     </div>
   );
