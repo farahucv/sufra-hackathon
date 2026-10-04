@@ -23,7 +23,7 @@ const samples = [
   { icon: Music2, label: "TikTok", url: "https://www.tiktok.com/@chef.noura/video/7391022" , id: "mutabbaq" },
   { icon: Youtube, label: "YouTube", url: "https://youtu.be/kabsa-najdi-2026", id: "kabsa" },
 ];
-const stages = [t("تحليل الفيديو والإطارات"), t("تفريغ الصوت والنص"), t("استخراج المقادير والكميات"), t("ترتيب الخطوات"), t("فحص الحساسية وحساب التكلفة")];
+const stages = () => [t("تحليل الفيديو والإطارات"), t("تفريغ الصوت والنص"), t("استخراج المقادير والكميات"), t("ترتيب الخطوات"), t("فحص الحساسية وحساب التكلفة")];
 
 function ImportPage() {
   const s = useStore();
@@ -36,8 +36,8 @@ function ImportPage() {
     if (!/^https?:\/\/(www\.)?(tiktok\.com|youtube\.com|youtu\.be|instagram\.com)\//i.test(url.trim())) { setPhase("error"); return; }
     setRid(/youtu/i.test(url) ? "kabsa" : "mutabbaq");
     setPhase("loading"); setStage(0);
-    stages.forEach((_, i) => setTimeout(() => setStage(i + 1), 300 * (i + 1)));
-    setTimeout(() => setPhase("done"), 300 * stages.length + 200);
+    stages().forEach((_, i) => setTimeout(() => setStage(i + 1), 300 * (i + 1)));
+    setTimeout(() => setPhase("done"), 300 * stages().length + 200);
   };
 
   const r = getRecipe(rid)!;
@@ -70,9 +70,9 @@ function ImportPage() {
 
         {phase === "loading" && (
           <div className="space-y-4 rounded-2xl bg-card p-5">
-            <div className="h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-olive transition-all duration-300 ease-out" style={{ width: `${(stage / stages.length) * 100}%` }} /></div>
+            <div className="h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-olive transition-all duration-300 ease-out" style={{ width: `${(stage / stages().length) * 100}%` }} /></div>
             <ul className="space-y-2.5">
-              {stages.map((st, i) => (
+              {stages().map((st, i) => (
                 <li key={st} className={`flex items-center gap-3 text-sm transition ${i < stage ? "text-olive" : i === stage ? "text-foreground" : "text-muted-foreground/60"}`}>
                   {i < stage ? <CheckCircle2 className="h-4 w-4" /> : i === stage ? <Loader2 className="h-4 w-4 animate-spin" /> : <span className="h-4 w-4 rounded-full border" />}
                   {st}

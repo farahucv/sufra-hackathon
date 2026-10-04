@@ -17,7 +17,7 @@ export const Route = createFileRoute("/future")({
   component: Future,
 });
 
-const items = [
+const items = () => [
   { i: BookOpen, t: t("مدونات الطهاة"), d: t("مقالات وقصص الأطباق التراثية وأسرار المطبخ."), phase: t("المرحلة ٢") },
   { i: GraduationCap, t: t("أكاديمية سُفرة"), d: t("دورات مدفوعة بشهادات: من الأساسيات إلى المطبخ الاحترافي."), phase: t("المرحلة ٢") },
   { i: Video, t: t("استشارة طاهٍ مباشرة"), d: t("محادثة أو مكالمة فيديو مع طاهٍ أثناء طبخك، بالحجز."), phase: t("المرحلة ٣") },
@@ -36,10 +36,10 @@ function Future() {
           <p className="absolute bottom-4 right-5 max-w-[70%] font-display text-2xl text-ink-foreground">{t("تعلّم من أمهر الطهاة السعوديين")}</p>
         </div>
         <ol className="relative mt-6 space-y-4 border-s-2 border-dashed border-sand ps-6">
-          {items.map(({ i: I, t, d, phase }) => (
+          {items().map(({ i: I, t, d, phase }) => (
             <li key={t} className="relative rounded-2xl bg-card p-4 shadow-soft">
               <span className="absolute -start-[35px] top-5 h-4 w-4 rounded-full border-4 border-background bg-olive" />
-              <div className="flex items-center gap-2"><I className="h-5 w-5 text-primary" /><p className="flex-1 font-semibold">{t}</p><span className="rounded-full bg-secondary px-2 py-0.5 text-[10px]">{phase}</span></div>
+              <div className="flex items()-center gap-2"><I className="h-5 w-5 text-primary" /><p className="flex-1 font-semibold">{t}</p><span className="rounded-full bg-secondary px-2 py-0.5 text-[10px]">{phase}</span></div>
               <p className="mt-1.5 text-sm text-muted-foreground">{d}</p>
             </li>
           ))}

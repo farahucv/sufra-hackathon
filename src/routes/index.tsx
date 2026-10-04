@@ -21,14 +21,14 @@ export const Route = createFileRoute("/")({
   component: Onboarding,
 });
 
-const slides = [
+const slides = () => [
   { img: kabsa, icon: PlayCircle, title: t("اكتشف من طهاة سعوديين"), body: t("ريلز قصيرة تتحول إلى وصفات واضحة بالمقادير والخطوات.") },
   { img: veggie, icon: ShieldCheck, title: t("وصفات تناسب جسمك"), body: t("نكشف الحساسية تلقائياً ونقترح بدائل آمنة بذكاء.") },
   { img: haneeth, icon: ShoppingBasket, title: t("اطبخ بالموجود… واشترِ الأوفر"), body: t("نقترح من مخزنك ونقارن أسعار الناقص بين المتاجر.") },
 ];
 
 function Onboarding() {
-  const [phase, setPhase] = useState<"splash" | "slides" | "prefs">("splash");
+  const [phase, setPhase] = useState<"splash" | "slides()" | "prefs">("splash");
   const [slide, setSlide] = useState(0);
   const [step, setStep] = useState(0);
   const s = useStore();
@@ -36,7 +36,7 @@ function Onboarding() {
 
   useEffect(() => {
     if (phase !== "splash") return;
-    const t = setTimeout(() => setPhase("slides"), 1800);
+    const t = setTimeout(() => setPhase("slides()"), 1800);
     return () => clearTimeout(t);
   }, [phase]);
 
@@ -44,7 +44,7 @@ function Onboarding() {
 
   if (phase === "splash") {
     return (
-      <button onClick={() => setPhase("slides")} className="star-pattern relative grid min-h-screen w-full place-items-center bg-ink">
+      <button onClick={() => setPhase("slides()")} className="star-pattern relative grid min-h-screen w-full place-items-center bg-ink">
         <div className="animate-float-up text-center">
           <Wordmark size="lg" tone="light" />
           <p className="mt-5 text-sm text-ink-foreground/70">{t("منصة الطبخ السعودي الذكية")}</p>
@@ -60,7 +60,7 @@ function Onboarding() {
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-2">
       {/* Visual panel (desktop) */}
       <div className="relative hidden lg:block">
-        <img src={slides[phase === "slides" ? slide : 2]!.img} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={slides()[phase === "slides()" ? slide : 2]!.img} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 scrim" />
         <div className="absolute bottom-12 start-12 max-w-md text-ink-foreground">
           <Wordmark size="md" tone="light" />
@@ -68,21 +68,21 @@ function Onboarding() {
         </div>
       </div>
 
-      {phase === "slides" ? (
+      {phase === "slides()" ? (
         <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col lg:justify-center">
           <div className="relative h-[58vh] overflow-hidden rounded-b-[2.5rem] lg:hidden">
-            <img key={slide} src={slides[slide]!.img} alt="" className="animate-in fade-in h-full w-full object-cover duration-500" />
+            <img key={slide} src={slides()[slide]!.img} alt="" className="animate-in fade-in h-full w-full object-cover duration-500" />
             <div className="absolute inset-0 scrim" />
             <div className="absolute start-5 top-6"><Wordmark size="sm" tone="light" /></div>
           </div>
           <button onClick={finish} className="absolute end-5 top-7 rounded-full bg-card/80 px-4 py-1.5 text-xs lg:top-10">{t("تخطَّ")}</button>
           <div key={slide} className="animate-float-up flex-1 px-7 pt-8 lg:flex-none">
-            {(() => { const I = slides[slide]!.icon; return <I className="h-9 w-9 text-olive" strokeWidth={1.5} />; })()}
-            <h1 className="mt-4 text-3xl leading-snug lg:text-4xl">{slides[slide]!.title}</h1>
-            <p className="mt-3 text-lg leading-relaxed text-muted-foreground">{slides[slide]!.body}</p>
+            {(() => { const I = slides()[slide]!.icon; return <I className="h-9 w-9 text-olive" strokeWidth={1.5} />; })()}
+            <h1 className="mt-4 text-3xl leading-snug lg:text-4xl">{slides()[slide]!.title}</h1>
+            <p className="mt-3 text-lg leading-relaxed text-muted-foreground">{slides()[slide]!.body}</p>
           </div>
           <div className="flex items-center justify-between px-7 pb-10 pt-8">
-            <div className="flex gap-1.5">{slides.map((_, i) => <span key={i} className={`h-2 rounded-full transition-all ${i === slide ? "w-7 bg-primary" : "w-2 bg-muted-foreground/25"}`} />)}</div>
+            <div className="flex gap-1.5">{slides().map((_, i) => <span key={i} className={`h-2 rounded-full transition-all ${i === slide ? "w-7 bg-primary" : "w-2 bg-muted-foreground/25"}`} />)}</div>
             <button onClick={() => (slide < 2 ? setSlide(slide + 1) : setPhase("prefs"))} className="press rounded-2xl bg-primary px-8 py-3.5 font-semibold text-primary-foreground">
               {slide < 2 ? t("التالي") : t("خصّص تجربتي")}
             </button>

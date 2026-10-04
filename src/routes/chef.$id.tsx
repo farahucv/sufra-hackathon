@@ -25,18 +25,18 @@ export const Route = createFileRoute("/chef/$id")({
   component: ChefPage,
 });
 
-const reviews = [
+const reviews = () => [
   { n: t("عبدالله"), t: t("الكبسة طلعت مثل كبسة الوالدة بالضبط!"), s: 5, d: t("قبل يومين") },
   { n: t("ريم"), t: t("البدائل الخالية من المكسرات أنقذت عزيمتنا."), s: 5, d: t("الأسبوع الماضي") },
   { n: t("ماجد"), t: t("شرح واضح، أتمنى فيديوهات أطول للخطوات الصعبة."), s: 4, d: t("قبل أسبوعين") },
 ];
-const blog = [t("سر الأرز المفلفل في الكبسة"), t("٥ بهارات لا يخلو منها مطبخ نجدي"), t("كيف تخفف الدهون في الأطباق التراثية")];
+const blog = () => [t("سر الأرز المفلفل في الكبسة"), t("٥ بهارات لا يخلو منها مطبخ نجدي"), t("كيف تخفف الدهون في الأطباق التراثية")];
 
 function ChefPage() {
   const { id } = Route.useLoaderData();
   const c = getChef(id)!;
   const own = recipes.filter((r) => r.chefId === c.id);
-  const [tab, setTab] = useState<"reels" | "recipes" | "reviews" | "blog">("reels");
+  const [tab, setTab] = useState<"reels" | "recipes" | "reviews()" | "blog()">("reels");
   const [following, setFollowing] = useState(false);
   const soon = (what: string) => toast(`${what} — قريباً`, { description: t("ميزة مستقبلية: جلسات مدفوعة مع الطهاة بالمحادثة أو الفيديو.") });
 
@@ -76,7 +76,7 @@ function ChefPage() {
       </div>
 
       <div className="mx-5 mt-6 grid grid-cols-4 rounded-2xl bg-muted p-1 text-sm lg:mx-8 lg:max-w-xl">
-        {([["reels", t("الريلز")], ["recipes", t("الوصفات")], ["reviews", t("التقييمات")], ["blog", t("المدونة")]] as const).map(([k, l]) => (
+        {([["reels", t("الريلز")], ["recipes", t("الوصفات")], ["reviews()", t("التقييمات")], ["blog()", t("المدونة")]] as const).map(([k, l]) => (
           <button key={k} onClick={() => setTab(k)} className={`rounded-xl py-2.5 transition ${tab === k ? "bg-card font-medium shadow-soft" : "text-muted-foreground"}`}>{l}</button>
         ))}
       </div>
@@ -104,9 +104,9 @@ function ChefPage() {
             ))}
           </ul>
         )}
-        {tab === "reviews" && (
+        {tab === "reviews()" && (
           <div className="grid gap-3 lg:grid-cols-3">
-            {reviews.map((r) => (
+            {reviews().map((r) => (
               <div key={r.n} className="rounded-2xl bg-card p-4">
                 <div className="flex items-center justify-between"><p className="font-semibold">{r.n}</p><span className="flex">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className={`h-3.5 w-3.5 ${i < r.s ? "fill-gold text-gold" : "text-muted"}`} />)}</span></div>
                 <p className="mt-1 text-sm">{r.t}</p><p className="mt-2 text-[11px] text-muted-foreground">{r.d}</p>
@@ -114,9 +114,9 @@ function ChefPage() {
             ))}
           </div>
         )}
-        {tab === "blog" && (
+        {tab === "blog()" && (
           <div className="grid gap-3 lg:grid-cols-3">
-            {blog.map((b) => (
+            {blog().map((b) => (
               <article key={b} className="rounded-2xl bg-card p-4"><p className="font-semibold">{t(b)}</p><p className="mt-1 text-xs text-muted-foreground">{t("مقال · ٤ دقائق قراءة")}</p>
                 <Link to="/future" className="mt-3 inline-block text-xs text-olive">{t("المدونات قادمة قريباً ←")}</Link></article>
             ))}
