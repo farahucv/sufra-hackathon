@@ -57,7 +57,7 @@ function Checkout() {
 
   return (
     <AppShell wide>
-      <TopBar title={t("راجع صندوقك")} sub="Review your box" action={<DemoBadge label="Prototype checkout" />} />
+      <TopBar title={t("راجع صندوقك")} action={<DemoBadge label={t("نموذج دفع تجريبي")} />} />
       <div className="space-y-6 px-5 pb-10 lg:grid lg:grid-cols-[1fr_340px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-6">
           <section className="flex items-center gap-4">
@@ -98,7 +98,7 @@ function Checkout() {
 
         <aside>
           <div className="space-y-3 rounded-2xl border bg-card p-5 font-mono text-sm lg:sticky lg:top-24">
-            <p className="font-sans font-semibold">{t("ملخص الطلب")} <span className="text-xs font-normal text-muted-foreground">· Order Summary</span></p>
+            <p className="font-sans font-semibold">{t("ملخص الطلب")}</p>
             <Row l={t("صندوق الوصفة · {n} حصص", { n: s.box.serv })} v={sar(box.subtotal)} />
             {swapped.length > 0 && <Row l={t("بدائل آمنة ({n})", { n: swapped.length })} v={t("مشمولة")} />}
             <Row l={t("التوصيل")} v={sar(DELIVERY_FEE)} />

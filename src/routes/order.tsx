@@ -44,7 +44,7 @@ function OrderPage() {
 
   return (
     <AppShell wide>
-      <TopBar title={delivered ? t("وصل صندوقك") : t("صندوقك في الطريق")} sub={`${delivered ? "Delivered" : "Your box is on the way"} · ${o.id}`} action={<DemoBadge label={t("تتبّع تجريبي")} />} />
+      <TopBar title={delivered ? t("وصل صندوقك") : t("صندوقك في الطريق")} sub={t("طلب {x}", { x: o.id })} />
       <JourneyCallout step={4} hideNext />
       <JourneyCallout step={5} hideNext />
 

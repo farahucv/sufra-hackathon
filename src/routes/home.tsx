@@ -8,7 +8,7 @@ import { BoxArt } from "@/components/BoxArt";
 import { buildBox } from "@/lib/box";
 import { categories, sar, recipes, getChef, recipeAllergens, type Recipe } from "@/lib/data";
 import { matchesAllergy, toggleIn, useStore, useTr, type State } from "@/lib/store";
-import { list, t } from "@/lib/i18n";
+import { isEn, list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/home")({
   head: () => ({
@@ -69,8 +69,8 @@ function HomePage() {
 
       <section className="mt-7">
         <div className="flex items-baseline justify-between px-5 lg:px-8">
-          <h2 className="text-xl">{t("جاهز للطبخ")} <span className="ms-1 text-[10px] tracking-normal text-muted-foreground">Ready-to-Cook Box</span></h2>
-          <span className="text-[11px] text-muted-foreground">Demo data</span>
+          <h2 className="text-xl">{t("جاهز للطبخ")} {!isEn() && <span className="ms-1 text-[10px] tracking-normal text-muted-foreground">Ready-to-Cook Box</span>}</h2>
+          <span className="text-[11px] text-muted-foreground">{t("بيانات تجريبية")}</span>
         </div>
         <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto px-5 pb-1 lg:grid lg:grid-cols-3 lg:px-8">
           {["kabsa", "jareesh", "freekeh"].map((id) => {

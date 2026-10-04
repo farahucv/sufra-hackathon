@@ -35,7 +35,6 @@ function Profile() {
               <p className="text-lg font-semibold">{s.name}</p>
               <p className="text-xs opacity-75">{saved.length} {t("وصفة محفوظة ·")} {s.pantry.length} {t("مكوّن في المخزن")}</p>
             </div>
-            <DemoBadge label={t("حساب تجريبي")} />
           </div>
 
           <section>

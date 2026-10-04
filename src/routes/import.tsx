@@ -45,7 +45,7 @@ function ImportPage() {
 
   return (
     <AppShell>
-      <TopBar title={t("استيراد وصفة")} sub="TikTok · YouTube · Instagram" action={<DemoBadge label="Demo AI extraction" />} />
+      <TopBar title={t("استيراد وصفة")} sub="TikTok · YouTube · Instagram" action={<DemoBadge label={t("استخراج تجريبي بالذكاء الاصطناعي")} />} />
       <div className="space-y-5 px-5 lg:px-8">
         <div className="rounded-2xl bg-card p-5 shadow-soft">
           <label className="text-sm font-medium" htmlFor="url">{t("رابط الفيديو")}</label>

@@ -8,7 +8,7 @@ import { JourneyCallout } from "@/components/Journey";
 import { getChef, getRecipe, ingredientLoc, sar } from "@/lib/data";
 import { BOX_SERVINGS, autoSubs, buildBox, householdBasics, isBoxEligible, unsafeLeft } from "@/lib/box";
 import { setStore, useStore, useTr } from "@/lib/store";
-import { list, t } from "@/lib/i18n";
+import { isEn, list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/box/$id")({
   loader: ({ params }) => {
@@ -195,7 +195,7 @@ function BoxPage() {
           <section className="border-t pt-6">
             <div className="flex items-baseline justify-between">
               <SectionTitle ar={t("من المورد إلى مطبخك")} en="How it works" />
-              <span className="text-[11px] text-muted-foreground">Demo data</span>
+              <span className="text-[11px] text-muted-foreground">{t("بيانات تجريبية")}</span>
             </div>
             <ol className="mt-4 grid grid-cols-3 gap-3 text-center text-xs">
               {[
@@ -207,7 +207,7 @@ function BoxPage() {
               ))}
             </ol>
             <p className="mt-6 text-center font-display text-lg leading-relaxed text-primary">{t("«من الإلهام إلى المائدة: وصفة مخصصة، مكونات مجهزة، وتوصيل في تجربة واحدة.»")}</p>
-            <p className="mt-1 text-center text-xs text-muted-foreground" dir="ltr">From inspiration to the table: a personalized recipe, prepared ingredients, and delivery in one seamless experience.</p>
+            {!isEn() && <p className="mt-1 text-center text-xs text-muted-foreground" dir="ltr">From inspiration to the table: a personalized recipe, prepared ingredients, and delivery in one seamless experience.</p>}
           </section>
         </div>
 
@@ -232,7 +232,7 @@ function BoxPage() {
         <div className="mx-auto flex max-w-md items-center gap-4">
           <div className="shrink-0">
             <p key={box.subtotal} className="animate-float-up font-display text-2xl leading-none text-primary tabular-nums">{sar(box.subtotal)}</p>
-            <p className="mt-1 text-[11px] text-muted-foreground">{serv} {t("حصص · Demo data")}</p>
+            <p className="mt-1 text-[11px] text-muted-foreground">{t("{n} حصص · بيانات تجريبية", { n: serv })}</p>
           </div>
           <div className="flex-1"><CTA disabled={left.length > 0} onClick={toCheckout} /></div>
         </div>
