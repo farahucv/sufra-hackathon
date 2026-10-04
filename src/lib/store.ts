@@ -7,14 +7,17 @@ export type State = {
   onboarded: boolean; name: string; diet: string; household: number;
   allergies: string[]; dislikes: string[]; saved: string[]; liked: string[];
   pantry: PantryItem[]; lang: "ar" | "en"; journey: number; synced: boolean;
+  box: BoxDraft | null; order: Order | null;
 };
+export type BoxDraft = { recipeId: string; serv: number; subs: Record<string, number> };
+export type Order = BoxDraft & { id: string; address: string; slot: string; pay: string; total: number; stage: number; placedAt: number };
 
 const defaultPantry = ["دجاج", "أرز", "بصل", "طماطم", "بهارات كبسة", "بيض", "حليب", "دقيق", "خميرة", "زيت", "زبيب", "دبس تمر", "سمسم"];
 export const defaults: State = {
   onboarded: false, name: "ضيف سُفرة", diet: "all", household: 4,
   allergies: ["مكسرات"], dislikes: [], saved: ["jareesh"], liked: [],
   pantry: defaultPantry.map((name) => ({ name, loc: ingredientLoc[name] ?? "pantry" })),
-  lang: "ar", journey: 0, synced: false,
+  lang: "ar", journey: 0, synced: false, box: null, order: null,
 };
 
 let state: State = defaults;
