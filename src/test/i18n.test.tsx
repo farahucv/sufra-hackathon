@@ -4,7 +4,9 @@ import { describe, expect, it } from "vitest";
 import en from "@/lib/i18n.en.json";
 import { setLangValue as setLang } from "@/lib/lang";
 import { t, list } from "@/lib/i18n";
-import { sar } from "@/lib/data";
+import { sar, getRecipe, recipeAllergens } from "@/lib/data";
+import { getState, matchesAllergy, setStore } from "@/lib/store";
+import { startJourney } from "@/components/Journey";
 
 const AR = /[\u0600-\u06FF]/;
 // Intentional Arabic in English mode: brand wordmark only.
@@ -50,6 +52,27 @@ describe("bilingual localization", () => {
       for (const m of body.matchAll(/>([^<>{}=;"]*[\u0600-\u06FF][^<>{}=;"]*)</g)) if (!BRAND.has(m[1]!.trim())) bad.push(`${f}: ${m[1]!.trim()}`);
     }
     expect(bad).toEqual([]);
+  });
+
+  it("no raw Arabic literals in toasts, aria/placeholder/title/label props or descriptions", () => {
+    const bad: string[] = [];
+    const re = /(?:toast(?:\.\w+)?\(\s*|description:\s*|(?:aria-label|placeholder|title|label|alt|sub|body|aria)=\{?\s*)"([^"]*[\u0600-\u06FF][^"]*)"/g;
+    for (const f of files) {
+      const body = readFileSync(f, "utf8").replace(/head:[\s\S]*?\}\),\n/, "");
+      for (const m of body.matchAll(re)) if (!BRAND.has(m[1]!)) bad.push(`${f}: ${m[0]}`);
+    }
+    expect(bad).toEqual([]);
+  });
+
+  it("Demo Journey in English stores canonical allergy keys and still matches Kabsa", () => {
+    setLang("en");
+    setStore(() => ({ lang: "en", allergies: [] }));
+    startJourney();
+    const st = getState();
+    expect(st.allergies).toEqual(["مكسرات"]);
+    const kabsa = getRecipe("kabsa")!;
+    expect(recipeAllergens(kabsa).some((a) => matchesAllergy(a, st.allergies))).toBe(true);
+    setLang("ar");
   });
 
   it("switches language at runtime", () => {
