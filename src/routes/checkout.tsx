@@ -57,11 +57,11 @@ function Checkout() {
 
   return (
     <AppShell wide>
-      <TopBar title="مراجعة الطلب" sub="Demo checkout" action={<DemoBadge label="دفع تجريبي" />} />
+      <TopBar title="راجع صندوقك" sub="Review your box" action={<DemoBadge label="Prototype checkout" />} />
       <div className="space-y-6 px-5 pb-10 lg:grid lg:grid-cols-[1fr_340px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-6">
           <section className="flex gap-4">
-            <div className="w-40 shrink-0"><BoxArt img={r.img} title={r.title} serv={s.box.serv} compact /></div>
+            <div className="w-36 shrink-0"><BoxArt img={r.img} title={r.title} serv={s.box.serv} size="sm" /></div>
             <div className="min-w-0 text-sm">
               <p className="font-display text-xl">صندوق {r.title}</p>
               <p className="text-muted-foreground">{s.box.serv} حصص · {box.lines.length} مكونات</p>
@@ -98,15 +98,16 @@ function Checkout() {
 
         <aside>
           <div className="space-y-3 rounded-2xl border bg-card p-5 font-mono text-sm lg:sticky lg:top-24">
-            <p className="font-sans font-semibold">ملخص الطلب</p>
-            <Row l="صندوق الوصفة" v={sar(box.subtotal)} />
+            <p className="font-sans font-semibold">ملخص الطلب <span className="text-xs font-normal text-muted-foreground">· Order Summary</span></p>
+            <Row l={`صندوق الوصفة · ${s.box.serv} حصص`} v={sar(box.subtotal)} />
+            {swapped.length > 0 && <Row l={`بدائل آمنة (${swapped.length})`} v="مشمولة" />}
             <Row l="التوصيل" v={sar(DELIVERY_FEE)} />
             <div className="border-t border-dashed pt-3"><Row l="الإجمالي" v={sar(total)} bold /></div>
             <button onClick={confirm} disabled={busy}
               className="press mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 font-sans font-semibold text-primary-foreground disabled:opacity-50">
               <Check className="h-4 w-4" /> تأكيد الطلب
             </button>
-            <p className="flex items-center justify-center gap-1 font-sans text-[11px] text-muted-foreground"><Lock className="h-3 w-3" /> نموذج تجريبي — لن يتم أي دفع فعلي</p>
+            <p className="flex items-center justify-center gap-1 font-sans text-[11px] text-muted-foreground"><Lock className="h-3 w-3" /> Prototype checkout — لا يتم أي دفع فعلي</p>
           </div>
         </aside>
       </div>

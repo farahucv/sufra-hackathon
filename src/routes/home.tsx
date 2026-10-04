@@ -77,7 +77,7 @@ function HomePage() {
             const r = recipes.find((x) => x.id === id)!;
             return (
               <Link key={id} to="/box/$id" params={{ id }} className="press w-64 shrink-0 lg:w-auto">
-                <BoxArt img={r.img} title={r.title} serv={4} compact />
+                <BoxArt img={r.img} title={r.title} serv={4} size="sm" />
                 <p className="mt-2 flex justify-between text-sm"><span>{r.time} د · {r.difficulty}</span><b className="text-primary">{sar(buildBox(r, 4, {}).subtotal)}</b></p>
               </Link>
             );
