@@ -74,7 +74,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Reem+Kufi:wght@500;600;700&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Reem+Kufi:wght@500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -100,9 +100,11 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   useStoreSync();
+  const lang = useStore().lang;
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      {/* Remount the page tree on language switch so every t() call re-reads the language. */}
+      <div key={lang} className="contents"><Outlet /></div>
       <Toaster position="top-center" toastOptions={{ style: { background: "var(--card)", color: "var(--foreground)", border: "1px solid var(--border)", fontFamily: "var(--font-sans)", borderRadius: "1rem" } }} />
     </QueryClientProvider>
   );
