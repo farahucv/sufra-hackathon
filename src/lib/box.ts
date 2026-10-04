@@ -12,7 +12,7 @@ export const householdBasics = ["ملح", "ماء", "زيت طبخ أساسي", 
 export const BOX_FEE = 12; // packaging + cold-chain prep (demo)
 export const DELIVERY_FEE = 9;
 
-export type BoxLine = { key: string; name: string; qty: string; price: number; swapped?: { from: string; reason: string } ; allergen?: string };
+export type BoxLine = { key: string; name: string; qty: string; price: number; swapped?: { from: string; reason: string } | undefined; allergen?: string | undefined };
 
 const fmt = (n: number) => (Number.isInteger(n) ? `${n}` : n < 1 ? (Math.abs(n - 0.25) < 0.01 ? "¼" : Math.abs(n - 0.5) < 0.01 ? "½" : n.toFixed(2)) : n.toFixed(1).replace(/\.0$/, ""));
 
