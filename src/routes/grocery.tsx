@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
 import { getRecipe, recipes, stores, priceOf, cheapest, sar } from "@/lib/data";
 import { hasPantry, useStore } from "@/lib/store";
+import { t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/grocery")({
   validateSearch: (s) => z.object({ recipe: z.string().optional() }).parse(s),
@@ -51,12 +52,12 @@ function Grocery() {
 
   return (
     <AppShell wide>
-      <TopBar title="مقارنة الأسعار" sub={`${showAll ? "كل مكونات" : "الناقص من"} ${r.title} · الرياض`} action={<DemoBadge label="أسعار تجريبية" />} />
+      <TopBar title={t("مقارنة الأسعار")} sub={`${showAll ? t("كل مكونات") : t("الناقص من")} ${r.title} · الرياض`} action={<DemoBadge label={t("أسعار تجريبية")} />} />
 
       <div className="px-5 lg:px-8">
         <div className="flex items-start gap-2 rounded-2xl bg-gold/15 p-3 text-xs leading-relaxed">
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-          <p>مقارنة توضيحية بأسعار <b>تجريبية</b> لمتاجر نموذجية، وليست أسعاراً حية أو موثّقة. الربط المباشر مع المتاجر ضمن المرحلة القادمة.</p>
+          <p>{t("مقارنة توضيحية بأسعار")} <b>{t("تجريبية")}</b> {t("لمتاجر نموذجية، وليست أسعاراً حية أو موثّقة. الربط المباشر مع المتاجر ضمن المرحلة القادمة.")}</p>
         </div>
         <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto">
           {recipes.slice(0, 6).map((x) => (
@@ -66,22 +67,22 @@ function Grocery() {
       </div>
 
       {loading ? (
-        <div className="mt-5 space-y-3 px-5 lg:px-8"><div className="skeleton h-36" /><div className="skeleton h-64" /><p className="text-center text-xs text-muted-foreground">نقارن الأسعار بين ٤ متاجر…</p></div>
+        <div className="mt-5 space-y-3 px-5 lg:px-8"><div className="skeleton h-36" /><div className="skeleton h-64" /><p className="text-center text-xs text-muted-foreground">{t("نقارن الأسعار بين ٤ متاجر…")}</p></div>
       ) : items.length === 0 ? (
         <div className="mt-6 px-5 lg:px-8">
-          <EmptyState icon={<PartyPopper className="h-6 w-6" />} title="كل المكونات عندك!" body={`مخزنك يغطي ${r.title} بالكامل — ما تحتاج تتسوّق.`}
-            action={<div className="flex gap-2"><Link to="/recipe/$id" params={{ id: r.id }} className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">ابدأ الطبخ</Link><button onClick={() => setShowAll(true)} className="rounded-full border px-4 py-2 text-sm">قارن كل المكونات</button></div>} />
+          <EmptyState icon={<PartyPopper className="h-6 w-6" />} title={t("كل المكونات عندك!")} body={`مخزنك يغطي ${r.title} بالكامل — ما تحتاج تتسوّق.`}
+            action={<div className="flex gap-2"><Link to="/recipe/$id" params={{ id: r.id }} className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">{t("ابدأ الطبخ")}</Link><button onClick={() => setShowAll(true)} className="rounded-full border px-4 py-2 text-sm">{t("قارن كل المكونات")}</button></div>} />
         </div>
       ) : (
         <div className="mt-5 space-y-5 px-5 lg:grid lg:grid-cols-[1fr_360px] lg:gap-8 lg:space-y-0 lg:px-8">
           <div className="space-y-5">
             <div className="grid grid-cols-2 gap-3">
-              <StrategyCard active={mode === "cheap"} onClick={() => setMode("cheap")} icon={<PiggyBank className="h-5 w-5" />} label="أقل سعر إجمالي" value={sar(splitTotal)} note={`من ${splitStores.length} متاجر · توفير ${sar(Math.max(0, worst - splitTotal))}`} />
-              <StrategyCard active={mode === "single"} onClick={() => setMode("single")} icon={<Store className="h-5 w-5" />} label="أقل عدد متاجر" value={sar(totals[singleIdx]!.total)} note={`كله من ${stores[singleIdx]!.name}${totals[singleIdx]!.missing ? ` (+${totals[singleIdx]!.missing} من غيره)` : ""}`} />
+              <StrategyCard active={mode === "cheap"} onClick={() => setMode("cheap")} icon={<PiggyBank className="h-5 w-5" />} label={t("أقل سعر إجمالي")} value={sar(splitTotal)} note={`من ${splitStores.length} {t("متاجر · توفير $")}{sar(Math.max(0, worst - splitTotal))}`} />
+              <StrategyCard active={mode === "single"} onClick={() => setMode("single")} icon={<Store className="h-5 w-5" />} label={t("أقل عدد متاجر")} value={sar(totals[singleIdx]!.total)} note={`كله من ${stores[singleIdx]!.name}${totals[singleIdx]!.missing ? ` (+${totals[singleIdx]!.missing} من غيره)` : ""}`} />
             </div>
 
             <label className="flex items-center justify-between rounded-2xl bg-card p-3 text-sm">
-              <span>عرض كل مكونات الوصفة (وليس الناقص فقط)</span>
+              <span>{t("عرض كل مكونات الوصفة (وليس الناقص فقط)")}</span>
               <input type="checkbox" checked={showAll} onChange={(e) => setShowAll(e.target.checked)} className="h-5 w-5 accent-[var(--olive)]" />
             </label>
 
@@ -89,7 +90,7 @@ function Grocery() {
               <table className="w-full min-w-[480px] text-sm">
                 <thead>
                   <tr className="border-b text-xs text-muted-foreground">
-                    <th className="p-3 text-start font-medium">المنتج</th>
+                    <th className="p-3 text-start font-medium">{t("المنتج")}</th>
                     {stores.map((st, i) => <th key={st.id} className={`p-3 font-medium ${i === singleIdx ? "text-olive" : ""}`}>{st.name}<span className="block text-[10px] font-normal opacity-70">{st.en}</span></th>)}
                   </tr>
                 </thead>
@@ -103,7 +104,7 @@ function Grocery() {
                           const p = priceOf(k, i);
                           return (
                             <td key={i} className="p-2 text-center tabular-nums">
-                              {p === null ? <span className="inline-flex items-center gap-0.5 text-[11px] text-terracotta"><X className="h-3.5 w-3.5" />غير متوفر</span>
+                              {p === null ? <span className="inline-flex items-center gap-0.5 text-[11px] text-terracotta"><X className="h-3.5 w-3.5" />{t("غير متوفر")}</span>
                                 : <span className={i === min ? "rounded-lg bg-accent px-1.5 py-0.5 font-semibold text-accent-foreground" : ""}>{p.toFixed(2)}</span>}
                             </td>
                           );
@@ -112,8 +113,8 @@ function Grocery() {
                     );
                   })}
                   <tr className="bg-secondary font-semibold">
-                    <td className="p-3">الإجمالي</td>
-                    {totals.map((t, i) => <td key={i} className="p-2 text-center tabular-nums">{t.total.toFixed(2)}{t.missing > 0 && <span className="block text-[10px] font-normal text-terracotta">ينقص {t.missing}</span>}</td>)}
+                    <td className="p-3">{t("الإجمالي")}</td>
+                    {totals.map((t, i) => <td key={i} className="p-2 text-center tabular-nums">{t.total.toFixed(2)}{t.missing > 0 && <span className="block text-[10px] font-normal text-terracotta">{t("ينقص")} {t.missing}</span>}</td>)}
                   </tr>
                 </tbody>
               </table>
@@ -124,9 +125,9 @@ function Grocery() {
           <aside className="lg:sticky lg:top-6 lg:self-start">
             <div className="rounded-t-2xl bg-card p-5 font-sans shadow-soft">
               <div className="flex items-center justify-between">
-                <p className="flex items-center gap-2 font-display text-lg"><Trophy className="h-5 w-5 text-gold" /> سلّتك المقترحة</p>
+                <p className="flex items-center gap-2 font-display text-lg"><Trophy className="h-5 w-5 text-gold" /> {t("سلّتك المقترحة")}</p>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">{mode === "cheap" ? "أقل سعر إجمالي" : "أقل عدد متاجر"} · {r.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{mode === "cheap" ? t("أقل سعر إجمالي") : t("أقل عدد متاجر")} · {r.title}</p>
               <div className="my-4 border-t border-dashed" />
               <ul className="space-y-2 text-sm">
                 {lines.map((l) => (
@@ -140,14 +141,14 @@ function Grocery() {
               </ul>
               <div className="my-4 border-t border-dashed" />
               <div className="space-y-1 text-sm">
-                <div className="flex justify-between"><span className="text-muted-foreground">المجموع</span><span className="tabular-nums">{sar(subtotal)}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">توصيل ({usedStores.length} متجر)</span><span className="tabular-nums">{delivery ? sar(delivery) : "مجاني"}</span></div>
-                <div className="flex justify-between pt-2 text-lg font-bold"><span>الإجمالي</span><span className="tabular-nums text-primary">{sar(subtotal + delivery)}</span></div>
-                <p className="text-xs text-olive">توفّر {sar(Math.max(0, worst - subtotal))} مقارنة بأغلى متجر</p>
+                <div className="flex justify-between"><span className="text-muted-foreground">{t("المجموع")}</span><span className="tabular-nums">{sar(subtotal)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">{t("توصيل (")}{usedStores.length} متجر)</span><span className="tabular-nums">{delivery ? sar(delivery) : t("مجاني")}</span></div>
+                <div className="flex justify-between pt-2 text-lg font-bold"><span>{t("الإجمالي")}</span><span className="tabular-nums text-primary">{sar(subtotal + delivery)}</span></div>
+                <p className="text-xs text-olive">{t("توفّر")} {sar(Math.max(0, worst - subtotal))} {t("مقارنة بأغلى متجر")}</p>
               </div>
-              <button onClick={() => toast("الطلب المباشر قادم قريباً", { description: "نعمل على الربط مع تطبيقات التوصيل في المرحلة القادمة." })}
+              <button onClick={() => toast("الطلب المباشر قادم قريباً", { description: t("نعمل على الربط مع تطبيقات التوصيل في المرحلة القادمة.") })}
                 className="press mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 font-semibold text-primary-foreground">
-                <Truck className="h-5 w-5" /> اطلب السلة
+                <Truck className="h-5 w-5" /> {t("اطلب السلة")}
               </button>
             </div>
             <div className="receipt-edge rotate-180" aria-hidden />

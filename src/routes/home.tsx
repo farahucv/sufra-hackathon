@@ -8,6 +8,7 @@ import { BoxArt } from "@/components/BoxArt";
 import { buildBox } from "@/lib/box";
 import { categories, sar, recipes, getChef, recipeAllergens, type Recipe } from "@/lib/data";
 import { matchesAllergy, toggleIn, useStore, useTr, type State } from "@/lib/store";
+import { t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/home")({
   head: () => ({
@@ -30,7 +31,6 @@ export function fitFor(r: Recipe, s: State) {
 function HomePage() {
   const [cat, setCat] = useState<string | null>(null);
   const s = useStore();
-  const tr = useTr();
   const list = recipes.filter((r) => !cat || r.cats.includes(cat))
     .sort((a, b) => Number(fitFor(b, s).fit) - Number(fitFor(a, s).fit));
   const hour = new Date().getHours();
@@ -40,15 +40,15 @@ function HomePage() {
       <header className="flex items-center justify-between px-5 pb-2 pt-6 lg:px-8 lg:pt-10">
         <div className="lg:hidden"><Wordmark size="sm" /></div>
         <div className="hidden lg:block">
-          <p className="text-sm text-muted-foreground">{hour < 12 ? "صباح الخير" : "مساء الخير"}، {s.name}</p>
-          <h1 className="text-3xl">{tr("وش نطبخ اليوم؟", "What's cooking today?")}</h1>
+          <p className="text-sm text-muted-foreground">{hour < 12 ? t("صباح الخير") : t("مساء الخير")}{t("،")} {s.name}</p>
+          <h1 className="text-3xl">{t("وش نطبخ اليوم؟")}</h1>
         </div>
-        <button onClick={() => { startJourney(); toast("بدأت رحلة العرض", { description: "٤ خطوات قصيرة تشرح الفكرة كاملة." }); }}
+        <button onClick={() => { startJourney(); toast("بدأت رحلة العرض", { description: t("٤ خطوات قصيرة تشرح الفكرة كاملة.") }); }}
           className="press inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] text-muted-foreground hover:bg-muted">
           <RouteIcon className="h-3.5 w-3.5" /> Demo Journey
         </button>
       </header>
-      <p className="px-5 text-sm text-muted-foreground lg:hidden">{hour < 12 ? "صباح الخير" : "مساء الخير"}، {s.name} — {tr("وش نطبخ اليوم؟", "what's cooking today?")}</p>
+      <p className="px-5 text-sm text-muted-foreground lg:hidden">{hour < 12 ? t("صباح الخير") : t("مساء الخير")}{t("،")} {s.name} — {t("وش نطبخ اليوم؟")}</p>
 
       <JourneyCallout step={1} />
 
@@ -56,20 +56,20 @@ function HomePage() {
         <Link to="/import" className="press flex items-center gap-3 rounded-2xl bg-ink p-4 text-ink-foreground">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gold text-ink"><Link2 className="h-5 w-5" /></span>
           <div className="min-w-0 flex-1">
-            <p className="font-semibold">{tr("استورد وصفة من تيك توك أو يوتيوب", "Import a recipe from TikTok or YouTube")}</p>
-            <p className="truncate text-xs opacity-70">الصق الرابط ونستخرج المقادير والخطوات</p>
+            <p className="font-semibold">{t("استورد وصفة من تيك توك أو يوتيوب")}</p>
+            <p className="truncate text-xs opacity-70">{t("الصق الرابط ونستخرج المقادير والخطوات")}</p>
           </div>
           <Sparkles className="h-5 w-5 text-gold" />
         </Link>
         <Link to="/pantry" className="press hidden items-center gap-3 rounded-2xl bg-secondary p-4 lg:flex">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-olive text-olive-foreground font-display">{s.pantry.length}</span>
-          <div className="min-w-0 flex-1"><p className="font-semibold">مكوّن في مخزنك</p><p className="text-xs text-muted-foreground">شوف وش تقدر تطبخ الحين</p></div>
+          <div className="min-w-0 flex-1"><p className="font-semibold">{t("مكوّن في مخزنك")}</p><p className="text-xs text-muted-foreground">{t("شوف وش تقدر تطبخ الحين")}</p></div>
         </Link>
       </div>
 
       <section className="mt-7">
         <div className="flex items-baseline justify-between px-5 lg:px-8">
-          <h2 className="text-xl">جاهز للطبخ <span className="ms-1 text-[10px] tracking-normal text-muted-foreground">Ready-to-Cook Box</span></h2>
+          <h2 className="text-xl">{t("جاهز للطبخ")} <span className="ms-1 text-[10px] tracking-normal text-muted-foreground">Ready-to-Cook Box</span></h2>
           <span className="text-[11px] text-muted-foreground">Demo data</span>
         </div>
         <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto px-5 pb-1 lg:grid lg:grid-cols-3 lg:px-8">
@@ -78,7 +78,7 @@ function HomePage() {
             return (
               <Link key={id} to="/box/$id" params={{ id }} className="press w-64 shrink-0 lg:w-auto">
                 <BoxArt img={r.img} title={r.title} serv={4} size="sm" />
-                <p className="mt-2 flex justify-between text-sm"><span>{r.time} د · {r.difficulty}</span><b className="text-primary">{sar(buildBox(r, 4, {}).subtotal)}</b></p>
+                <p className="mt-2 flex justify-between text-sm"><span>{r.time} {t("د ·")} {r.difficulty}</span><b className="text-primary">{sar(buildBox(r, 4, {}).subtotal)}</b></p>
               </Link>
             );
           })}
@@ -86,13 +86,13 @@ function HomePage() {
       </section>
 
       <div className="no-scrollbar mt-5 flex gap-2 overflow-x-auto px-5 lg:px-8">
-        <Chip active={!cat} onClick={() => setCat(null)}>الكل</Chip>
+        <Chip active={!cat} onClick={() => setCat(null)}>{t("الكل")}</Chip>
         {categories.map((c) => <Chip key={c} active={cat === c} onClick={() => setCat(c)}>{c}</Chip>)}
       </div>
 
       <section className="mt-5 grid gap-5 px-5 lg:grid-cols-2 lg:px-8 xl:grid-cols-3">
         {list.length === 0 && (
-          <div className="lg:col-span-2"><EmptyState icon={<SearchX className="h-6 w-6" />} title="لا توجد ريلز هنا بعد" body="جرّب تصنيفاً آخر — نضيف ريلز جديدة أسبوعياً." action={<Chip onClick={() => setCat(null)}>عرض الكل</Chip>} /></div>
+          <div className="lg:col-span-2"><EmptyState icon={<SearchX className="h-6 w-6" />} title={t("لا توجد ريلز هنا بعد")} body={t("جرّب تصنيفاً آخر — نضيف ريلز جديدة أسبوعياً.")} action={<Chip onClick={() => setCat(null)}>{t("عرض الكل")}</Chip>} /></div>
         )}
         {list.map((r, idx) => <Reel key={r.id} r={r} s={s} idx={idx} />)}
       </section>
@@ -115,18 +115,18 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
         <div className="absolute inset-0 scrim" />
       </Link>
       <div className="pointer-events-none absolute inset-x-4 top-4 flex flex-wrap items-start justify-between gap-2">
-        <span className="flex items-center gap-1.5 rounded-full bg-ink/55 px-3 py-1.5 text-xs text-ink-foreground"><Play className="h-3.5 w-3.5 fill-current" /> ٠:٤٥</span>
-        {fit && <span className="flex items-center gap-1 rounded-full bg-olive px-3 py-1.5 text-xs font-medium text-olive-foreground"><Sparkles className="h-3.5 w-3.5" /> مناسب لك</span>}
+        <span className="flex items-center gap-1.5 rounded-full bg-ink/55 px-3 py-1.5 text-xs text-ink-foreground"><Play className="h-3.5 w-3.5 fill-current" /> {t("٠:٤٥")}</span>
+        {fit && <span className="flex items-center gap-1 rounded-full bg-olive px-3 py-1.5 text-xs font-medium text-olive-foreground"><Sparkles className="h-3.5 w-3.5" /> {t("مناسب لك")}</span>}
         {!fit && warn.length > 0 && (
           <span className="flex items-center gap-1 rounded-full bg-terracotta px-3 py-1.5 text-xs text-primary-foreground">
-            <AlertTriangle className="h-3.5 w-3.5" /> {warn.join("، ")}{adaptable ? " · قابل للتعديل" : ""}
+            <AlertTriangle className="h-3.5 w-3.5" /> {warn.join("، ")}{adaptable ? t(" · قابل للتعديل") : ""}
           </span>
         )}
       </div>
       <div className="absolute bottom-36 end-4 flex flex-col gap-4 text-ink-foreground">
-        <ActionBtn label={r.likes} aria="إعجاب" onClick={() => toggleIn("liked", r.id)}><Heart className={`h-5 w-5 ${liked ? "fill-terracotta text-terracotta" : ""}`} /></ActionBtn>
-        <ActionBtn label={saved ? "محفوظ" : "حفظ"} aria="حفظ" onClick={() => { toggleIn("saved", r.id); toast.success(saved ? "أُزيلت من المحفوظات" : "حُفظت في وصفاتك"); }}><Bookmark className={`h-5 w-5 ${saved ? "fill-gold text-gold" : ""}`} /></ActionBtn>
-        <ActionBtn label="مشاركة" aria="مشاركة" onClick={share}><Share2 className="h-5 w-5" /></ActionBtn>
+        <ActionBtn label={r.likes} aria={t("إعجاب")} onClick={() => toggleIn("liked", r.id)}><Heart className={`h-5 w-5 ${liked ? "fill-terracotta text-terracotta" : ""}`} /></ActionBtn>
+        <ActionBtn label={saved ? t("محفوظ") : t("حفظ")} aria={t("حفظ")} onClick={() => { toggleIn("saved", r.id); toast.success(saved ? t("أُزيلت من المحفوظات") : t("حُفظت في وصفاتك")); }}><Bookmark className={`h-5 w-5 ${saved ? "fill-gold text-gold" : ""}`} /></ActionBtn>
+        <ActionBtn label={t("مشاركة")} aria={t("مشاركة")} onClick={share}><Share2 className="h-5 w-5" /></ActionBtn>
       </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 space-y-2.5 p-5 text-ink-foreground">
         <Link to="/chef/$id" params={{ id: chef.id }} className="pointer-events-auto flex w-fit items-center gap-2">
@@ -136,11 +136,11 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
         <h2 className="text-3xl">{r.title}</h2>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs opacity-90">
           <span>{r.region}</span>
-          <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{r.time} د</span>
-          <span className="flex items-center gap-1"><Flame className="h-3.5 w-3.5" />{r.nutrition.kcal} سعرة</span>
+          <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{r.time} {t("د")}</span>
+          <span className="flex items-center gap-1"><Flame className="h-3.5 w-3.5" />{r.nutrition.kcal} {t("سعرة")}</span>
           <span className="flex items-center gap-1"><Gauge className="h-3.5 w-3.5" />{r.difficulty}</span>
         </div>
-        <Link to="/recipe/$id" params={{ id: r.id }} className="press pointer-events-auto block rounded-2xl bg-card py-3 text-center font-semibold text-foreground">عرض الوصفة</Link>
+        <Link to="/recipe/$id" params={{ id: r.id }} className="press pointer-events-auto block rounded-2xl bg-card py-3 text-center font-semibold text-foreground">{t("عرض الوصفة")}</Link>
       </div>
     </article>
   );

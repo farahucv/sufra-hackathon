@@ -12,14 +12,14 @@ export function BoxArt({ title, serv, size = "md", img }: { title: string; serv:
         <div className={`absolute inset-0 flex flex-col justify-between ${big ? "p-6" : "p-3.5"}`}>
           <div className="flex items-start justify-between gap-2">
             <div className="text-primary">
-              <p className={`font-display leading-none ${big ? "text-4xl" : "text-xl"}`}>سُفرة</p>
+              <p className={`font-display leading-none ${big ? "text-4xl" : "text-xl"}`}>{t("سُفرة")}</p>
               <p className={`mt-1 font-medium tracking-[0.28em] opacity-70 ${big ? "text-[10px]" : "text-[8px]"}`}>READY-TO-COOK BOX</p>
             </div>
             {img && <img src={img} alt="" className={`rounded-full object-cover ring-2 ring-card ${big ? "h-20 w-20" : "h-11 w-11"}`} width={80} height={80} loading="lazy" />}
           </div>
           <div className="flex items-end justify-between gap-2">
             <p className={`min-w-0 truncate font-display text-foreground ${big ? "text-2xl" : "text-sm"}`}>{title}</p>
-            <span className={`shrink-0 rounded-full bg-olive font-semibold text-olive-foreground ${big ? "px-3 py-1 text-xs" : "px-2 py-0.5 text-[10px]"}`}>{serv} حصص</span>
+            <span className={`shrink-0 rounded-full bg-olive font-semibold text-olive-foreground ${big ? "px-3 py-1 text-xs" : "px-2 py-0.5 text-[10px]"}`}>{serv} {t("حصص")}</span>
           </div>
         </div>
         {/* tape seam */}

@@ -4,6 +4,7 @@ import { MapPin, BookOpen, CalendarHeart, ArrowLeft, Landmark } from "lucide-rea
 import { AppShell, Chip, TopBar } from "@/components/AppShell";
 import { regions, chefs, getRecipe } from "@/lib/data";
 import { useTr } from "@/lib/store";
+import { t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/explore")({
   head: () => ({
@@ -18,13 +19,12 @@ export const Route = createFileRoute("/explore")({
 });
 
 function Explore() {
-  const tr = useTr();
   const [sel, setSel] = useState(0);
   const region = regions[sel]!;
 
   return (
     <AppShell wide>
-      <TopBar back={false} title={tr("التراث الطهوي السعودي", "Saudi Culinary Heritage")} sub="لكل منطقة حكاية… ولكل طبق ذاكرة" />
+      <TopBar back={false} title={t("التراث الطهوي السعودي")} sub={t("لكل منطقة حكاية… ولكل طبق ذاكرة")} />
 
       <div className="no-scrollbar flex gap-2 overflow-x-auto px-5 lg:px-8">
         {regions.map((r, i) => <Chip key={r.name} active={sel === i} onClick={() => setSel(i)}>{r.name}</Chip>)}
@@ -59,9 +59,9 @@ function Explore() {
               </div>
               <p className="mt-4 flex gap-2 border-s-2 border-gold ps-3 text-sm leading-loose"><BookOpen className="mt-1 h-4 w-4 shrink-0 text-gold" />{d.story}</p>
               {r ? (
-                <Link to="/recipe/$id" params={{ id: r.id }} className="press mt-4 inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">اطبخها الآن <ArrowLeft className="h-3.5 w-3.5 ltr:rotate-180" /></Link>
+                <Link to="/recipe/$id" params={{ id: r.id }} className="press mt-4 inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">{t("اطبخها الآن")} <ArrowLeft className="h-3.5 w-3.5 ltr:rotate-180" /></Link>
               ) : (
-                <span className="mt-4 inline-block rounded-full bg-muted px-4 py-2 text-xs text-muted-foreground">الوصفة المصوّرة قادمة قريباً</span>
+                <span className="mt-4 inline-block rounded-full bg-muted px-4 py-2 text-xs text-muted-foreground">{t("الوصفة المصوّرة قادمة قريباً")}</span>
               )}
             </article>
           );
@@ -70,19 +70,19 @@ function Explore() {
 
       <section className="star-pattern mx-5 mt-8 rounded-2xl bg-ink p-6 text-ink-foreground lg:mx-8">
         <Landmark className="h-6 w-6 text-gold" />
-        <h3 className="mt-3 text-xl">حفظ الإرث الطهوي للأجيال القادمة</h3>
+        <h3 className="mt-3 text-xl">{t("حفظ الإرث الطهوي للأجيال القادمة")}</h3>
         <p className="mt-2 text-sm leading-relaxed opacity-85">
           تنسجم سُفرة مع تطلعات رؤية السعودية ٢٠٣٠ في تعزيز الهوية الثقافية وجودة الحياة؛ عبر توثيق وصفات المناطق بأصوات طهاتها، وتمكين الطهاة المحليين كصنّاع محتوى. (مبادرة مستقلة، دون أي ارتباط رسمي.)
         </p>
         <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-          {[["٥", "مناطق"], ["١١", "طبقاً تراثياً"], ["٢", "طهاة موثّقون"]].map(([v, l]) => (
+          {[[t("٥"), t("مناطق")], [t("١١"), t("طبقاً تراثياً")], [t("٢"), t("طهاة موثّقون")]].map(([v, l]) => (
             <div key={l} className="rounded-2xl bg-ink-foreground/10 py-3"><p className="font-display text-2xl text-gold">{v}</p><p className="text-[11px] opacity-75">{l}</p></div>
           ))}
         </div>
       </section>
 
       <section className="mt-8 px-5 lg:px-8">
-        <h3 className="text-lg">حرّاس النكهة</h3>
+        <h3 className="text-lg">{t("حرّاس النكهة")}</h3>
         <div className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
           {chefs.map((c) => (
             <Link key={c.id} to="/chef/$id" params={{ id: c.id }} className="lift rounded-2xl bg-card p-4 text-center">
