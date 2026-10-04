@@ -77,6 +77,7 @@ function BoxPage() {
 
   return (
     <AppShell wide nav={false}>
+      {s.journey === 3 && <div className="pt-[env(safe-area-inset-top)]"><JourneyCallout step={3} action={{ label: t("متابعة رحلة العرض"), onClick: toCheckout }} /></div>}
       {/* Hero */}
       <section className="relative">
         <div className="relative h-64 overflow-hidden lg:mx-8 lg:mt-8 lg:h-80 lg:rounded-2xl">
@@ -92,7 +93,6 @@ function BoxPage() {
 
       <div className="px-5 pt-6 lg:grid lg:grid-cols-[1fr_340px] lg:gap-10 lg:px-8">
         <div className="space-y-8">
-          <div className="-mx-5 -my-4 lg:-mx-8"><JourneyCallout step={3} action={{ label: t("متابعة رحلة العرض"), onClick: toCheckout }} /></div>
           <header className="text-center lg:text-start">
             <p className="text-xs font-medium tracking-wide text-olive">{t("صندوق جاهز للطبخ")}</p>
             <h1 className="mt-1 text-4xl lg:text-5xl">{t(r.title)}</h1>
