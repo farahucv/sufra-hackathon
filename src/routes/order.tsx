@@ -56,7 +56,7 @@ function OrderPage() {
               <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-olive" />{delivered ? "تم التسليم" : `الوصول المتوقع ${eta}`}</span>
               <span className="text-xs text-muted-foreground">{slots.find((x) => x.id === o.slot)?.label}</span>
             </div>
-            <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-olive transition-[width] duration-200" style={{ width: `${((o.stage + 1) / 4) * 100}%` }} /></div>
+            <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted"><div className="me-auto h-full rounded-full bg-olive transition-[width] duration-200" style={{ width: `${((o.stage + 1) / 4) * 100}%` }} /></div>
             <ol className="mt-5 space-y-0">
               {orderStages.map((st, i) => {
                 const done = i <= o.stage;
