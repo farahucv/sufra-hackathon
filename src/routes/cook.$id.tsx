@@ -99,7 +99,7 @@ function Cook() {
             )}
           </div>
         )}
-        {tip && <p className="mt-6 flex gap-2 rounded-2xl bg-gold/15 p-4 text-sm leading-relaxed"><Lightbulb className="h-5 w-5 shrink-0 text-gold" /><span><b>{t("نصيحة الشيف:")}</b> {tip}</span></p>}
+        {tip && <p className="mt-6 flex gap-2 rounded-2xl bg-gold/15 p-4 text-sm leading-relaxed"><Lightbulb className="h-5 w-5 shrink-0 text-gold" /><span><b>{t("نصيحة الشيف:")}</b> {t(tip)}</span></p>}
       </main>
 
       <footer className="mx-auto flex w-full max-w-2xl gap-3 px-5 pb-[max(env(safe-area-inset-bottom),1.25rem)]">
