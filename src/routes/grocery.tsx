@@ -77,8 +77,8 @@ function Grocery() {
         <div className="mt-5 space-y-5 px-5 lg:grid lg:grid-cols-[1fr_360px] lg:gap-8 lg:space-y-0 lg:px-8">
           <div className="space-y-5">
             <div className="grid grid-cols-2 gap-3">
-              <StrategyCard active={mode === "cheap"} onClick={() => setMode("cheap")} icon={<PiggyBank className="h-5 w-5" />} label={t("أقل سعر إجمالي")} value={sar(splitTotal)} note={`من ${splitStores.length} {t("متاجر · توفير $")}{sar(Math.max(0, worst - splitTotal))}`} />
-              <StrategyCard active={mode === "single"} onClick={() => setMode("single")} icon={<Store className="h-5 w-5" />} label={t("أقل عدد متاجر")} value={sar(totals[singleIdx]!.total)} note={`كله من ${stores[singleIdx]!.name}${totals[singleIdx]!.missing ? ` (+${totals[singleIdx]!.missing} من غيره)` : ""}`} />
+              <StrategyCard active={mode === "cheap"} onClick={() => setMode("cheap")} icon={<PiggyBank className="h-5 w-5" />} label={t("أقل سعر إجمالي")} value={sar(splitTotal)} note={t("من {n} متاجر · توفير {x}", { n: splitStores.length, x: sar(Math.max(0, worst - splitTotal)) })} />
+              <StrategyCard active={mode === "single"} onClick={() => setMode("single")} icon={<Store className="h-5 w-5" />} label={t("أقل عدد متاجر")} value={sar(totals[singleIdx]!.total)} note={t("كله من {x}", { x: t(stores[singleIdx]!.name) }) + (totals[singleIdx]!.missing ? t(" (+{n} من غيره)", { n: totals[singleIdx]!.missing }) : "")} />
             </div>
 
             <label className="flex items-center justify-between rounded-2xl bg-card p-3 text-sm">
