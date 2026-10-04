@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Home, Compass, Refrigerator, ShoppingBasket, User, ChevronRight, ChevronLeft, Link2, Cloud } from "lucide-react";
 import type { ReactNode } from "react";
 import { useStore, useTr } from "@/lib/store";
-import { t } from "@/lib/i18n";
+import { isEn, t } from "@/lib/i18n";
 
 export function Wordmark({ size = "md", tone = "default" }: { size?: "sm" | "md" | "lg"; tone?: "default" | "light" }) {
   const s = { sm: "text-xl", md: "text-2xl", lg: "text-5xl" }[size];

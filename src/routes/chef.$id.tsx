@@ -123,7 +123,7 @@ function ChefPage() {
           </div>
         )}
 
-        <h2 className="mt-8 text-lg">{t("يوصي به")} {c.name.split(" ")[0]}</h2>
+        <h2 className="mt-8 text-lg">{t("اختيارات {x}", { x: t(c.name) })}</h2>
         <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto pb-2">
           {recipes.filter((r) => r.chefId !== c.id).map((r) => (
             <Link key={r.id} to="/recipe/$id" params={{ id: r.id }} className="lift w-40 shrink-0 overflow-hidden rounded-2xl bg-card">

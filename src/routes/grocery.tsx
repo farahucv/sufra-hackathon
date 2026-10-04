@@ -131,7 +131,7 @@ function Grocery() {
               <ul className="space-y-2 text-sm">
                 {lines.map((l) => (
                   <li key={l.k} className="flex items-baseline gap-2">
-                    <span>{l.k}</span>
+                    <span>{t(l.k)}</span>
                     <span className="flex-1 border-b border-dotted border-muted-foreground/30" />
                     <span className="text-[10px] text-muted-foreground">{l.store >= 0 ? t(stores[l.store]!.name) : "—"}</span>
                     <span className="tabular-nums">{l.price.toFixed(2)}</span>

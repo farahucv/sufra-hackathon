@@ -68,7 +68,7 @@ function HomePage() {
       <JourneyCallout step={1} />
 
       <div className="grid gap-3 px-5 pt-3 lg:grid-cols-2 lg:px-8">
-        <Link to="/import" className="press flex items-center gap-3 rounded-2xl bg-ink p-4 text-ink-foreground">
+        <Link to="/import" className="press flex min-w-0 items-center gap-3 rounded-2xl bg-ink p-4 text-ink-foreground">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gold text-ink"><Link2 className="h-5 w-5" /></span>
           <div className="min-w-0 flex-1">
             <p className="font-semibold">{t("استورد وصفة من تيك توك أو يوتيوب")}</p>
