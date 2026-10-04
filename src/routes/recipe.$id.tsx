@@ -8,7 +8,7 @@ import { isBoxEligible } from "@/lib/box";
 import { Package } from "lucide-react";
 import { getRecipe, getChef, baseCost, cheapest, priceOf, sar } from "@/lib/data";
 import { hasPantry, matchesAllergy, toggleIn, useStore , setStore } from "@/lib/store";
-import { list, t } from "@/lib/i18n";
+import { isEn, list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/recipe/$id")({
   loader: ({ params }) => {
@@ -73,7 +73,7 @@ function RecipePage() {
           </button>
         </div>
         <div className="absolute bottom-8 start-5 text-ink-foreground">
-          <p className="text-xs opacity-80">{r.en} · {t(r.region)}</p>
+          <p className="text-xs opacity-80">{isEn() ? t("مطبخ {x}", { x: t(r.region) }) : `${r.en} · ${r.region}`}</p>
           <h1 className="text-4xl lg:text-5xl">{t(r.title)}</h1>
         </div>
       </div>
