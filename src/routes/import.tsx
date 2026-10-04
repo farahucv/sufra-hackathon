@@ -86,27 +86,27 @@ function ImportPage() {
         {phase === "done" && (
           <article className="animate-float-up overflow-hidden rounded-2xl bg-card shadow-soft">
             <div className="relative h-48">
-              <img src={r.img} alt={r.title} className="h-full w-full object-cover" loading="lazy" />
+              <img src={r.img} alt={t(r.title)} className="h-full w-full object-cover" loading="lazy" />
               <div className="absolute inset-0 scrim" />
               <span className="absolute start-3 top-3 flex items-center gap-1 rounded-full bg-olive px-3 py-1 text-xs text-olive-foreground"><CheckCircle2 className="h-3.5 w-3.5" /> {t("تم الاستخراج")}</span>
-              <div className="absolute bottom-3 start-4 text-ink-foreground"><h2 className="text-2xl">{r.title}</h2><p className="text-xs opacity-80">{r.time} {t("دقيقة ·")} {r.servings} {t("حصص ·")} {r.difficulty}</p></div>
+              <div className="absolute bottom-3 start-4 text-ink-foreground"><h2 className="text-2xl">{t(r.title)}</h2><p className="text-xs opacity-80">{r.time} {t("دقيقة ·")} {r.servings} {t("حصص ·")} {t(r.difficulty)}</p></div>
             </div>
             <div className="space-y-5 p-5">
               <div>
                 <p className="mb-2 text-sm font-semibold">{t("المقادير المستخرجة (")}{r.ingredients.length})</p>
                 <div className="flex flex-wrap gap-2 text-xs">
-                  {r.ingredients.map((i) => <span key={i.key} className={`rounded-full px-3 py-1.5 ${i.allergen && matchesAllergy(i.allergen, s.allergies) ? "bg-terracotta-soft text-terracotta" : "bg-secondary"}`}>{i.key} · {i.qty} {i.unit}</span>)}
+                  {r.ingredients.map((i) => <span key={i.key} className={`rounded-full px-3 py-1.5 ${i.allergen && matchesAllergy(i.allergen, s.allergies) ? "bg-terracotta-soft text-terracotta" : "bg-secondary"}`}>{t(i.key)} · {i.qty} {t(i.unit)}</span>)}
                 </div>
               </div>
               <div>
                 <p className="mb-2 text-sm font-semibold">{t("الخطوات")}</p>
-                <ol className="space-y-1.5 text-sm">{r.steps.map((st, n) => <li key={n} className="flex gap-2"><span className="font-display text-primary">{n + 1}.</span>{st.t}</li>)}</ol>
+                <ol className="space-y-1.5 text-sm">{r.steps.map((st, n) => <li key={n} className="flex gap-2"><span className="font-display text-primary">{n + 1}.</span>{t(st.t)}</li>)}</ol>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className={`rounded-2xl p-3 text-sm ${warn.length ? "bg-terracotta-soft" : "bg-accent/50"}`}>
                   <p className="font-semibold">{warn.length ? t("⚠ حساسية مكتشفة") : t("✓ لا حساسية من قائمتك")}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{t("يحتوي:")} {list(recipeAllergens(r)) || "—"}</p>
-                  {r.ingredients.filter((i) => i.allergen && matchesAllergy(i.allergen, s.allergies)).map((i) => <p key={i.key} className="mt-1 text-xs">{t("بديل")} {i.key}: <b className="text-olive">{i.subs?.[0]?.name}</b></p>)}
+                  {r.ingredients.filter((i) => i.allergen && matchesAllergy(i.allergen, s.allergies)).map((i) => <p key={i.key} className="mt-1 text-xs">{t("بديل")} {t(i.key)}: <b className="text-olive">{i.subs?.[0]?.name}</b></p>)}
                 </div>
                 <div className="rounded-2xl bg-secondary p-3 text-sm">
                   <p className="font-semibold">{t("التكلفة التقديرية")}</p>

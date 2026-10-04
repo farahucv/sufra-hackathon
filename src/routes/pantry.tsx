@@ -64,7 +64,7 @@ function Pantry() {
             </div>
             <div className="mt-3 flex gap-2">
               {locations.map((l) => (
-                <button key={l.id} onClick={() => setLoc(l.id)} className={`press rounded-full px-3 py-1 text-xs ${loc === l.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{l.ar}</button>
+                <button key={l.id} onClick={() => setLoc(l.id)} className={`press rounded-full px-3 py-1 text-xs ${loc === l.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{t(l.ar)}</button>
               ))}
               <span className="ms-auto"><DemoBadge label={t("المسح تجريبي")} /></span>
             </div>
@@ -85,12 +85,12 @@ function Pantry() {
                 const Icon = locIcon[l.id];
                 return (
                   <section key={l.id} className="rounded-2xl bg-card p-4">
-                    <p className="flex items-center gap-2 text-sm font-semibold"><Icon className="h-4 w-4 text-olive" />{l.ar}<span className="text-xs font-normal text-muted-foreground">({items.length})</span></p>
+                    <p className="flex items-center gap-2 text-sm font-semibold"><Icon className="h-4 w-4 text-olive" />{t(l.ar)}<span className="text-xs font-normal text-muted-foreground">({items.length})</span></p>
                     <div className="mt-3 flex flex-wrap gap-1.5">
                       {items.length === 0 && <p className="text-xs text-muted-foreground">{t("لا شيء هنا")}</p>}
                       {items.map((p) => (
                         <span key={p.name} className="animate-in zoom-in-95 inline-flex items-center gap-1 rounded-full bg-secondary py-1 pe-1.5 ps-3 text-sm">
-                          {p.name}
+                          {t(p.name)}
                           <button onClick={() => togglePantry(p.name)} aria-label={t("حذف {x}", { x: t(p.name) })} className="grid h-5 w-5 place-items-center rounded-full hover:bg-muted"><X className="h-3 w-3" /></button>
                         </span>
                       ))}
@@ -109,8 +109,8 @@ function Pantry() {
               {ready.length === 0 && <p className="col-span-2 rounded-2xl bg-muted p-4 text-sm text-muted-foreground">{t("لا توجد وصفة مكتملة بعد — أضف مكوّناً أو اثنين من القائمة التالية.")}</p>}
               {ready.map(({ r }) => (
                 <Link key={r.id} to="/recipe/$id" params={{ id: r.id }} className="lift overflow-hidden rounded-2xl bg-card shadow-soft">
-                  <img src={r.img} alt={r.title} className="h-28 w-full object-cover" loading="lazy" />
-                  <div className="p-3"><p className="font-semibold">{r.title}</p><p className="text-xs text-olive">{t("١٠٠٪ من مخزنك ·")} {r.time} {t("د")}</p></div>
+                  <img src={r.img} alt={t(r.title)} className="h-28 w-full object-cover" loading="lazy" />
+                  <div className="p-3"><p className="font-semibold">{t(r.title)}</p><p className="text-xs text-olive">{t("١٠٠٪ من مخزنك ·")} {r.time} {t("د")}</p></div>
                 </Link>
               ))}
             </div>
@@ -122,9 +122,9 @@ function Pantry() {
               {almost.length === 0 && <li className="rounded-2xl bg-muted p-4 text-sm text-muted-foreground">{t("لا اقتراحات قريبة حالياً.")}</li>}
               {almost.map(({ r, miss }) => (
                 <li key={r.id} className="flex items-center gap-3 rounded-2xl bg-card p-3">
-                  <Link to="/recipe/$id" params={{ id: r.id }}><img src={r.img} alt={r.title} className="h-14 w-14 rounded-xl object-cover" loading="lazy" /></Link>
+                  <Link to="/recipe/$id" params={{ id: r.id }}><img src={r.img} alt={t(r.title)} className="h-14 w-14 rounded-xl object-cover" loading="lazy" /></Link>
                   <div className="min-w-0 flex-1">
-                    <Link to="/recipe/$id" params={{ id: r.id }} className="font-semibold">{r.title}</Link>
+                    <Link to="/recipe/$id" params={{ id: r.id }} className="font-semibold">{t(r.title)}</Link>
                     <p className="truncate text-xs text-terracotta">{t("ينقص:")} {list(miss)}</p>
                   </div>
                   <Link to="/grocery" search={{ recipe: r.id }} className="press inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">

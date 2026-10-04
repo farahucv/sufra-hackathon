@@ -52,7 +52,7 @@ function Cook() {
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-ink px-6 text-center text-ink-foreground">
         <PartyPopper className="h-14 w-14 text-gold" />
         <h1 className="mt-6 text-4xl">{t("تمت الوصفة!")}</h1>
-        <p className="mt-2 max-w-xs opacity-80">{t("صحتين وعافية —")} {r.title} {t("جاهزة على سفرتك.")}</p>
+        <p className="mt-2 max-w-xs opacity-80">{t("صحتين وعافية —")} {t(r.title)} {t("جاهزة على سفرتك.")}</p>
         <div className="mt-8 flex w-full max-w-xs flex-col gap-2">
           <button onClick={() => { toast.success("شكراً لتقييمك", { description: t("يصل تقييمك للشيف (تجريبي).") }); }} className="press rounded-xl bg-gold py-3.5 font-semibold text-ink">{t("قيّم الوصفة ★★★★★")}</button>
           {s.journey === 5 && (
@@ -71,7 +71,7 @@ function Cook() {
         <button onClick={() => history.back()} aria-label={t("إغلاق")} className="press grid h-11 w-11 place-items-center rounded-full bg-ink-foreground/10"><X className="h-5 w-5" /></button>
         <div className="flex-1">
           <p className="text-xs opacity-70">{t("وضع الطبخ · Cook Mode")}{o ? ` · ${t("{n} حصص", { n: o.serv })}` : ""}</p>
-          <p className="font-display text-lg">{r.title}</p>
+          <p className="font-display text-lg">{t(r.title)}</p>
         </div>
         <span className="text-sm tabular-nums opacity-80">{i + 1}/{r.steps.length}</span>
       </header>
@@ -79,9 +79,9 @@ function Cook() {
 
       <main key={i} className="animate-float-up mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center overflow-y-auto px-6 py-6">
         <p className="text-sm text-gold">{t("الخطوة")} {i + 1}</p>
-        <p className="mt-3 font-display text-3xl leading-snug lg:text-5xl">{step.t}</p>
+        <p className="mt-3 font-display text-3xl leading-snug lg:text-5xl">{t(step.t)}</p>
         {used.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-2">{used.map((l) => <span key={l.key} className="rounded-full bg-ink-foreground/10 px-3 py-1.5 text-sm">{l.name} · <b className="tabular-nums">{l.qty}</b></span>)}</div>
+          <div className="mt-6 flex flex-wrap gap-2">{used.map((l) => <span key={l.key} className="rounded-full bg-ink-foreground/10 px-3 py-1.5 text-sm">{t(l.name)} · <b className="tabular-nums">{l.qty}</b></span>)}</div>
         )}
         {step.min && (
           <div className="mt-6 flex flex-wrap items-center gap-2">

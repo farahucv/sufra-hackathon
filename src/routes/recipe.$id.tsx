@@ -64,7 +64,7 @@ function RecipePage() {
   return (
     <AppShell nav={false}>
       <div className="relative h-80 lg:mx-8 lg:mt-8 lg:h-[420px] lg:overflow-hidden lg:rounded-2xl">
-        <img src={r.img} alt={r.title} className="h-full w-full object-cover" width={768} height={1024} />
+        <img src={r.img} alt={t(r.title)} className="h-full w-full object-cover" width={768} height={1024} />
         <div className="absolute inset-0 scrim" />
         <div className="absolute inset-x-5 top-6 flex justify-between">
           <button onClick={() => history.back()} aria-label={t("رجوع")} className="press grid h-10 w-10 place-items-center rounded-full bg-card"><ChevronRight className="h-5 w-5 rtl:rotate-0 ltr:rotate-180" /></button>
@@ -73,20 +73,20 @@ function RecipePage() {
           </button>
         </div>
         <div className="absolute bottom-8 start-5 text-ink-foreground">
-          <p className="text-xs opacity-80">{r.en} · {r.region}</p>
-          <h1 className="text-4xl lg:text-5xl">{r.title}</h1>
+          <p className="text-xs opacity-80">{r.en} · {t(r.region)}</p>
+          <h1 className="text-4xl lg:text-5xl">{t(r.title)}</h1>
         </div>
       </div>
 
       <div className="relative -mt-5 rounded-t-3xl bg-background pb-40 pt-6 lg:mt-0 lg:pb-16">
         <div className="px-5 lg:px-8">
           <Link to="/chef/$id" params={{ id: chef.id }} className="flex items-center gap-3">
-            <img src={chef.img} alt={chef.name} className="h-11 w-11 rounded-full object-cover" loading="lazy" />
-            <div className="flex-1"><p className="flex items-center gap-1 font-semibold">{chef.name}<BadgeCheck className="h-4 w-4 text-olive" /></p><p className="text-xs text-muted-foreground">{chef.title}</p></div>
+            <img src={chef.img} alt={t(chef.name)} className="h-11 w-11 rounded-full object-cover" loading="lazy" />
+            <div className="flex-1"><p className="flex items-center gap-1 font-semibold">{t(chef.name)}<BadgeCheck className="h-4 w-4 text-olive" /></p><p className="text-xs text-muted-foreground">{t(chef.title)}</p></div>
           </Link>
           <div className="mt-5 grid grid-cols-3 gap-2 text-center">
             <Stat icon={<Clock className="h-4 w-4" />} v={t("{n} د", { n: r.time })} l={t("الوقت")} />
-            <Stat icon={<Gauge className="h-4 w-4" />} v={r.difficulty} l={t("الصعوبة")} />
+            <Stat icon={<Gauge className="h-4 w-4" />} v={t(r.difficulty)} l={t("الصعوبة")} />
             <Stat icon={<Users className="h-4 w-4" />} v={`${serv}`} l={t("حصص")} />
           </div>
         </div>
@@ -111,7 +111,7 @@ function RecipePage() {
                 <div className="mt-4 space-y-3">
                   {flagged.map((i) => (
                     <div key={i.key} className="rounded-xl bg-card p-3">
-                      <p className="text-sm"><span className="font-semibold">{i.key}</span> <span className="text-xs text-terracotta">{t("· يحتوي")} {i.allergen}</span></p>
+                      <p className="text-sm"><span className="font-semibold">{t(i.key)}</span> <span className="text-xs text-terracotta">{t("· يحتوي")} {t(i.allergen)}</span></p>
                       <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground"><Sparkles className="h-3.5 w-3.5 text-gold" /> {t("بدائل مقترحة")}</p>
                       <div className="mt-2 space-y-2">
                         {i.subs?.map((sub, n) => {
@@ -121,11 +121,11 @@ function RecipePage() {
                               className={`press w-full rounded-xl border p-3 text-start transition ${on ? "border-olive bg-accent/60" : "hover:bg-muted"}`}>
                               <div className="flex items-center gap-2">
                                 <span className={`grid h-5 w-5 shrink-0 place-items-center rounded-full border ${on ? "border-olive bg-olive text-olive-foreground" : ""}`}>{on && <Check className="h-3 w-3" />}</span>
-                                <span className="flex-1 font-medium">{sub.name}</span>
+                                <span className="flex-1 font-medium">{t(sub.name)}</span>
                                 <span className="text-[11px] text-muted-foreground">{sub.kcal > 0 ? "+" : ""}{sub.kcal} {t("سعرة")}</span>
                               </div>
-                              <p className="mt-1.5 ps-7 text-xs text-muted-foreground"><b className="font-medium text-foreground">{t("لماذا؟")}</b> {sub.reason}</p>
-                              <p className="ps-7 text-xs text-muted-foreground"><b className="font-medium text-foreground">{t("الأثر:")}</b> {sub.impact}</p>
+                              <p className="mt-1.5 ps-7 text-xs text-muted-foreground"><b className="font-medium text-foreground">{t("لماذا؟")}</b> {t(sub.reason)}</p>
+                              <p className="ps-7 text-xs text-muted-foreground"><b className="font-medium text-foreground">{t("الأثر:")}</b> {t(sub.impact)}</p>
                             </button>
                           );
                         })}
@@ -166,10 +166,10 @@ function RecipePage() {
                       {pantryView && (have ? <Check className="h-4 w-4 shrink-0 text-olive" /> : <X className="h-4 w-4 shrink-0 text-terracotta" />)}
                       <div className="min-w-0 flex-1">
                         <p className={sub ? "font-medium text-olive" : "font-medium"}>{sub ? sub.name : i.key}</p>
-                        {sub && <p className="text-xs text-muted-foreground line-through">{i.key}</p>}
-                        {bad && !sub && <p className="text-xs text-terracotta">{t("يحتوي")} {i.allergen}</p>}
+                        {sub && <p className="text-xs text-muted-foreground line-through">{t(i.key)}</p>}
+                        {bad && !sub && <p className="text-xs text-terracotta">{t("يحتوي")} {t(i.allergen)}</p>}
                       </div>
-                      <span className="text-sm text-muted-foreground">{+(i.qty * k).toFixed(2)} {i.unit}</span>
+                      <span className="text-sm text-muted-foreground">{+(i.qty * k).toFixed(2)} {t(i.unit)}</span>
                     </li>
                   );
                 })}
@@ -179,7 +179,7 @@ function RecipePage() {
                 {r.steps.map((st, n) => (
                   <li key={n} className="flex gap-3 rounded-2xl bg-card p-4">
                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-secondary font-display text-primary">{n + 1}</span>
-                    <div><p className="leading-relaxed">{st.t}</p>{st.min && <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Timer className="h-3.5 w-3.5" />{st.min} {t("دقيقة")}</p>}</div>
+                    <div><p className="leading-relaxed">{t(st.t)}</p>{st.min && <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Timer className="h-3.5 w-3.5" />{st.min} {t("دقيقة")}</p>}</div>
                   </li>
                 ))}
               </ol>
@@ -233,7 +233,7 @@ function RecipePage() {
         </div>
       </div>
 
-      {cooking && <CookMode steps={r.steps} title={r.title} onClose={() => setCooking(false)} />}
+      {cooking && <CookMode steps={r.steps} title={t(r.title)} onClose={() => setCooking(false)} />}
     </AppShell>
   );
 }
@@ -250,7 +250,7 @@ function CookMode({ steps, title, onClose }: { steps: { t: string; min?: number 
       <div className="mx-auto mt-6 flex w-full max-w-2xl gap-1.5">{steps.map((_, n) => <span key={n} className={`h-1 flex-1 rounded-full ${n <= i ? "bg-gold" : "bg-ink-foreground/15"}`} />)}</div>
       <div key={i} className="animate-float-up mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center">
         <p className="font-display text-7xl text-gold">{i + 1}</p>
-        <p className="mt-6 text-3xl leading-relaxed">{st.t}</p>
+        <p className="mt-6 text-3xl leading-relaxed">{t(st.t)}</p>
         {st.min && <p className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-ink-foreground/10 px-4 py-2 text-sm"><Timer className="h-4 w-4" /> {t("مؤقّت مقترح:")} {st.min} {t("دقيقة")}</p>}
       </div>
       <div className="mx-auto flex w-full max-w-2xl gap-3">

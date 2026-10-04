@@ -77,8 +77,8 @@ function HomePage() {
             const r = recipes.find((x) => x.id === id)!;
             return (
               <Link key={id} to="/box/$id" params={{ id }} className="press w-64 shrink-0 lg:w-auto">
-                <BoxArt img={r.img} title={r.title} serv={4} size="sm" />
-                <p className="mt-2 flex justify-between text-sm"><span>{r.time} {t("د ·")} {r.difficulty}</span><b className="text-primary">{sar(buildBox(r, 4, {}).subtotal)}</b></p>
+                <BoxArt img={r.img} title={t(r.title)} serv={4} size="sm" />
+                <p className="mt-2 flex justify-between text-sm"><span>{r.time} {t("د ·")} {t(r.difficulty)}</span><b className="text-primary">{sar(buildBox(r, 4, {}).subtotal)}</b></p>
               </Link>
             );
           })}
@@ -105,13 +105,13 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
   const { warn, fit, adaptable } = fitFor(r, s);
   const liked = s.liked.includes(r.id), saved = s.saved.includes(r.id);
   const share = async () => {
-    const url = `${location.origin}/recipe/${r.id}`;
+    const url = `${t(location.origin)}/recipe/${r.id}`;
     try { await navigator.clipboard.writeText(url); toast.success("تم نسخ رابط الوصفة"); } catch { toast("رابط الوصفة", { description: url }); }
   };
   return (
     <article className={`relative h-[460px] overflow-hidden rounded-2xl bg-muted lg:h-[520px] ${idx < 2 ? "animate-float-up" : ""}`}>
-      <Link to="/recipe/$id" params={{ id: r.id }} aria-label={r.title} className="absolute inset-0">
-        <img src={r.img} alt={r.title} className="h-full w-full object-cover" loading={idx ? "lazy" : "eager"} fetchPriority={idx ? "auto" : "high"} decoding="async" width={768} height={1024} />
+      <Link to="/recipe/$id" params={{ id: r.id }} aria-label={t(r.title)} className="absolute inset-0">
+        <img src={r.img} alt={t(r.title)} className="h-full w-full object-cover" loading={idx ? "lazy" : "eager"} fetchPriority={idx ? "auto" : "high"} decoding="async" width={768} height={1024} />
         <div className="absolute inset-0 scrim" />
       </Link>
       <div className="pointer-events-none absolute inset-x-4 top-4 flex flex-wrap items-start justify-between gap-2">
@@ -124,21 +124,21 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
         )}
       </div>
       <div className="absolute bottom-36 end-4 flex flex-col gap-4 text-ink-foreground">
-        <ActionBtn label={r.likes} aria={t("إعجاب")} onClick={() => toggleIn("liked", r.id)}><Heart className={`h-5 w-5 ${liked ? "fill-terracotta text-terracotta" : ""}`} /></ActionBtn>
+        <ActionBtn label={t(r.likes)} aria={t("إعجاب")} onClick={() => toggleIn("liked", r.id)}><Heart className={`h-5 w-5 ${liked ? "fill-terracotta text-terracotta" : ""}`} /></ActionBtn>
         <ActionBtn label={saved ? t("محفوظ") : t("حفظ")} aria={t("حفظ")} onClick={() => { toggleIn("saved", r.id); toast.success(saved ? t("أُزيلت من المحفوظات") : t("حُفظت في وصفاتك")); }}><Bookmark className={`h-5 w-5 ${saved ? "fill-gold text-gold" : ""}`} /></ActionBtn>
         <ActionBtn label={t("مشاركة")} aria={t("مشاركة")} onClick={share}><Share2 className="h-5 w-5" /></ActionBtn>
       </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 space-y-2.5 p-5 text-ink-foreground">
         <Link to="/chef/$id" params={{ id: chef.id }} className="pointer-events-auto flex w-fit items-center gap-2">
-          <img src={chef.img} alt={chef.name} className="h-9 w-9 rounded-full border-2 border-gold object-cover" loading="lazy" />
-          <span className="text-sm font-medium">{chef.name}</span><BadgeCheck className="h-4 w-4 text-gold" />
+          <img src={chef.img} alt={t(chef.name)} className="h-9 w-9 rounded-full border-2 border-gold object-cover" loading="lazy" />
+          <span className="text-sm font-medium">{t(chef.name)}</span><BadgeCheck className="h-4 w-4 text-gold" />
         </Link>
-        <h2 className="text-3xl">{r.title}</h2>
+        <h2 className="text-3xl">{t(r.title)}</h2>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs opacity-90">
-          <span>{r.region}</span>
+          <span>{t(r.region)}</span>
           <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{r.time} {t("د")}</span>
           <span className="flex items-center gap-1"><Flame className="h-3.5 w-3.5" />{r.nutrition.kcal} {t("سعرة")}</span>
-          <span className="flex items-center gap-1"><Gauge className="h-3.5 w-3.5" />{r.difficulty}</span>
+          <span className="flex items-center gap-1"><Gauge className="h-3.5 w-3.5" />{t(r.difficulty)}</span>
         </div>
         <Link to="/recipe/$id" params={{ id: r.id }} className="press pointer-events-auto block rounded-2xl bg-card py-3 text-center font-semibold text-foreground">{t("عرض الوصفة")}</Link>
       </div>

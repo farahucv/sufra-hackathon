@@ -107,7 +107,7 @@ function Onboarding() {
                   {diets.map((d) => (
                     <button key={d.id} onClick={() => setStore(() => ({ diet: d.id }))}
                       className={`press rounded-2xl border p-4 text-start ${s.diet === d.id ? "border-primary bg-secondary" : "bg-card"}`}>
-                      <p className="font-medium">{d.ar}</p><p className="text-[11px] text-muted-foreground">{d.en}</p>
+                      <p className="font-medium">{t(d.ar)}</p><p className="text-[11px] text-muted-foreground">{d.en}</p>
                     </button>
                   ))}
                 </div>

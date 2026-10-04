@@ -61,9 +61,9 @@ function Checkout() {
       <div className="space-y-6 px-5 pb-10 lg:grid lg:grid-cols-[1fr_340px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-6">
           <section className="flex items-center gap-4">
-            <img src={r.img} alt={r.title} className="h-20 w-20 shrink-0 rounded-xl object-cover" width={80} height={80} />
+            <img src={r.img} alt={t(r.title)} className="h-20 w-20 shrink-0 rounded-xl object-cover" width={80} height={80} />
             <div className="min-w-0 text-sm">
-              <p className="font-display text-xl">{t("صندوق")} {r.title}</p>
+              <p className="font-display text-xl">{t("صندوق")} {t(r.title)}</p>
               <p className="text-muted-foreground">{s.box.serv} {t("حصص ·")} {box.lines.length} {t("مكونات")}</p>
               <Link to="/box/$id" params={{ id: r.id }} className="mt-2 inline-block text-xs text-primary underline">{t("تعديل الصندوق")}</Link>
             </div>
@@ -71,9 +71,9 @@ function Checkout() {
 
           <section>
             <p className="text-sm font-semibold">{t("المكونات المشمولة")}</p>
-            <div className="mt-2 flex flex-wrap gap-1.5">{box.lines.map((l) => <span key={l.key} className="rounded-full bg-card px-2.5 py-1 text-xs ring-1 ring-border">{l.name} <b className="tabular-nums">{l.qty}</b></span>)}</div>
+            <div className="mt-2 flex flex-wrap gap-1.5">{box.lines.map((l) => <span key={l.key} className="rounded-full bg-card px-2.5 py-1 text-xs ring-1 ring-border">{t(l.name)} <b className="tabular-nums">{l.qty}</b></span>)}</div>
             {swapped.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1.5">{swapped.map((l) => <span key={l.key} className="rounded-full bg-accent px-3 py-1 text-xs text-accent-foreground">{l.swapped!.from} ← {l.name}</span>)}</div>
+              <div className="mt-2 flex flex-wrap gap-1.5">{swapped.map((l) => <span key={l.key} className="rounded-full bg-accent px-3 py-1 text-xs text-accent-foreground">{l.swapped!.from} ← {t(l.name)}</span>)}</div>
             )}
           </section>
 
@@ -88,7 +88,7 @@ function Checkout() {
                 return (
                   <button key={p.id} onClick={() => setPay(p.id)} aria-pressed={pay === p.id}
                     className={`press flex flex-col items-center gap-1.5 rounded-xl border px-2 py-3 text-xs ${pay === p.id ? "border-primary bg-secondary font-semibold" : "bg-card"}`}>
-                    <Icon className="h-5 w-5" />{p.label}
+                    <Icon className="h-5 w-5" />{t(p.label)}
                   </button>
                 );
               })}
@@ -127,7 +127,7 @@ function Picker({ title, icon, items, value, onChange }: { title: string; icon: 
         {items.map((it) => (
           <button key={it.id} onClick={() => onChange(it.id)} aria-pressed={value === it.id}
             className={`press min-w-0 rounded-xl border p-2.5 text-start ${value === it.id ? "border-primary bg-secondary" : "bg-card"}`}>
-            <p className="truncate text-sm font-semibold">{it.label}</p><p className="truncate text-[11px] text-muted-foreground">{it.sub}</p>
+            <p className="truncate text-sm font-semibold">{t(it.label)}</p><p className="truncate text-[11px] text-muted-foreground">{t(it.sub)}</p>
           </button>
         ))}
       </div>

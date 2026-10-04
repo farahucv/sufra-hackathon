@@ -61,7 +61,7 @@ function Grocery() {
         </div>
         <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto">
           {recipes.slice(0, 6).map((x) => (
-            <Link key={x.id} to="/grocery" search={{ recipe: x.id }} className={`press shrink-0 rounded-full border px-3 py-1.5 text-xs ${x.id === r.id ? "border-primary bg-primary text-primary-foreground" : "bg-card"}`}>{x.title}</Link>
+            <Link key={x.id} to="/grocery" search={{ recipe: x.id }} className={`press shrink-0 rounded-full border px-3 py-1.5 text-xs ${x.id === r.id ? "border-primary bg-primary text-primary-foreground" : "bg-card"}`}>{t(x.title)}</Link>
           ))}
         </div>
       </div>
@@ -91,7 +91,7 @@ function Grocery() {
                 <thead>
                   <tr className="border-b text-xs text-muted-foreground">
                     <th className="p-3 text-start font-medium">{t("المنتج")}</th>
-                    {stores.map((st, i) => <th key={st.id} className={`p-3 font-medium ${i === singleIdx ? "text-olive" : ""}`}>{st.name}<span className="block text-[10px] font-normal opacity-70">{st.en}</span></th>)}
+                    {stores.map((st, i) => <th key={st.id} className={`p-3 font-medium ${i === singleIdx ? "text-olive" : ""}`}>{t(st.name)}<span className="block text-[10px] font-normal opacity-70">{st.en}</span></th>)}
                   </tr>
                 </thead>
                 <tbody>
@@ -127,7 +127,7 @@ function Grocery() {
               <div className="flex items-center justify-between">
                 <p className="flex items-center gap-2 font-display text-lg"><Trophy className="h-5 w-5 text-gold" /> {t("سلّتك المقترحة")}</p>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">{mode === "cheap" ? t("أقل سعر إجمالي") : t("أقل عدد متاجر")} · {r.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{mode === "cheap" ? t("أقل سعر إجمالي") : t("أقل عدد متاجر")} · {t(r.title)}</p>
               <div className="my-4 border-t border-dashed" />
               <ul className="space-y-2 text-sm">
                 {lines.map((l) => (

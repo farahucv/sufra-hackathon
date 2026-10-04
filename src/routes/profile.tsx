@@ -47,8 +47,8 @@ function Profile() {
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {saved.map((r) => (
                     <Link key={r.id} to="/recipe/$id" params={{ id: r.id }} className="lift overflow-hidden rounded-2xl bg-card shadow-soft">
-                      <img src={r.img} alt={r.title} className="h-28 w-full object-cover" loading="lazy" />
-                      <p className="p-3 text-sm font-semibold">{r.title}</p>
+                      <img src={r.img} alt={t(r.title)} className="h-28 w-full object-cover" loading="lazy" />
+                      <p className="p-3 text-sm font-semibold">{t(r.title)}</p>
                     </Link>
                   ))}
                 </div>
@@ -63,7 +63,7 @@ function Profile() {
             <p className="mt-5 text-sm font-medium">{t("مكونات لا تفضّلها")}</p>
             <div className="mt-2 flex flex-wrap gap-2">{dislikesList.map((d) => <Chip key={d} active={s.dislikes.includes(d)} onClick={() => toggleIn("dislikes", d)}>{d}</Chip>)}</div>
             <p className="mt-5 text-sm font-medium">{t("نمط الأكل")}</p>
-            <div className="mt-2 flex flex-wrap gap-2">{diets.map((d) => <Chip key={d.id} active={s.diet === d.id} onClick={() => setStore(() => ({ diet: d.id }))}>{d.ar}</Chip>)}</div>
+            <div className="mt-2 flex flex-wrap gap-2">{diets.map((d) => <Chip key={d.id} active={s.diet === d.id} onClick={() => setStore(() => ({ diet: d.id }))}>{t(d.ar)}</Chip>)}</div>
             <div className="mt-5 flex items-center justify-between">
               <p className="text-sm font-medium">{t("أفراد البيت")}</p>
               <div className="flex items-center gap-3">

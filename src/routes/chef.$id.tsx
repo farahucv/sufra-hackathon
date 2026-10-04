@@ -46,13 +46,13 @@ function ChefPage() {
       <div className="px-5 lg:px-8">
         <div className="lg:flex lg:items-center lg:gap-8">
           <div className="text-center lg:text-start">
-            <img src={c.img} alt={c.name} className="mx-auto h-28 w-28 rounded-full border-4 border-card object-cover shadow-soft lg:h-36 lg:w-36" />
+            <img src={c.img} alt={t(c.name)} className="mx-auto h-28 w-28 rounded-full border-4 border-card object-cover shadow-soft lg:h-36 lg:w-36" />
           </div>
           <div className="mt-3 flex-1 text-center lg:mt-0 lg:text-start">
-            <h1 className="flex items-center justify-center gap-1 text-2xl lg:justify-start lg:text-3xl">{c.name}<BadgeCheck className="h-5 w-5 text-olive" /></h1>
-            <p className="text-sm text-muted-foreground">{c.title}</p>
-            <p className="mt-1 flex items-center justify-center gap-1 text-xs text-muted-foreground lg:justify-start"><MapPin className="h-3.5 w-3.5" />{c.city} {t("· جذوره")} {c.roots}</p>
-            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed lg:mx-0">{c.bio}</p>
+            <h1 className="flex items-center justify-center gap-1 text-2xl lg:justify-start lg:text-3xl">{t(c.name)}<BadgeCheck className="h-5 w-5 text-olive" /></h1>
+            <p className="text-sm text-muted-foreground">{t(c.title)}</p>
+            <p className="mt-1 flex items-center justify-center gap-1 text-xs text-muted-foreground lg:justify-start"><MapPin className="h-3.5 w-3.5" />{t(c.city)} {t("· جذوره")} {t(c.roots)}</p>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed lg:mx-0">{t(c.bio)}</p>
             <div className="mt-3 flex flex-wrap justify-center gap-1.5 lg:justify-start">
               {c.specialties.map((x) => <span key={x} className="rounded-full bg-secondary px-3 py-1 text-xs">{x}</span>)}
             </div>
@@ -60,7 +60,7 @@ function ChefPage() {
         </div>
 
         <div className="mt-5 grid grid-cols-3 rounded-2xl bg-card py-3 text-center">
-          <div><p className="font-bold">{c.followers}</p><p className="text-[11px] text-muted-foreground">{t("متابع")}</p></div>
+          <div><p className="font-bold">{t(c.followers)}</p><p className="text-[11px] text-muted-foreground">{t("متابع")}</p></div>
           <div><p className="font-bold">{own.length}</p><p className="text-[11px] text-muted-foreground">{t("وصفة منشورة")}</p></div>
           <div><p className="flex items-center justify-center gap-1 font-bold"><Star className="h-4 w-4 fill-gold text-gold" />{c.rating}</p><p className="text-[11px] text-muted-foreground">{c.reviews} {t("تقييم")}</p></div>
         </div>
@@ -86,10 +86,10 @@ function ChefPage() {
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
             {own.map((r, i) => (
               <Link key={r.id} to="/recipe/$id" params={{ id: r.id }} className="lift relative h-60 overflow-hidden rounded-2xl">
-                <img src={r.img} alt={r.title} className="h-full w-full object-cover" loading="lazy" />
+                <img src={r.img} alt={t(r.title)} className="h-full w-full object-cover" loading="lazy" />
                 <div className="absolute inset-0 scrim" />
                 <span className="absolute start-2 top-2 rounded-full bg-ink/50 px-2 py-0.5 text-[10px] text-ink-foreground">{[t("١٢٠ ألف"), t("٨٤ ألف"), t("٢٠٠ ألف"), t("٤٥ ألف"), t("٦٦ ألف")][i % 5]} {t("مشاهدة")}</span>
-                <span className="absolute bottom-2 start-2 flex items-center gap-1 text-xs text-ink-foreground"><Play className="h-3 w-3 fill-current" />{r.title}</span>
+                <span className="absolute bottom-2 start-2 flex items-center gap-1 text-xs text-ink-foreground"><Play className="h-3 w-3 fill-current" />{t(r.title)}</span>
               </Link>
             ))}
           </div>
@@ -98,8 +98,8 @@ function ChefPage() {
           <ul className="grid gap-2 lg:grid-cols-2">
             {own.map((r) => (
               <li key={r.id}><Link to="/recipe/$id" params={{ id: r.id }} className="flex items-center gap-3 rounded-2xl bg-card p-3">
-                <img src={r.img} alt={r.title} className="h-16 w-16 rounded-xl object-cover" loading="lazy" />
-                <div className="flex-1"><p className="font-semibold">{r.title}</p><p className="text-xs text-muted-foreground">{r.time} {t("د ·")} {r.difficulty} · {r.nutrition.kcal} {t("سعرة")}</p></div>
+                <img src={r.img} alt={t(r.title)} className="h-16 w-16 rounded-xl object-cover" loading="lazy" />
+                <div className="flex-1"><p className="font-semibold">{t(r.title)}</p><p className="text-xs text-muted-foreground">{r.time} {t("د ·")} {t(r.difficulty)} · {r.nutrition.kcal} {t("سعرة")}</p></div>
               </Link></li>
             ))}
           </ul>
@@ -109,7 +109,7 @@ function ChefPage() {
             {reviews().map((r) => (
               <div key={r.n} className="rounded-2xl bg-card p-4">
                 <div className="flex items-center justify-between"><p className="font-semibold">{r.n}</p><span className="flex">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className={`h-3.5 w-3.5 ${i < r.s ? "fill-gold text-gold" : "text-muted"}`} />)}</span></div>
-                <p className="mt-1 text-sm">{r.t}</p><p className="mt-2 text-[11px] text-muted-foreground">{r.d}</p>
+                <p className="mt-1 text-sm">{t(r.t)}</p><p className="mt-2 text-[11px] text-muted-foreground">{r.d}</p>
               </div>
             ))}
           </div>
@@ -127,8 +127,8 @@ function ChefPage() {
         <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto pb-2">
           {recipes.filter((r) => r.chefId !== c.id).map((r) => (
             <Link key={r.id} to="/recipe/$id" params={{ id: r.id }} className="lift w-40 shrink-0 overflow-hidden rounded-2xl bg-card">
-              <img src={r.img} alt={r.title} className="h-24 w-full object-cover" loading="lazy" />
-              <p className="p-3 text-sm font-semibold">{r.title}</p>
+              <img src={r.img} alt={t(r.title)} className="h-24 w-full object-cover" loading="lazy" />
+              <p className="p-3 text-sm font-semibold">{t(r.title)}</p>
             </Link>
           ))}
         </div>

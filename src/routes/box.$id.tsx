@@ -80,13 +80,13 @@ function BoxPage() {
       {/* Hero */}
       <section className="relative">
         <div className="relative h-64 overflow-hidden lg:mx-8 lg:mt-8 lg:h-80 lg:rounded-2xl">
-          <img src={r.img} alt={r.title} className="h-full w-full object-cover" width={1280} height={640} fetchPriority="high" />
+          <img src={r.img} alt={t(r.title)} className="h-full w-full object-cover" width={1280} height={640} fetchPriority="high" />
           <div className="absolute inset-0 scrim" />
           <button onClick={() => history.back()} aria-label={t("رجوع")} className="press absolute start-5 top-[max(env(safe-area-inset-top),1.25rem)] grid h-10 w-10 place-items-center rounded-full bg-card"><Back className="h-5 w-5" /></button>
           <span className="absolute end-5 top-[max(env(safe-area-inset-top),1.25rem)] rounded-full bg-card/90 px-3 py-1.5 text-[11px] font-medium text-primary">Ready-to-Cook Box</span>
         </div>
         <div className="relative z-10 mx-auto -mt-20 w-[78%] max-w-sm lg:-mt-24 lg:max-w-[300px]">
-          <BoxArt title={r.title} serv={serv} size="lg" img={r.img} />
+          <BoxArt title={t(r.title)} serv={serv} size="lg" img={r.img} />
         </div>
       </section>
 
@@ -94,14 +94,14 @@ function BoxPage() {
         <div className="space-y-8">
           <header className="text-center lg:text-start">
             <p className="text-xs font-medium tracking-wide text-olive">{t("صندوق جاهز للطبخ")}</p>
-            <h1 className="mt-1 text-4xl lg:text-5xl">{r.title}</h1>
+            <h1 className="mt-1 text-4xl lg:text-5xl">{t(r.title)}</h1>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground lg:mx-0">{t("كل ما تحتاجه لهذه الوصفة، مقسّم بالحصة ويصلك لباب البيت.")}</p>
             <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground lg:justify-start">
               <Link to="/chef/$id" params={{ id: chef.id }} className="flex items-center gap-1.5 text-foreground">
-                <img src={chef.img} alt={chef.name} className="h-6 w-6 rounded-full object-cover" loading="lazy" width={24} height={24} />{chef.name}<BadgeCheck className="h-3.5 w-3.5 text-olive" />
+                <img src={chef.img} alt={t(chef.name)} className="h-6 w-6 rounded-full object-cover" loading="lazy" width={24} height={24} />{t(chef.name)}<BadgeCheck className="h-3.5 w-3.5 text-olive" />
               </Link>
               <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{r.time} {t("د")}</span>
-              <span className="flex items-center gap-1"><Gauge className="h-3.5 w-3.5" />{r.difficulty}</span>
+              <span className="flex items-center gap-1"><Gauge className="h-3.5 w-3.5" />{t(r.difficulty)}</span>
               <span className="flex items-center gap-1"><Truck className="h-3.5 w-3.5" />{t("يصل خلال ٩٠ د")}</span>
             </div>
           </header>
@@ -142,8 +142,8 @@ function BoxPage() {
               <ul className="space-y-2 p-4">
                 {box.lines.filter((l) => l.swapped).map((l) => (
                   <li key={l.key} className="rounded-xl bg-card p-3 text-sm">
-                    <p className="flex flex-wrap items-center gap-2"><s className="text-muted-foreground">{l.swapped!.from}</s><ArrowLeft className="h-3.5 w-3.5 text-olive ltr:rotate-180" /><b>{l.name}</b></p>
-                    <p className="mt-1 text-xs text-muted-foreground">{l.swapped!.reason}</p>
+                    <p className="flex flex-wrap items-center gap-2"><s className="text-muted-foreground">{l.swapped!.from}</s><ArrowLeft className="h-3.5 w-3.5 text-olive ltr:rotate-180" /><b>{t(l.name)}</b></p>
+                    <p className="mt-1 text-xs text-muted-foreground">{t(l.swapped!.reason)}</p>
                   </li>
                 ))}
               </ul>
@@ -174,7 +174,7 @@ function BoxPage() {
                   <li key={l.key} className={`flex items-center gap-3 rounded-xl bg-card p-3 ring-1 ${unsafe ? "ring-terracotta/50" : l.swapped ? "ring-olive/40" : "ring-border"}`}>
                     <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg ${tag.cls}`}><tag.Icon className="h-4 w-4" /></span>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">{l.name}</p>
+                      <p className="truncate text-sm font-medium">{t(l.name)}</p>
                       <p className="text-[11px] text-muted-foreground">
                         {unsafe ? <span className="text-terracotta">{t("يحتوي")} {t(l.allergen!)}</span> : l.swapped ? <span className="text-olive">{t("بديل آمن")}</span> : t(tag.ar)}
                       </p>
