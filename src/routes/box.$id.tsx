@@ -85,7 +85,7 @@ function BoxPage() {
           <button onClick={() => history.back()} aria-label="رجوع" className="press absolute start-5 top-[max(env(safe-area-inset-top),1.25rem)] grid h-10 w-10 place-items-center rounded-full bg-card"><Back className="h-5 w-5" /></button>
           <span className="absolute end-5 top-[max(env(safe-area-inset-top),1.25rem)] rounded-full bg-card/90 px-3 py-1.5 text-[11px] font-medium text-primary">Ready-to-Cook Box</span>
         </div>
-        <div className="relative z-10 mx-auto -mt-20 w-[78%] max-w-sm lg:-mt-28">
+        <div className="relative z-10 mx-auto -mt-20 w-[78%] max-w-sm lg:-mt-24 lg:max-w-[300px]">
           <BoxArt title={r.title} serv={serv} size="lg" img={r.img} />
         </div>
       </section>
