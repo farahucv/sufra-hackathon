@@ -52,7 +52,7 @@ function Grocery() {
 
   return (
     <AppShell wide>
-      <TopBar title={t("مقارنة الأسعار")} sub={`${showAll ? t("كل مكونات") : t("الناقص من")} ${r.title} · الرياض`} action={<DemoBadge label={t("أسعار تجريبية")} />} />
+      <TopBar title={t("مقارنة الأسعار")} sub={t(showAll ? "كل مكونات {x} · الرياض" : "الناقص من {x} · الرياض", { x: t(r.title) })} action={<DemoBadge label={t("أسعار تجريبية")} />} />
 
       <div className="px-5 lg:px-8">
         <div className="flex items-start gap-2 rounded-2xl bg-gold/15 p-3 text-xs leading-relaxed">
@@ -142,7 +142,7 @@ function Grocery() {
               <div className="my-4 border-t border-dashed" />
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between"><span className="text-muted-foreground">{t("المجموع")}</span><span className="tabular-nums">{sar(subtotal)}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">{t("توصيل (t(")}{usedStores.length} متجر)</span><span className=")tabular-nums">{delivery ? sar(delivery) : t("مجاني")}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">{t("توصيل ({n} متجر)", { n: usedStores.length })}</span><span className="tabular-nums">{delivery ? sar(delivery) : t("مجاني")}</span></div>
                 <div className="flex justify-between pt-2 text-lg font-bold"><span>{t("الإجمالي")}</span><span className="tabular-nums text-primary">{sar(subtotal + delivery)}</span></div>
                 <p className="text-xs text-olive">{t("توفّر")} {sar(Math.max(0, worst - subtotal))} {t("مقارنة بأغلى متجر")}</p>
               </div>

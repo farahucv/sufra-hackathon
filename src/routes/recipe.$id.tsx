@@ -99,7 +99,7 @@ function RecipePage() {
             {flagged.length === 0 ? (
               <div className="flex items-center gap-3 rounded-2xl border border-olive/30 bg-accent/50 p-4">
                 <ShieldCheck className="h-6 w-6 shrink-0 text-olive" />
-                <div><p className="font-semibold text-accent-foreground">{t("آمنة لملفك الغذائي")}</p><p className="text-xs text-muted-foreground">{t("لم نكتشف أي مسبب حساسية من قائمتك")}{s.allergies.length ? ` (${s.allergies.join("، ")})` : ""}.</p></div>
+                <div><p className="font-semibold text-accent-foreground">{t("آمنة لملفك الغذائي")}</p><p className="text-xs text-muted-foreground">{t("لم نكتشف أي مسبب حساسية من قائمتك")}{s.allergies.length ? ` (${list(s.allergies)})` : ""}.</p></div>
               </div>
             ) : (
               <section className={`rounded-2xl border p-4 transition-colors ${unresolved.length ? "border-terracotta/40 bg-terracotta-soft" : "border-olive/30 bg-accent/50"}`}>
@@ -148,9 +148,9 @@ function RecipePage() {
             </div>
 
             <div className="grid grid-cols-2 rounded-2xl bg-muted p-1">
-              {(["ing", "steps"] as const).map((t) => (
-                <button key={t} onClick={() => setTab(t)} className={`rounded-xl py-2.5 text-sm font-medium transition ${tab === t ? "bg-card shadow-soft" : "text-muted-foreground"}`}>
-                  {t === "ing" ? tr("المقادير ({n})", { n: r.ingredients.length }) : tr("الخطوات ({n})", { n: r.steps.length })}
+              {(["ing", "steps"] as const).map((k) => (
+                <button key={k} onClick={() => setTab(k)} className={`rounded-xl py-2.5 text-sm font-medium transition ${tab === k ? "bg-card shadow-soft" : "text-muted-foreground"}`}>
+                  {k === "ing" ? t("المقادير ({n})", { n: r.ingredients.length }) : t("الخطوات ({n})", { n: r.steps.length })}
                 </button>
               ))}
             </div>
@@ -190,7 +190,7 @@ function RecipePage() {
             <div className="rounded-2xl bg-card p-4 shadow-soft">
               <p className="font-semibold">{t("القيمة الغذائية")} <span className="text-xs font-normal text-muted-foreground">{t("/ حصة")}</span></p>
               <div className="mt-3 grid grid-cols-4 gap-2 text-center">
-                {[[t("سعرات"), r.nutrition.kcal + Math.round(kcalDelta / r.servings)], [t("بروتين"), `${r.nutrition.protein}غ`], [t("كارب"), `${r.nutrition.carbs}غ`], [t("دهون"), `${r.nutrition.fat}غ`]].map(([l, v]) => (
+                {[[t("سعرات"), r.nutrition.kcal + Math.round(kcalDelta / r.servings)], [t("بروتين"), t("{n}غ", { n: r.nutrition.protein })], [t("كارب"), t("{n}غ", { n: r.nutrition.carbs })], [t("دهون"), t("{n}غ", { n: r.nutrition.fat })]].map(([l, v]) => (
                   <div key={l} className="rounded-xl bg-secondary py-2"><p className="text-sm font-bold">{v}</p><p className="text-[10px] text-muted-foreground">{l}</p></div>
                 ))}
               </div>
