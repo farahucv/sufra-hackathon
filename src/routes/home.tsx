@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Heart, Bookmark, Clock, Link2, Play, Sparkles, AlertTriangle, BadgeCheck, Share2, Flame, Gauge, Route as RouteIcon, SearchX } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, Chip, EmptyState, Wordmark } from "@/components/AppShell";
@@ -29,6 +29,21 @@ export function fitFor(r: Recipe, s: State) {
 }
 
 function HomePage() {
+  const router = useRouter();
+  useEffect(() => {
+    // Warm up the judge demo path (Kabsa → box → checkout → order → cook) so the first run has no hitch.
+    const go = () => {
+      const k = recipes.find((x) => x.id === "kabsa");
+      if (k) { const im = new Image(); im.src = k.img; }
+      router.preloadRoute({ to: "/recipe/$id", params: { id: "kabsa" } }).catch(() => {});
+      router.preloadRoute({ to: "/box/$id", params: { id: "kabsa" } }).catch(() => {});
+      router.preloadRoute({ to: "/checkout" }).catch(() => {});
+      router.preloadRoute({ to: "/order" }).catch(() => {});
+      router.preloadRoute({ to: "/cook/$id", params: { id: "kabsa" } }).catch(() => {});
+    };
+    const ric = (window as unknown as { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback;
+    if (ric) ric(go); else setTimeout(go, 300);
+  }, [router]);
   const [cat, setCat] = useState<string | null>(null);
   const s = useStore();
   const list = recipes.filter((r) => !cat || r.cats.includes(cat))
