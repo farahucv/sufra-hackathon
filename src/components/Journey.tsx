@@ -38,14 +38,14 @@ export function JourneyCallout({ step, action }: { step: 1 | 2 | 3 | 4 | 5; acti
         <button onClick={() => setStore(() => ({ journey: 0 }))} aria-label={t("إنهاء الرحلة")} className="text-muted-foreground"><X className="h-4 w-4" /></button>
       </div>
       <p className="mt-2 flex gap-2 text-sm leading-relaxed"><Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-gold" />{t(j.insight)}</p>
-      <div className="mt-3 flex justify-end">
+      <div className={action ? "-mx-4 -mb-4 mt-4 flex justify-end border-t border-olive/15 px-4 py-3" : "mt-3 flex justify-end"}>
           {action ? (
-            <button onClick={action.onClick} className="press inline-flex items-center gap-1 rounded-full bg-olive px-4 py-2 text-xs font-semibold text-olive-foreground">
-              {action.label} <ArrowLeft className="h-3.5 w-3.5 ltr:rotate-180" />
+            <button onClick={action.onClick} className="press inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-olive px-6 text-sm font-semibold text-olive-foreground sm:w-auto">
+              {action.label} <ArrowLeft className="h-4 w-4 shrink-0 ltr:rotate-180" />
             </button>
           ) : !last ? (
             <Link {...next[step as 1 | 2 | 3 | 4]} onClick={go} className="press inline-flex items-center gap-1 rounded-full bg-olive px-4 py-2 text-xs font-semibold text-olive-foreground">
-              {t("الخطوة التالية")} <ArrowLeft className="h-3.5 w-3.5" />
+              {t("الخطوة التالية")} <ArrowLeft className="h-3.5 w-3.5 ltr:rotate-180" />
             </Link>
           ) : (
             <button onClick={() => { setStore(() => ({ journey: 0 })); toast.success(t("اكتملت رحلة العرض"), { description: t("من ريل إلى طبق جاهز على سفرتك.") }); }}
