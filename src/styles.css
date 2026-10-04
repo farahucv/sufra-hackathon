@@ -32,6 +32,10 @@
   --color-sand: var(--sand);
   --color-gold: var(--gold);
   --color-ink: var(--ink);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-soft: var(--terracotta-soft);
+  --animate-float-up: float-up 0.5s cubic-bezier(.2,.7,.2,1) both;
+  --animate-shimmer: shimmer 1.4s linear infinite;
   --color-ink-foreground: var(--ink-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
@@ -61,6 +65,8 @@
   --sand: oklch(0.86 0.06 78);
   --gold: oklch(0.74 0.12 75);
   --ink: oklch(0.2 0.025 50);
+  --terracotta: oklch(0.6 0.13 40);
+  --terracotta-soft: oklch(0.93 0.035 45);
   --ink-foreground: oklch(0.97 0.015 85);
   --destructive: oklch(0.56 0.18 30);
   --destructive-foreground: oklch(0.98 0 0);
@@ -87,4 +93,33 @@
 @utility pattern {
   background-image: radial-gradient(oklch(0.38 0.07 45 / 0.08) 1px, transparent 1px);
   background-size: 14px 14px;
+}
+
+@keyframes float-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@utility skeleton {
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--muted) 25%, var(--secondary) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+@utility press {
+  transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease;
+  &:active { transform: scale(.97); }
+}
+@utility lift {
+  transition: transform .25s ease, box-shadow .25s ease;
+  &:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+}
+@utility receipt-edge {
+  background-image: radial-gradient(circle at 8px 0, transparent 7px, var(--card) 7.5px);
+  background-size: 16px 10px;
+  background-repeat: repeat-x;
+  height: 10px;
+}
+@utility star-pattern {
+  background-image:
+    linear-gradient(45deg, oklch(0.74 0.12 75 / .12) 25%, transparent 25%, transparent 75%, oklch(0.74 0.12 75 / .12) 75%),
+    linear-gradient(-45deg, oklch(0.74 0.12 75 / .12) 25%, transparent 25%, transparent 75%, oklch(0.74 0.12 75 / .12) 75%);
+  background-size: 28px 28px;
 }
