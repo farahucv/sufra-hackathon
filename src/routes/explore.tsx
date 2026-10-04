@@ -24,7 +24,7 @@ function Explore() {
 
   return (
     <AppShell wide>
-      <TopBar back={false} title={tr("التراث الطهوي السعودي", "Saudi culinary heritage")} sub="لكل منطقة حكاية… ولكل طبق ذاكرة" />
+      <TopBar back={false} title={tr("التراث الطهوي السعودي", "Saudi Culinary Heritage")} sub="لكل منطقة حكاية… ولكل طبق ذاكرة" />
 
       <div className="no-scrollbar flex gap-2 overflow-x-auto px-5 lg:px-8">
         {regions.map((r, i) => <Chip key={r.name} active={sel === i} onClick={() => setSel(i)}>{r.name}</Chip>)}

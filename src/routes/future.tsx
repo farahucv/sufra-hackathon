@@ -27,7 +27,7 @@ const items = [
 function Future() {
   return (
     <AppShell>
-      <TopBar title="قادم في سُفرة" sub="Roadmap · خارطة التوسّع" />
+      <TopBar title="قادم في سُفرة" sub="خارطة التوسّع · Roadmap" />
       <div className="px-5 lg:px-8">
         <div className="relative h-44 overflow-hidden rounded-2xl">
           <img src={chef2} alt="أكاديمية سُفرة" className="h-full w-full object-cover object-top" loading="lazy" />

@@ -48,7 +48,7 @@ function HomePage() {
           <RouteIcon className="h-3.5 w-3.5" /> Demo Journey
         </button>
       </header>
-      <p className="px-5 text-sm text-muted-foreground lg:hidden">{hour < 12 ? "صباح الخير" : "مساء الخير"}، {s.name} — {tr("وش نطبخ اليوم؟", "what's cooking?")}</p>
+      <p className="px-5 text-sm text-muted-foreground lg:hidden">{hour < 12 ? "صباح الخير" : "مساء الخير"}، {s.name} — {tr("وش نطبخ اليوم؟", "what's cooking today?")}</p>
 
       <JourneyCallout step={1} />
 
@@ -56,7 +56,7 @@ function HomePage() {
         <Link to="/import" className="press flex items-center gap-3 rounded-2xl bg-ink p-4 text-ink-foreground">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gold text-ink"><Link2 className="h-5 w-5" /></span>
           <div className="min-w-0 flex-1">
-            <p className="font-semibold">{tr("استورد وصفة من تيك توك أو يوتيوب", "Import from TikTok / YouTube")}</p>
+            <p className="font-semibold">{tr("استورد وصفة من تيك توك أو يوتيوب", "Import a recipe from TikTok or YouTube")}</p>
             <p className="truncate text-xs opacity-70">الصق الرابط ونستخرج المقادير والخطوات</p>
           </div>
           <Sparkles className="h-5 w-5 text-gold" />

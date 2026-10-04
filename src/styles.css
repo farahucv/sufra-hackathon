@@ -130,3 +130,14 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
 }
+
+/* Subtle Sadu-inspired lattice for Sufra packaging */
+@utility sadu {
+  background-image:
+    repeating-linear-gradient(45deg, color-mix(in oklab, var(--primary) 7%, transparent) 0 1.5px, transparent 1.5px 14px),
+    repeating-linear-gradient(-45deg, color-mix(in oklab, var(--primary) 7%, transparent) 0 1.5px, transparent 1.5px 14px);
+}
+/* Row of small triangles, like a woven Sadu band */
+@utility sadu-band {
+  background: conic-gradient(from 135deg at 50% 0, var(--olive) 90deg, transparent 0) 0 0 / 14px 9px repeat-x;
+}
