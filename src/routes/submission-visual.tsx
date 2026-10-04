@@ -49,7 +49,7 @@ function SubmissionVisual() {
           <div key={p.src} className="contents">
             {i > 0 && <Arrow />}
             <div className="relative">
-              <span className="absolute -top-3 start-4 z-10 grid h-8 w-8 place-items-center rounded-full bg-gold font-display text-ink">{p.n}</span>
+              <span className="absolute -top-3 end-4 z-10 grid h-8 w-8 place-items-center rounded-full bg-gold font-display text-ink">{p.n}</span>
               <div className="overflow-hidden rounded-2xl border bg-background shadow-soft">
                 <img src={p.src} alt="" style={{ width: p.w }} className="block" />
               </div>
