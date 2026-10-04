@@ -105,7 +105,7 @@ function RecipePage() {
                 <div className="flex items-center gap-2">
                   {unresolved.length ? <AlertTriangle className="h-5 w-5 text-terracotta" /> : <ShieldCheck className="h-5 w-5 text-olive" />}
                   <p className="flex-1 font-semibold">{unresolved.length ? `اكتشفنا ${unresolved.length} مكوّن غير مناسب لك` : "أصبحت الوصفة آمنة لك"}</p>
-                  <DemoBadge label="AI تجريبي" />
+                  <DemoBadge label="اقتراحات تجريبية" />
                 </div>
                 <div className="mt-4 space-y-3">
                   {flagged.map((i) => (

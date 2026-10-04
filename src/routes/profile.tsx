@@ -39,7 +39,7 @@ function Profile() {
           </div>
 
           <section>
-            <h2 className="flex items-center gap-2 text-lg"><Bookmark className="h-5 w-5 text-gold" /> {tr("المحفوظات", "Saved")}</h2>
+            <h2 className="flex items-center gap-2 text-lg"><Bookmark className="h-5 w-5 text-gold" /> {tr("المحفوظات", "Saved Recipes")}</h2>
             <div className="mt-3">
               {saved.length === 0 ? (
                 <EmptyState icon={<Bookmark className="h-6 w-6" />} title="لا توجد وصفات محفوظة" body="اضغط على أيقونة الحفظ في أي ريل لتجده هنا لاحقاً." action={<Link to="/home" className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">تصفّح الريلز</Link>} />
@@ -90,7 +90,7 @@ function Profile() {
                 <button key={l} onClick={() => setStore(() => ({ lang: l }))} className={`rounded-lg py-2 transition ${s.lang === l ? "bg-card font-semibold shadow-soft" : "text-muted-foreground"}`}>{l === "ar" ? "العربية" : "English"}</button>
               ))}
             </div>
-            <p className="mt-2 text-[11px] text-muted-foreground">{tr("الإنجليزية تغيّر الاتجاه والقوائم الرئيسية (معاينة).", "English switches direction and main navigation (preview).")}</p>
+            <p className="mt-2 text-[11px] text-muted-foreground">{tr("الإنجليزية تغيّر الاتجاه والقوائم الرئيسية (معاينة).", "English mode switches the layout direction and main navigation (preview).")}</p>
           </div>
 
           <div className="rounded-2xl bg-card p-4">

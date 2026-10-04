@@ -35,7 +35,7 @@ export function AppShell({ children, nav: showNav = true, wide = false }: { chil
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-e bg-card/60 px-5 py-8 lg:flex">
         <Link to="/home"><Wordmark /></Link>
-        <p className="mt-2 text-xs text-muted-foreground">{tr("وش نطبخ اليوم؟ بذكاء.", "Smart Saudi cooking.")}</p>
+        <p className="mt-2 text-xs text-muted-foreground">{tr("وش نطبخ اليوم؟ بذكاء.", "Smart Saudi cooking, made personal.")}</p>
         <nav className="mt-10 space-y-1">
           {nav.map(({ to, ar, en, icon: Icon }) => (
             <Link key={to} to={to} className="press flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
@@ -51,10 +51,10 @@ export function AppShell({ children, nav: showNav = true, wide = false }: { chil
         <div className="mt-auto space-y-3">
           <Link to="/future" className="block rounded-2xl border border-dashed border-gold/60 bg-gold/10 p-3 text-xs">
             <p className="font-semibold text-primary">{tr("قادم في سُفرة", "Coming to Sufra")}</p>
-            <p className="mt-0.5 text-muted-foreground">{tr("الأكاديمية · المدونات · استشارات مباشرة", "Academy · Blogs · Live chefs")}</p>
+            <p className="mt-0.5 text-muted-foreground">{tr("الأكاديمية · المدونات · استشارات مباشرة", "Academy · Blogs · Live Chef Sessions")}</p>
           </Link>
           <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <Cloud className={`h-3.5 w-3.5 ${s.synced ? "text-olive" : ""}`} /> {s.synced ? tr("ملفك التجريبي محفوظ", "Demo profile saved") : tr("جارِ الحفظ…", "Saving…")}
+            <Cloud className={`h-3.5 w-3.5 ${s.synced ? "text-olive" : ""}`} /> {s.synced ? tr("ملفك التجريبي محفوظ", "Demo profile synced") : tr("جارِ الحفظ…", "Saving…")}
           </p>
         </div>
       </aside>

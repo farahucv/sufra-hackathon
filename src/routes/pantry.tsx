@@ -50,7 +50,7 @@ function Pantry() {
 
   return (
     <AppShell wide>
-      <TopBar back={false} title={tr("مخزني", "My pantry")} sub="أضف ما عندك ونقترح وصفات بالموجود فقط" action={<span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold">{s.pantry.length} مكوّن</span>} />
+      <TopBar back={false} title={tr("مخزني", "Pantry")} sub="أضف ما عندك ونقترح وصفات بالموجود فقط" action={<span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold">{s.pantry.length} مكوّن</span>} />
       <div className="space-y-6 px-5 lg:grid lg:grid-cols-[1fr_380px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-5">
           <div className="rounded-2xl bg-card p-4 shadow-soft">
