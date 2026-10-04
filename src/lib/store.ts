@@ -9,7 +9,7 @@ export type State = {
   pantry: PantryItem[]; lang: "ar" | "en"; journey: number; synced: boolean;
 };
 
-const defaultPantry = ["دجاج", "أرز", "بصل", "طماطم", "بهارات كبسة", "بيض", "حليب", "دقيق", "خميرة", "زيت", "زبيب"];
+const defaultPantry = ["دجاج", "أرز", "بصل", "طماطم", "بهارات كبسة", "بيض", "حليب", "دقيق", "خميرة", "زيت", "زبيب", "دبس تمر", "سمسم"];
 export const defaults: State = {
   onboarded: false, name: "ضيف سُفرة", diet: "all", household: 4,
   allergies: ["مكسرات"], dislikes: [], saved: ["jareesh"], liked: [],

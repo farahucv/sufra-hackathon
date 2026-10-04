@@ -60,7 +60,7 @@ function RecipePage() {
 
   return (
     <AppShell nav={false}>
-      <div className="relative h-80 lg:mx-8 lg:mt-8 lg:h-[420px] lg:overflow-hidden lg:rounded-3xl">
+      <div className="relative h-80 lg:mx-8 lg:mt-8 lg:h-[420px] lg:overflow-hidden lg:rounded-2xl">
         <img src={r.img} alt={r.title} className="h-full w-full object-cover" width={768} height={1024} />
         <div className="absolute inset-0 scrim" />
         <div className="absolute inset-x-5 top-6 flex justify-between">
@@ -210,7 +210,7 @@ function RecipePage() {
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-card/95 p-3 backdrop-blur lg:static lg:mx-8 lg:mb-10 lg:rounded-2xl lg:border">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-card p-3 lg:static lg:mx-8 lg:mb-10 lg:rounded-2xl lg:border">
         <div className="mx-auto grid max-w-md grid-cols-[1fr_1fr_1.3fr] gap-2 lg:max-w-none">
           <button onClick={() => { setPantryView((v) => !v); setTab("ing"); }} className={`press flex flex-col items-center gap-1 rounded-2xl border py-2.5 text-[11px] font-medium ${pantryView ? "border-olive bg-accent text-accent-foreground" : ""}`}>
             <Refrigerator className="h-5 w-5" /> استخدم الموجود عندي

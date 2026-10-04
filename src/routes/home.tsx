@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Heart, Bookmark, Clock, Link2, Play, Sparkles, AlertTriangle, BadgeCheck, Share2, Flame, Gauge, Route as RouteIcon, SearchX } from "lucide-react";
 import { toast } from "sonner";
-import { AppShell, Chip, DemoBadge, EmptyState, Wordmark } from "@/components/AppShell";
+import { AppShell, Chip, EmptyState, Wordmark } from "@/components/AppShell";
 import { JourneyCallout, startJourney } from "@/components/Journey";
 import { categories, recipes, getChef, recipeAllergens, type Recipe } from "@/lib/data";
 import { matchesAllergy, toggleIn, useStore, useTr, type State } from "@/lib/store";
@@ -27,10 +27,8 @@ export function fitFor(r: Recipe, s: State) {
 
 function HomePage() {
   const [cat, setCat] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
   const s = useStore();
   const tr = useTr();
-  useEffect(() => { setLoading(true); const t = setTimeout(() => setLoading(false), 450); return () => clearTimeout(t); }, [cat]);
   const list = recipes.filter((r) => !cat || r.cats.includes(cat))
     .sort((a, b) => Number(fitFor(b, s).fit) - Number(fitFor(a, s).fit));
   const hour = new Date().getHours();
@@ -44,7 +42,7 @@ function HomePage() {
           <h1 className="text-3xl">{tr("وش نطبخ اليوم؟", "What's cooking today?")}</h1>
         </div>
         <button onClick={() => { startJourney(); toast("بدأت رحلة العرض", { description: "٤ خطوات قصيرة تشرح الفكرة كاملة." }); }}
-          className="press inline-flex items-center gap-1.5 rounded-full border border-olive/40 px-3 py-1.5 text-xs font-medium text-olive hover:bg-accent">
+          className="press inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] text-muted-foreground hover:bg-muted">
           <RouteIcon className="h-3.5 w-3.5" /> Demo Journey
         </button>
       </header>
@@ -73,11 +71,10 @@ function HomePage() {
       </div>
 
       <section className="mt-5 grid gap-5 px-5 lg:grid-cols-2 lg:px-8 xl:grid-cols-3">
-        {loading && [0, 1].map((i) => <div key={i} className="skeleton h-[540px] rounded-3xl" />)}
-        {!loading && list.length === 0 && (
+        {list.length === 0 && (
           <div className="lg:col-span-2"><EmptyState icon={<SearchX className="h-6 w-6" />} title="لا توجد ريلز هنا بعد" body="جرّب تصنيفاً آخر — نضيف ريلز جديدة أسبوعياً." action={<Chip onClick={() => setCat(null)}>عرض الكل</Chip>} /></div>
         )}
-        {!loading && list.map((r, idx) => <Reel key={r.id} r={r} s={s} idx={idx} />)}
+        {list.map((r, idx) => <Reel key={r.id} r={r} s={s} idx={idx} />)}
       </section>
     </AppShell>
   );
@@ -92,13 +89,13 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
     try { await navigator.clipboard.writeText(url); toast.success("تم نسخ رابط الوصفة"); } catch { toast("رابط الوصفة", { description: url }); }
   };
   return (
-    <article className="animate-float-up relative h-[540px] overflow-hidden rounded-3xl shadow-soft" style={{ animationDelay: `${idx * 60}ms` }}>
+    <article className={`relative h-[460px] overflow-hidden rounded-2xl bg-muted lg:h-[520px] ${idx < 2 ? "animate-float-up" : ""}`}>
       <Link to="/recipe/$id" params={{ id: r.id }} aria-label={r.title} className="absolute inset-0">
-        <img src={r.img} alt={r.title} className="h-full w-full object-cover transition duration-700 hover:scale-105" loading={idx ? "lazy" : "eager"} width={768} height={1024} />
+        <img src={r.img} alt={r.title} className="h-full w-full object-cover" loading={idx ? "lazy" : "eager"} fetchPriority={idx ? "auto" : "high"} decoding="async" width={768} height={1024} />
         <div className="absolute inset-0 scrim" />
       </Link>
       <div className="pointer-events-none absolute inset-x-4 top-4 flex flex-wrap items-start justify-between gap-2">
-        <span className="flex items-center gap-1.5 rounded-full bg-ink/55 px-3 py-1.5 text-xs text-ink-foreground backdrop-blur"><Play className="h-3.5 w-3.5 fill-current" /> ٠:٤٥</span>
+        <span className="flex items-center gap-1.5 rounded-full bg-ink/55 px-3 py-1.5 text-xs text-ink-foreground"><Play className="h-3.5 w-3.5 fill-current" /> ٠:٤٥</span>
         {fit && <span className="flex items-center gap-1 rounded-full bg-olive px-3 py-1.5 text-xs font-medium text-olive-foreground"><Sparkles className="h-3.5 w-3.5" /> مناسب لك</span>}
         {!fit && warn.length > 0 && (
           <span className="flex items-center gap-1 rounded-full bg-terracotta px-3 py-1.5 text-xs text-primary-foreground">
@@ -106,7 +103,7 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
           </span>
         )}
       </div>
-      <div className="absolute bottom-40 end-4 flex flex-col gap-4 text-ink-foreground">
+      <div className="absolute bottom-36 end-4 flex flex-col gap-4 text-ink-foreground">
         <ActionBtn label={r.likes} aria="إعجاب" onClick={() => toggleIn("liked", r.id)}><Heart className={`h-5 w-5 ${liked ? "fill-terracotta text-terracotta" : ""}`} /></ActionBtn>
         <ActionBtn label={saved ? "محفوظ" : "حفظ"} aria="حفظ" onClick={() => { toggleIn("saved", r.id); toast.success(saved ? "أُزيلت من المحفوظات" : "حُفظت في وصفاتك"); }}><Bookmark className={`h-5 w-5 ${saved ? "fill-gold text-gold" : ""}`} /></ActionBtn>
         <ActionBtn label="مشاركة" aria="مشاركة" onClick={share}><Share2 className="h-5 w-5" /></ActionBtn>
@@ -125,7 +122,6 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
         </div>
         <Link to="/recipe/$id" params={{ id: r.id }} className="press pointer-events-auto block rounded-2xl bg-card py-3 text-center font-semibold text-foreground">عرض الوصفة</Link>
       </div>
-      {idx === 0 && <div className="absolute end-4 top-14"><DemoBadge label="محتوى تجريبي" /></div>}
     </article>
   );
 }
@@ -133,7 +129,7 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
 function ActionBtn({ children, label, aria, onClick }: { children: React.ReactNode; label: string; aria: string; onClick: () => void }) {
   return (
     <button onClick={onClick} aria-label={aria} className="press flex flex-col items-center gap-1 text-[11px]">
-      <span className="grid h-11 w-11 place-items-center rounded-full bg-ink/50 backdrop-blur">{children}</span>{label}
+      <span className="grid h-11 w-11 place-items-center rounded-full bg-ink/55">{children}</span>{label}
     </button>
   );
 }

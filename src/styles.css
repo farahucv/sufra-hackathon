@@ -34,7 +34,7 @@
   --color-ink: var(--ink);
   --color-terracotta: var(--terracotta);
   --color-terracotta-soft: var(--terracotta-soft);
-  --animate-float-up: float-up 0.5s cubic-bezier(.2,.7,.2,1) both;
+  --animate-float-up: float-up 0.22s cubic-bezier(.2,.7,.2,1) both;
   --animate-shimmer: shimmer 1.4s linear infinite;
   --color-ink-foreground: var(--ink-foreground);
   --color-destructive: var(--destructive);
@@ -73,13 +73,14 @@
   --border: oklch(0.89 0.025 80);
   --input: oklch(0.89 0.025 80);
   --ring: oklch(0.5 0.08 125);
-  --shadow-soft: 0 10px 30px -14px oklch(0.38 0.07 45 / 0.35);
+  --shadow-soft: 0 1px 2px oklch(0.38 0.07 45 / 0.06), 0 8px 24px -16px oklch(0.38 0.07 45 / 0.28);
   --gradient-scrim: linear-gradient(to top, oklch(0.15 0.03 50 / 0.92), oklch(0.15 0.03 50 / 0.1) 60%, transparent);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { background: var(--color-sand); }
+  html { background: var(--color-background); -webkit-text-size-adjust: 100%; }
+  img { background: var(--muted); }
   body { background-color: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); }
   h1, h2, h3 { font-family: var(--font-display); }
 }
@@ -104,12 +105,14 @@
   animation: var(--animate-shimmer);
 }
 @utility press {
-  transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease;
-  &:active { transform: scale(.97); }
+  transition: background-color .15s ease, opacity .15s ease, filter .15s ease;
+  -webkit-tap-highlight-color: transparent;
+  &:active { filter: brightness(.93); }
+  &:disabled { cursor: not-allowed; }
 }
 @utility lift {
-  transition: transform .25s ease, box-shadow .25s ease;
-  &:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+  transition: box-shadow .18s ease;
+  &:hover { box-shadow: var(--shadow-soft); }
 }
 @utility receipt-edge {
   background-image: radial-gradient(circle at 8px 0, transparent 7px, var(--card) 7.5px);
@@ -122,4 +125,8 @@
     linear-gradient(45deg, oklch(0.74 0.12 75 / .12) 25%, transparent 25%, transparent 75%, oklch(0.74 0.12 75 / .12) 75%),
     linear-gradient(-45deg, oklch(0.74 0.12 75 / .12) 25%, transparent 25%, transparent 75%, oklch(0.74 0.12 75 / .12) 75%);
   background-size: 28px 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
 }

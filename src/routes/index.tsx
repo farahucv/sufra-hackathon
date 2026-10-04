@@ -74,7 +74,7 @@ function Onboarding() {
             <div className="absolute inset-0 scrim" />
             <div className="absolute start-5 top-6"><Wordmark size="sm" tone="light" /></div>
           </div>
-          <button onClick={finish} className="absolute end-5 top-7 rounded-full bg-card/80 px-4 py-1.5 text-xs backdrop-blur lg:top-10">تخطَّ</button>
+          <button onClick={finish} className="absolute end-5 top-7 rounded-full bg-card/80 px-4 py-1.5 text-xs lg:top-10">تخطَّ</button>
           <div key={slide} className="animate-float-up flex-1 px-7 pt-8 lg:flex-none">
             {(() => { const I = slides[slide]!.icon; return <I className="h-9 w-9 text-olive" strokeWidth={1.5} />; })()}
             <h1 className="mt-4 text-3xl leading-snug lg:text-4xl">{slides[slide]!.title}</h1>

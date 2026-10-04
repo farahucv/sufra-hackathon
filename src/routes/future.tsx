@@ -29,7 +29,7 @@ function Future() {
     <AppShell>
       <TopBar title="قادم في سُفرة" sub="Roadmap · خارطة التوسّع" />
       <div className="px-5 lg:px-8">
-        <div className="relative h-44 overflow-hidden rounded-3xl">
+        <div className="relative h-44 overflow-hidden rounded-2xl">
           <img src={chef2} alt="أكاديمية سُفرة" className="h-full w-full object-cover object-top" loading="lazy" />
           <div className="absolute inset-0 scrim" />
           <p className="absolute bottom-4 right-5 max-w-[70%] font-display text-2xl text-ink-foreground">تعلّم من أمهر الطهاة السعوديين</p>

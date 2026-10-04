@@ -127,7 +127,6 @@ function Grocery() {
             <div className="rounded-t-2xl bg-card p-5 font-sans shadow-soft">
               <div className="flex items-center justify-between">
                 <p className="flex items-center gap-2 font-display text-lg"><Trophy className="h-5 w-5 text-gold" /> سلّتك المقترحة</p>
-                <DemoBadge />
               </div>
               <p className="mt-1 text-xs text-muted-foreground">{mode === "cheap" ? "أقل سعر إجمالي" : "أقل عدد متاجر"} · {r.title}</p>
               <div className="my-4 border-t border-dashed" />

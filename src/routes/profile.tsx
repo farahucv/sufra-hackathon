@@ -28,7 +28,7 @@ function Profile() {
       <TopBar back={false} title={tr("حسابي", "Profile")} />
       <div className="space-y-7 px-5 lg:grid lg:grid-cols-[1fr_360px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-7">
-          <div className="star-pattern flex items-center gap-4 rounded-3xl bg-primary p-5 text-primary-foreground">
+          <div className="star-pattern flex items-center gap-4 rounded-2xl bg-primary p-5 text-primary-foreground">
             <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gold font-display text-2xl text-ink">س</div>
             <div className="min-w-0 flex-1">
               <p className="text-lg font-semibold">{s.name}</p>
@@ -55,7 +55,7 @@ function Profile() {
             </div>
           </section>
 
-          <section className="rounded-3xl bg-card p-5">
+          <section className="rounded-2xl bg-card p-5">
             <h2 className="text-lg">ملفك الغذائي</h2>
             <p className="mt-4 text-sm font-medium">الحساسية</p>
             <div className="mt-2 flex flex-wrap gap-2">{allergensList.map((a) => <Chip key={a} active={s.allergies.includes(a)} onClick={() => toggleIn("allergies", a)}>{a}</Chip>)}</div>

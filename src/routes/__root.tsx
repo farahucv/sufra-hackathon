@@ -63,7 +63,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "سُفرة — وصفات سعودية ذكية" },
       { name: "description", content: "نموذج تطبيق سُفرة: ريلز الطهاة، وصفات مخصصة للحساسية، مقارنة أسعار السوبرماركت." },
       { property: "og:type", content: "website" },

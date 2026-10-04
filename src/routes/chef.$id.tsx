@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { Star, MessageCircle, CalendarCheck, Play, BadgeCheck, MapPin, UserPlus, UserCheck } from "lucide-react";
 import { toast } from "sonner";
-import { AppShell, DemoBadge, TopBar } from "@/components/AppShell";
+import { AppShell, TopBar } from "@/components/AppShell";
 import { getChef, recipes } from "@/lib/data";
 
 export const Route = createFileRoute("/chef/$id")({
@@ -41,7 +41,7 @@ function ChefPage() {
 
   return (
     <AppShell wide>
-      <TopBar title="" action={<DemoBadge label="ملف تجريبي" />} />
+      <TopBar title="" />
       <div className="px-5 lg:px-8">
         <div className="lg:flex lg:items-center lg:gap-8">
           <div className="text-center lg:text-start">
