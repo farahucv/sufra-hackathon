@@ -26,7 +26,7 @@ function SubmissionVisual() {
   const yt = importSamples[1];
   return (
     <div dir="rtl" lang="ar" className="relative mx-auto h-[900px] w-[1600px] overflow-hidden bg-background">
-      <div className="sadu pointer-events-none absolute inset-0 opacity-40" />
+      <div className="sadu pointer-events-none absolute inset-0 opacity-30" />
       <div className="relative grid h-full grid-cols-[560px_1fr] gap-x-20 px-20 py-14">
         {/* right column (RTL start): header + supporting steps */}
         <div className="flex flex-col">
