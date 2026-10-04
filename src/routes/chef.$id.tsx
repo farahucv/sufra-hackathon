@@ -36,7 +36,7 @@ function ChefPage() {
   const { id } = Route.useLoaderData();
   const c = getChef(id)!;
   const own = recipes.filter((r) => r.chefId === c.id);
-  const [tab, setTab] = useState<"reels" | "recipes" | "reviews()" | "blog()">("reels");
+  const [tab, setTab] = useState<"reels" | "recipes" | "reviews" | "blog">("reels");
   const [following, setFollowing] = useState(false);
   const soon = (what: string) => toast(t("{x} — قريباً", { x: what }), { description: t("ميزة مستقبلية: جلسات مدفوعة مع الطهاة بالمحادثة أو الفيديو.") });
 
@@ -76,7 +76,7 @@ function ChefPage() {
       </div>
 
       <div className="mx-5 mt-6 grid grid-cols-4 rounded-2xl bg-muted p-1 text-sm lg:mx-8 lg:max-w-xl">
-        {([["reels", t("الريلز")], ["recipes", t("الوصفات")], ["reviews()", t("التقييمات")], ["blog()", t("المدونة")]] as const).map(([k, l]) => (
+        {([["reels", t("الريلز")], ["recipes", t("الوصفات")], ["reviews", t("التقييمات")], ["blog", t("المدونة")]] as const).map(([k, l]) => (
           <button key={k} onClick={() => setTab(k)} className={`rounded-xl py-2.5 transition ${tab === k ? "bg-card font-medium shadow-soft" : "text-muted-foreground"}`}>{l}</button>
         ))}
       </div>
@@ -104,7 +104,7 @@ function ChefPage() {
             ))}
           </ul>
         )}
-        {tab === "reviews()" && (
+        {tab === "reviews" && (
           <div className="grid gap-3 lg:grid-cols-3">
             {reviews().map((r) => (
               <div key={r.n} className="rounded-2xl bg-card p-4">
@@ -114,7 +114,7 @@ function ChefPage() {
             ))}
           </div>
         )}
-        {tab === "blog()" && (
+        {tab === "blog" && (
           <div className="grid gap-3 lg:grid-cols-3">
             {blog().map((b) => (
               <article key={b} className="rounded-2xl bg-card p-4"><p className="font-semibold">{t(b)}</p><p className="mt-1 text-xs text-muted-foreground">{t("مقال · ٤ دقائق قراءة")}</p>

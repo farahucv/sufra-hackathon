@@ -28,7 +28,7 @@ const slides = () => [
 ];
 
 function Onboarding() {
-  const [phase, setPhase] = useState<"splash" | "slides()" | "prefs">("splash");
+  const [phase, setPhase] = useState<"splash" | "slides" | "prefs">("splash");
   const [slide, setSlide] = useState(0);
   const [step, setStep] = useState(0);
   const s = useStore();
@@ -36,7 +36,7 @@ function Onboarding() {
 
   useEffect(() => {
     if (phase !== "splash") return;
-    const t = setTimeout(() => setPhase("slides()"), 1800);
+    const t = setTimeout(() => setPhase("slides"), 1100);
     return () => clearTimeout(t);
   }, [phase]);
 
@@ -44,7 +44,7 @@ function Onboarding() {
 
   if (phase === "splash") {
     return (
-      <button onClick={() => setPhase("slides()")} className="star-pattern relative grid min-h-screen w-full place-items-center bg-ink">
+      <button onClick={() => setPhase("slides")} className="star-pattern relative grid min-h-screen w-full place-items-center bg-ink">
         <div className="animate-float-up text-center">
           <Wordmark size="lg" tone="light" />
           <p className="mt-5 text-sm text-ink-foreground/70">{t("منصة الطبخ السعودي الذكية")}</p>
@@ -60,7 +60,7 @@ function Onboarding() {
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-2">
       {/* Visual panel (desktop) */}
       <div className="relative hidden lg:block">
-        <img src={slides()[phase === "slides()" ? slide : 2]!.img} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={slides()[phase === "slides" ? slide : 2]!.img} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 scrim" />
         <div className="absolute bottom-12 start-12 max-w-md text-ink-foreground">
           <Wordmark size="md" tone="light" />
@@ -68,7 +68,7 @@ function Onboarding() {
         </div>
       </div>
 
-      {phase === "slides()" ? (
+      {phase === "slides" ? (
         <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col lg:justify-center">
           <div className="relative h-[58vh] overflow-hidden rounded-b-[2.5rem] lg:hidden">
             <img key={slide} src={slides()[slide]!.img} alt="" className="animate-in fade-in h-full w-full object-cover duration-500" />

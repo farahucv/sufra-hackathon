@@ -37,11 +37,11 @@ function Pantry() {
   const scan = () => {
     setScanning(true);
     setTimeout(() => {
-      const found = [t("لحم مفروم"), t("جزر"), t("كوسا")].filter((x) => !hasPantry(s, x));
-      setStore((st) => ({ pantry: [...st.pantry, ...found.map((name) => ({ name, loc: (name === t("لحم مفروم") ? "freezer" : "fridge") as Loc }))] }));
+      const found = ["لحم مفروم", "جزر", "كوسا"].filter((x) => !hasPantry(s, x));
+      setStore((st) => ({ pantry: [...st.pantry, ...found.map((name) => ({ name, loc: (name === "لحم مفروم" ? "freezer" : "fridge") as Loc }))] }));
       setScanning(false);
       toast.success(found.length ? t("تعرّفنا على {n} مكونات", { n: found.length }) : t("لا مكونات جديدة"), { description: t("مسح تجريبي — يحاكي التعرّف بالكاميرا.") });
-    }, 1400);
+    }, 600);
   };
 
   const scored = recipes.map((r) => ({ r, miss: r.ingredients.filter((i) => !hasPantry(s, i.key)).map((i) => i.key) }));
