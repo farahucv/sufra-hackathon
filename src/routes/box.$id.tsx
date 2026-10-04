@@ -176,7 +176,7 @@ function BoxPage() {
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium">{l.name}</p>
                       <p className="text-[11px] text-muted-foreground">
-                        {unsafe ? <span className="text-terracotta">{t("يحتوي")} {t(l.allergen)}</span> : l.swapped ? <span className="text-olive">{t("بديل آمن")}</span> : t(tag.ar)}
+                        {unsafe ? <span className="text-terracotta">{t("يحتوي")} {t(l.allergen!)}</span> : l.swapped ? <span className="text-olive">{t("بديل آمن")}</span> : t(tag.ar)}
                       </p>
                     </div>
                     <span className="shrink-0 rounded-md bg-primary px-2 py-1 text-[11px] font-semibold tabular-nums text-primary-foreground">{l.qty}</span>
