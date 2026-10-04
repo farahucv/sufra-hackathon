@@ -69,8 +69,8 @@ function HomePage() {
 
       <section className="mt-7">
         <div className="flex items-baseline justify-between px-5 lg:px-8">
-          <h2 className="text-xl">جاهز للطبخ <span className="ms-1 text-[10px] tracking-[0.25em] text-muted-foreground">READY-TO-COOK</span></h2>
-          <span className="text-[11px] text-muted-foreground">أسعار تجريبية</span>
+          <h2 className="text-xl">جاهز للطبخ <span className="ms-1 text-[10px] tracking-normal text-muted-foreground">Ready-to-Cook Box</span></h2>
+          <span className="text-[11px] text-muted-foreground">Demo data</span>
         </div>
         <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto px-5 pb-1 lg:grid lg:grid-cols-3 lg:px-8">
           {["kabsa", "jareesh", "freekeh"].map((id) => {

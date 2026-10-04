@@ -43,7 +43,7 @@ function OrderPage() {
 
   return (
     <AppShell wide>
-      <TopBar title={delivered ? "وصل صندوقك" : "صندوقك في الطريق"} sub={`طلب ${o.id}`} action={<DemoBadge label="تتبّع تجريبي" />} />
+      <TopBar title={delivered ? "وصل صندوقك" : "صندوقك في الطريق"} sub={`${delivered ? "Delivered" : "Your box is on the way"} · ${o.id}`} action={<DemoBadge label="تتبّع تجريبي" />} />
       <JourneyCallout step={4} hideNext />
       <JourneyCallout step={5} hideNext />
 
@@ -56,6 +56,7 @@ function OrderPage() {
               <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-olive" />{delivered ? "تم التسليم" : `الوصول المتوقع ${eta}`}</span>
               <span className="text-xs text-muted-foreground">{slots.find((x) => x.id === o.slot)?.label}</span>
             </div>
+            <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-olive transition-[width] duration-200" style={{ width: `${((o.stage + 1) / 4) * 100}%` }} /></div>
             <ol className="mt-5 space-y-0">
               {orderStages.map((st, i) => {
                 const done = i <= o.stage;
@@ -85,7 +86,7 @@ function OrderPage() {
           <Link to="/cook/$id" params={{ id: r.id }} disabled={!delivered}
             onClick={() => { if (s.journey === 4) setStore(() => ({ journey: 5 })); }}
             className={`press flex w-full items-center justify-center gap-2 rounded-xl py-4 font-semibold ${delivered ? "bg-primary text-primary-foreground" : "pointer-events-none bg-muted text-muted-foreground"}`}>
-            <ChefHat className="h-5 w-5" /> ابدأ الطبخ
+            <ChefHat className="h-5 w-5" /> ابدأ الطبخ · Start cooking
           </Link>
           {!delivered && <p className="text-center text-xs text-muted-foreground">يتاح وضع الطبخ عند تسليم الصندوق</p>}
           <div className="space-y-2 rounded-2xl bg-secondary/60 p-4 text-sm">
