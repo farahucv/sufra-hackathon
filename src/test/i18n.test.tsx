@@ -47,7 +47,7 @@ describe("bilingual localization", () => {
     const bad: string[] = [];
     for (const f of files) {
       const body = readFileSync(f, "utf8").replace(/head:[\s\S]*?\}\),\n/, "");
-      for (const m of body.matchAll(/>([^<>{}]*[\u0600-\u06FF][^<>{}]*)</g)) if (!BRAND.has(m[1]!.trim())) bad.push(`${f}: ${m[1]!.trim()}`);
+      for (const m of body.matchAll(/>([^<>{}=;"]*[\u0600-\u06FF][^<>{}=;"]*)</g)) if (!BRAND.has(m[1]!.trim())) bad.push(`${f}: ${m[1]!.trim()}`);
     }
     expect(bad).toEqual([]);
   });

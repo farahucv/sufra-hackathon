@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -19,11 +20,11 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">٤٠٤</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">الصفحة غير موجودة</h2>
+        <h1 className="text-7xl font-bold text-foreground">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">{t("الصفحة غير موجودة")}</h2>
         <div className="mt-6">
           <Link to="/home" className="inline-flex rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">
-            العودة للرئيسية
+            {t("العودة للرئيسية")}
           </Link>
         </div>
       </div>
@@ -41,7 +42,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold text-foreground">تعذّر تحميل الصفحة</h1>
+        <h1 className="text-xl font-semibold text-foreground">{t("تعذّر تحميل الصفحة")}</h1>
         <div className="mt-6 flex justify-center gap-2">
           <button
             onClick={() => {
@@ -50,9 +51,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
             }}
             className="rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground"
           >
-            حاول مجدداً
+            {t("حاول مجدداً")}
           </button>
-          <a href="/" className="rounded-full border px-5 py-2 text-sm">الرئيسية</a>
+          <a href="/" className="rounded-full border px-5 py-2 text-sm">{t("الرئيسية")}</a>
         </div>
       </div>
     </div>
