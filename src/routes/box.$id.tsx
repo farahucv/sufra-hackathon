@@ -77,6 +77,7 @@ function BoxPage() {
 
   return (
     <AppShell wide nav={false}>
+      {s.journey === 3 && <div className="pt-[env(safe-area-inset-top)]"><JourneyCallout step={3} action={{ label: t("متابعة رحلة العرض"), onClick: toCheckout }} /></div>}
       {/* Hero */}
       <section className="relative">
         <div className="relative h-64 overflow-hidden lg:mx-8 lg:mt-8 lg:h-80 lg:rounded-2xl">
@@ -92,7 +93,6 @@ function BoxPage() {
 
       <div className="px-5 pt-6 lg:grid lg:grid-cols-[1fr_340px] lg:gap-10 lg:px-8">
         <div className="space-y-8">
-          <div className="-mx-5 -my-4 lg:-mx-8"><JourneyCallout step={3} action={{ label: t("متابعة إلى الطلب"), onClick: toCheckout }} /></div>
           <header className="text-center lg:text-start">
             <p className="text-xs font-medium tracking-wide text-olive">{t("صندوق جاهز للطبخ")}</p>
             <h1 className="mt-1 text-4xl lg:text-5xl">{t(r.title)}</h1>
@@ -219,7 +219,7 @@ function BoxPage() {
               <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-olive" />{t("الرياض — ضمن نطاق التوصيل")}</p>
               <p className="flex items-center gap-2"><Check className="h-4 w-4 text-olive" />{t("عبوات مقسّمة بدقة")}</p>
             </div>
-            <CTA disabled={left.length > 0} onClick={toCheckout} />
+            <CTA disabled={left.length > 0} onClick={toCheckout} demo={s.journey === 3} />
             <p className="text-center text-[11px] text-muted-foreground">{t("الأسعار والتوصيل بيانات تجريبية")}</p>
           </div>
         </aside>
@@ -233,7 +233,7 @@ function BoxPage() {
             <p key={box.subtotal} className="animate-float-up font-display text-2xl leading-none text-primary tabular-nums">{sar(box.subtotal)}</p>
             <p className="mt-1 text-[11px] text-muted-foreground">{t("{n} حصص · بيانات تجريبية", { n: serv })}</p>
           </div>
-          <div className="flex-1"><CTA disabled={left.length > 0} onClick={toCheckout} /></div>
+          <div className="flex-1"><CTA disabled={left.length > 0} onClick={toCheckout} demo={s.journey === 3} /></div>
         </div>
       </div>
     </AppShell>
@@ -254,11 +254,11 @@ function PriceBlock({ total, per, serv }: { total: number; per: number; serv: nu
   );
 }
 
-function CTA({ disabled, onClick }: { disabled: boolean; onClick: () => void }) {
+function CTA({ disabled, onClick, demo }: { disabled: boolean; onClick: () => void; demo?: boolean }) {
   return (
     <button disabled={disabled} onClick={onClick}
       className="press flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 font-semibold text-primary-foreground disabled:opacity-40">
-      {disabled ? t("استبدل المكونات أولاً") : t("راجع صندوقك")}
+      {disabled ? t("استبدل المكونات أولاً") : demo ? t("متابعة رحلة العرض") : t("راجع صندوقك")}
       {!disabled && <Sparkles className="h-4 w-4 text-gold" />}
     </button>
   );
