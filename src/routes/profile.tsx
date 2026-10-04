@@ -32,7 +32,7 @@ function Profile() {
           <div className="star-pattern flex items-center gap-4 rounded-2xl bg-primary p-5 text-primary-foreground">
             <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gold font-display text-2xl text-ink">{t("س")}</div>
             <div className="min-w-0 flex-1">
-              <p className="text-lg font-semibold">{s.name}</p>
+              <p className="text-lg font-semibold">{t(s.name)}</p>
               <p className="text-xs opacity-75">{saved.length} {t("وصفة محفوظة ·")} {s.pantry.length} {t("مكوّن في المخزن")}</p>
             </div>
           </div>

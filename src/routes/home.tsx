@@ -55,7 +55,7 @@ function HomePage() {
       <header className="flex items-center justify-between px-5 pb-2 pt-6 lg:px-8 lg:pt-10">
         <div className="lg:hidden"><Wordmark size="sm" /></div>
         <div className="hidden lg:block">
-          <p className="text-sm text-muted-foreground">{hour < 12 ? t("صباح الخير") : t("مساء الخير")}{t("،")} {s.name}</p>
+          <p className="text-sm text-muted-foreground">{hour < 12 ? t("صباح الخير") : t("مساء الخير")}{t("،")} {t(s.name)}</p>
           <h1 className="text-3xl">{t("وش نطبخ اليوم؟")}</h1>
         </div>
         <button onClick={() => { startJourney(); toast("بدأت رحلة العرض", { description: t("٤ خطوات قصيرة تشرح الفكرة كاملة.") }); }}

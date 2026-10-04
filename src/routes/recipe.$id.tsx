@@ -165,7 +165,7 @@ function RecipePage() {
                     <li key={i.key} className="flex items-center gap-3 py-3.5">
                       {pantryView && (have ? <Check className="h-4 w-4 shrink-0 text-olive" /> : <X className="h-4 w-4 shrink-0 text-terracotta" />)}
                       <div className="min-w-0 flex-1">
-                        <p className={sub ? "font-medium text-olive" : "font-medium"}>{sub ? sub.name : i.key}</p>
+                        <p className={sub ? "font-medium text-olive" : "font-medium"}>{sub ? t(sub.name) : t(i.key)}</p>
                         {sub && <p className="text-xs text-muted-foreground line-through">{t(i.key)}</p>}
                         {bad && !sub && <p className="text-xs text-terracotta">{t("يحتوي")} {t(i.allergen)}</p>}
                       </div>

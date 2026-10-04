@@ -71,7 +71,7 @@ function Pantry() {
             <p className="mt-4 text-xs text-muted-foreground">{t("إضافة سريعة")}</p>
             <div className="no-scrollbar mt-2 flex gap-2 overflow-x-auto pb-1">
               {quickAdd.filter((q) => !hasPantry(s, q)).map((q) => (
-                <button key={q} onClick={() => togglePantry(q)} className="press shrink-0 rounded-full border border-dashed px-3 py-1.5 text-sm hover:bg-muted">+ {q}</button>
+                <button key={q} onClick={() => togglePantry(q)} className="press shrink-0 rounded-full border border-dashed px-3 py-1.5 text-sm hover:bg-muted">+ {t(q)}</button>
               ))}
             </div>
           </div>

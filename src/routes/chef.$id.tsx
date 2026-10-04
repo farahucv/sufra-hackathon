@@ -70,7 +70,7 @@ function ChefPage() {
             className={`press flex items-center justify-center gap-1.5 rounded-2xl py-3 text-sm font-semibold ${following ? "border bg-card" : "bg-primary text-primary-foreground"}`}>
             {following ? <UserCheck className="h-4 w-4" /> : <UserPlus className="h-4 w-4" />}{following ? t("تتابعه") : t("متابعة")}
           </button>
-          <button onClick={() => soon("اسأل الشيف")} className="press relative flex items-center justify-center gap-1.5 rounded-2xl border bg-card py-3 text-sm"><MessageCircle className="h-4 w-4" />{t("اسأل الشيف")}<span className="absolute -top-2 end-2 rounded-full bg-gold px-1.5 text-[9px] text-ink">{t("قريباً")}</span></button>
+          <button onClick={() => soon(t("اسأل الشيف"))} className="press relative flex items-center justify-center gap-1.5 rounded-2xl border bg-card py-3 text-sm"><MessageCircle className="h-4 w-4" />{t("اسأل الشيف")}<span className="absolute -top-2 end-2 rounded-full bg-gold px-1.5 text-[9px] text-ink">{t("قريباً")}</span></button>
           <button onClick={() => soon("احجز جلسة")} className="press relative flex items-center justify-center gap-1.5 rounded-2xl border bg-card py-3 text-sm"><CalendarCheck className="h-4 w-4" />{t("احجز جلسة")}<span className="absolute -top-2 end-2 rounded-full bg-gold px-1.5 text-[9px] text-ink">{t("قريباً")}</span></button>
         </div>
       </div>

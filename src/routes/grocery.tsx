@@ -51,7 +51,7 @@ function Grocery() {
 
   return (
     <AppShell wide>
-      <TopBar title={t("مقارنة الأسعار")} sub={t(showAll ? "كل مكونات {x} · الرياض" : "الناقص من {x} · الرياض", { x: t(r.title) })} action={<DemoBadge label={t("أسعار تجريبية")} />} />
+      <TopBar title={t("مقارنة الأسعار")} sub={showAll ? t("كل مكونات {x} · الرياض", { x: t(r.title) }) : t("الناقص من {x} · الرياض", { x: t(r.title) })} action={<DemoBadge label={t("أسعار تجريبية")} />} />
 
       <div className="px-5 lg:px-8">
         <div className="flex items-start gap-2 rounded-2xl bg-gold/15 p-3 text-xs leading-relaxed">
@@ -98,7 +98,7 @@ function Grocery() {
                     const min = cheapest(k);
                     return (
                       <tr key={k} className="border-b last:border-0">
-                        <td className="p-3 font-medium">{k}</td>
+                        <td className="p-3 font-medium">{t(k)}</td>
                         {stores.map((_, i) => {
                           const p = priceOf(k, i);
                           return (
