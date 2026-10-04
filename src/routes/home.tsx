@@ -63,7 +63,7 @@ function HomePage() {
           <RouteIcon className="h-3.5 w-3.5" /> Demo Journey
         </button>
       </header>
-      <p className="px-5 text-sm text-muted-foreground lg:hidden">{hour < 12 ? t("صباح الخير") : t("مساء الخير")}{t("،")} {s.name} — {t("وش نطبخ اليوم؟")}</p>
+      <p className="px-5 text-sm text-muted-foreground lg:hidden">{hour < 12 ? t("صباح الخير") : t("مساء الخير")}{t("،")} {t(s.name)} — {t("وش نطبخ اليوم؟")}</p>
 
       <JourneyCallout step={1} />
 
