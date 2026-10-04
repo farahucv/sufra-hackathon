@@ -7,6 +7,7 @@ import { JourneyCallout } from "@/components/Journey";
 import { getRecipe, sar } from "@/lib/data";
 import { addresses, orderStages, slots } from "@/lib/box";
 import { setStore, useStore } from "@/lib/store";
+import { isEn, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/order")({
   head: () => ({
@@ -28,8 +29,8 @@ function OrderPage() {
   const r = o ? getRecipe(o.recipeId) : undefined;
   if (!o || !r) {
     return (
-      <AppShell><TopBar title="طلباتي" />
-        <div className="px-5"><EmptyState icon={<PackageOpen className="h-6 w-6" />} title="لا توجد طلبات بعد" body="اطلب صندوق وصفة ويصلك جاهزاً للطبخ." action={<Link to="/box/$id" params={{ id: "kabsa" }} className="rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">جرّب صندوق الكبسة</Link>} /></div>
+      <AppShell><TopBar title={t("طلباتي")} />
+        <div className="px-5"><EmptyState icon={<PackageOpen className="h-6 w-6" />} title={t("لا توجد طلبات بعد")} body={t("اطلب صندوق وصفة ويصلك جاهزاً للطبخ.")} action={<Link to="/box/$id" params={{ id: "kabsa" }} className="rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">{t("جرّب صندوق الكبسة")}</Link>} /></div>
       </AppShell>
     );
   }
@@ -37,24 +38,24 @@ function OrderPage() {
   const advance = () => setStore((st) => ({ order: st.order && { ...st.order, stage: Math.min(3, st.order.stage + 1) } }));
   const simulate = () => {
     setStore((st) => ({ order: st.order && { ...st.order, stage: 3 }, journey: st.journey === 4 ? 5 : st.journey }));
-    toast.success("تم تسليم صندوقك", { description: "محاكاة تسليم للعرض." });
+    toast.success("تم تسليم صندوقك", { description: t("محاكاة تسليم للعرض.") });
   };
-  const eta = new Date(o.placedAt + 90 * 60000).toLocaleTimeString("ar-SA", { hour: "numeric", minute: "2-digit" });
+  const eta = new Date(o.placedAt + 90 * 60000).toLocaleTimeString(isEn() ? "en-US" : "ar-SA", { hour: "numeric", minute: "2-digit" });
 
   return (
     <AppShell wide>
-      <TopBar title={delivered ? "وصل صندوقك" : "صندوقك في الطريق"} sub={`${delivered ? "Delivered" : "Your box is on the way"} · ${o.id}`} action={<DemoBadge label="تتبّع تجريبي" />} />
+      <TopBar title={delivered ? t("وصل صندوقك") : t("صندوقك في الطريق")} sub={t("طلب {x}", { x: o.id })} />
       <JourneyCallout step={4} hideNext />
       <JourneyCallout step={5} hideNext />
 
       <div className="space-y-6 px-5 pb-10 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-6">
-          <div className="animate-float-up"><BoxArt img={r.img} title={r.title} serv={o.serv} size="lg" /></div>
+          <div><BoxArt img={r.img} title={t(r.title)} serv={o.serv} size="lg" /></div>
 
           <section className="rounded-2xl border bg-card p-5">
             <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-olive" />{delivered ? "تم التسليم" : `الوصول المتوقع ${eta}`}</span>
-              <span className="text-xs text-muted-foreground">{slots.find((x) => x.id === o.slot)?.label}</span>
+              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-olive" />{delivered ? t("تم التسليم") : t("الوصول المتوقع {x}", { x: eta })}</span>
+              <span className="text-xs text-muted-foreground">{t(slots.find((x) => x.id === o.slot)?.label)}</span>
             </div>
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted"><div className="me-auto h-full rounded-full bg-olive transition-[width] duration-200" style={{ width: `${((o.stage + 1) / 4) * 100}%` }} /></div>
             <ol className="mt-5 space-y-0">
@@ -68,15 +69,15 @@ function OrderPage() {
                       </span>
                       {i < 3 && <span className={`h-8 w-0.5 ${i < o.stage ? "bg-olive" : "bg-border"}`} />}
                     </div>
-                    <p className={`pt-1 text-sm ${i === o.stage ? "font-semibold" : done ? "" : "text-muted-foreground"}`}>{st}</p>
+                    <p className={`pt-1 text-sm ${i === o.stage ? "font-semibold" : done ? "" : "text-muted-foreground"}`}>{t(st)}</p>
                   </li>
                 );
               })}
             </ol>
             {!delivered && (
               <div className="mt-4 grid grid-cols-2 gap-2">
-                <button onClick={advance} className="press rounded-xl border py-2.5 text-sm">المرحلة التالية</button>
-                <button onClick={simulate} className="press flex items-center justify-center gap-1.5 rounded-xl bg-secondary py-2.5 text-sm font-semibold"><Truck className="h-4 w-4" />محاكاة التسليم</button>
+                <button onClick={advance} className="press rounded-xl border py-2.5 text-sm">{t("المرحلة التالية")}</button>
+                <button onClick={simulate} className="press flex items-center justify-center gap-1.5 rounded-xl bg-secondary py-2.5 text-sm font-semibold"><Truck className="h-4 w-4" />{t("محاكاة التسليم")}</button>
               </div>
             )}
           </section>
@@ -86,13 +87,13 @@ function OrderPage() {
           <Link to="/cook/$id" params={{ id: r.id }} disabled={!delivered}
             onClick={() => { if (s.journey === 4) setStore(() => ({ journey: 5 })); }}
             className={`press flex w-full items-center justify-center gap-2 rounded-xl py-4 font-semibold ${delivered ? "bg-primary text-primary-foreground" : "pointer-events-none bg-muted text-muted-foreground"}`}>
-            <ChefHat className="h-5 w-5" /> ابدأ الطبخ · Start cooking
+            <ChefHat className="h-5 w-5" /> {t("ابدأ الطبخ · Start cooking")}
           </Link>
-          {!delivered && <p className="text-center text-xs text-muted-foreground">يتاح وضع الطبخ عند تسليم الصندوق</p>}
+          {!delivered && <p className="text-center text-xs text-muted-foreground">{t("يتاح وضع الطبخ عند تسليم الصندوق")}</p>}
           <div className="space-y-2 rounded-2xl bg-secondary/60 p-4 text-sm">
-            <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-olive" />{addresses.find((a) => a.id === o.address)?.line}</p>
-            <p className="flex justify-between"><span>الإجمالي</span><b className="tabular-nums">{sar(o.total)}</b></p>
-            <p className="text-[11px] text-muted-foreground">طلب تجريبي — لم يتم أي دفع أو توصيل فعلي.</p>
+            <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-olive" />{t(addresses.find((a) => a.id === o.address)?.line)}</p>
+            <p className="flex justify-between"><span>{t("الإجمالي")}</span><b className="tabular-nums">{sar(o.total)}</b></p>
+            <p className="text-[11px] text-muted-foreground">{t("طلب تجريبي — لم يتم أي دفع أو توصيل فعلي.")}</p>
           </div>
         </aside>
       </div>

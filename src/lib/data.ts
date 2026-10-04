@@ -1,3 +1,4 @@
+import { getLang } from "./lang";
 import kabsa from "@/assets/kabsa.jpg";
 import jareesh from "@/assets/jareesh.jpg";
 import mutabbaq from "@/assets/mutabbaq.jpg";
@@ -193,7 +194,7 @@ export const regions: { name: string; en: string; img: string; tagline: string; 
 
 export const getRecipe = (id: string) => recipes.find((r) => r.id === id);
 export const getChef = (id: string) => chefs.find((c) => c.id === id);
-export const sar = (n: number) => `${n.toFixed(2)} ر.س`;
+export const sar = (n: number) => (getLang() === "en" ? `SAR ${n.toFixed(2)}` : `${n.toFixed(2)} ر.س`);
 export const recipeAllergens = (r: Recipe) => [...new Set(r.ingredients.map((i) => i.allergen).filter(Boolean) as string[])];
 export const baseCost = (r: Recipe) =>
   r.ingredients.reduce((a, i) => { const c = cheapest(i.key); return a + (c >= 0 ? (priceOf(i.key, c) as number) : 0); }, 0);

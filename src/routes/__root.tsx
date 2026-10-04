@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -13,17 +14,17 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "sonner";
-import { useStoreSync } from "../lib/store";
+import { useStore, useStoreSync } from "../lib/store";
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">٤٠٤</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">الصفحة غير موجودة</h2>
+        <h1 className="text-7xl font-bold text-foreground">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">{t("الصفحة غير موجودة")}</h2>
         <div className="mt-6">
           <Link to="/home" className="inline-flex rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">
-            العودة للرئيسية
+            {t("العودة للرئيسية")}
           </Link>
         </div>
       </div>
@@ -41,7 +42,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold text-foreground">تعذّر تحميل الصفحة</h1>
+        <h1 className="text-xl font-semibold text-foreground">{t("تعذّر تحميل الصفحة")}</h1>
         <div className="mt-6 flex justify-center gap-2">
           <button
             onClick={() => {
@@ -50,9 +51,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
             }}
             className="rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground"
           >
-            حاول مجدداً
+            {t("حاول مجدداً")}
           </button>
-          <a href="/" className="rounded-full border px-5 py-2 text-sm">الرئيسية</a>
+          <a href="/" className="rounded-full border px-5 py-2 text-sm">{t("الرئيسية")}</a>
         </div>
       </div>
     </div>
@@ -74,7 +75,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Reem+Kufi:wght@500;600;700&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Reem+Kufi:wght@500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -85,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -100,9 +101,11 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   useStoreSync();
+  const lang = useStore().lang;
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      {/* Remount the page tree on language switch so every t() call re-reads the language. */}
+      <div key={lang} className="contents"><Outlet /></div>
       <Toaster position="top-center" toastOptions={{ style: { background: "var(--card)", color: "var(--foreground)", border: "1px solid var(--border)", fontFamily: "var(--font-sans)", borderRadius: "1rem" } }} />
     </QueryClientProvider>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { ingredientLoc, type Loc } from "./data";
 import { loadDemoProfile, saveDemoProfile } from "./profile.functions";
+import { setLangValue } from "./lang";
 
 export type PantryItem = { name: string; loc: Loc };
 export type State = {
@@ -25,10 +26,13 @@ const subs = new Set<() => void>();
 let hydrated = false;
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
 
-const persist = () => {
+const emit = () => { setLangValue(state.lang); subs.forEach((l) => l()); };
+
+const persist = (localOnly = false) => {
   if (!hydrated || typeof window === "undefined") return;
   const { synced: _s, ...data } = state;
-  localStorage.setItem("sufra-state", JSON.stringify(data));
+  try { localStorage.setItem("sufra-state", JSON.stringify(data)); } catch { /* quota */ }
+  if (localOnly) return;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     saveDemoProfile({ data: { deviceId: getDeviceId(), data } })
@@ -40,8 +44,11 @@ const persist = () => {
 export const setStore = (fn: (s: State) => Partial<State>) => {
   const patch = fn(state);
   state = { ...state, ...patch };
-  subs.forEach((l) => l());
-  if (!("synced" in patch && Object.keys(patch).length === 1)) persist();
+  emit();
+  const keys = Object.keys(patch);
+  if (keys.length === 1 && keys[0] === "synced") return;
+  // Transient demo-journey steps stay local; never trigger a cloud write.
+  persist(keys.every((k) => k === "journey"));
 };
 
 export const toggleIn = (key: "allergies" | "dislikes" | "saved" | "liked", v: string) =>
@@ -76,10 +83,10 @@ export function useStoreSync() {
       if (local) state = { ...state, ...JSON.parse(local) };
     } catch { /* ignore */ }
     hydrated = true;
-    subs.forEach((l) => l());
+    emit();
     loadDemoProfile({ data: { deviceId: getDeviceId() } })
       .then(({ json }) => {
-        if (json) { state = { ...state, ...(JSON.parse(json) as Partial<State>), synced: true }; subs.forEach((l) => l()); }
+        if (json) { state = { ...state, ...(JSON.parse(json) as Partial<State>), synced: true }; emit(); }
         else persist();
       })
       .catch(() => {});

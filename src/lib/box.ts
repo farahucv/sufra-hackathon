@@ -1,4 +1,5 @@
 import { cheapest, priceOf, type Recipe } from "./data";
+import { t } from "./i18n";
 
 // ⚠ Demo data only — box pricing, suppliers and delivery are illustrative.
 
@@ -26,7 +27,7 @@ export function buildBox(r: Recipe, serv: number, subs: Record<string, number>) 
     // portion price scales with servings; packs never go below 40% of a retail unit
     const price = Math.max(unitPrice * 0.4, unitPrice * k * 0.8) + (sub ? sub.cost * k : 0);
     return {
-      key: i.key, name: sub ? sub.name : i.key, qty: `${fmt(i.qty * k)} ${i.unit}`, price,
+      key: i.key, name: sub ? sub.name : i.key, qty: `${fmt(i.qty * k)} ${t(i.unit)}`, price,
       swapped: sub ? { from: i.key, reason: sub.reason } : undefined,
       allergen: sub ? undefined : i.allergen,
     };

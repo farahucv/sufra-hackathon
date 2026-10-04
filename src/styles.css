@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "IBM Plex Sans Arabic", system-ui, sans-serif;
-  --font-display: "Reem Kufi", "IBM Plex Sans Arabic", serif;
+  --font-sans: var(--app-sans);
+  --font-display: var(--app-display);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -141,3 +141,14 @@
 @utility sadu-band {
   background: conic-gradient(from 135deg at 50% 0, var(--olive) 90deg, transparent 0) 0 0 / 14px 9px repeat-x;
 }
+
+:root {
+  --app-sans: "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --app-display: "Reem Kufi", "IBM Plex Sans Arabic", serif;
+}
+/* English mode: intentional LTR typography, not mirrored Arabic */
+html[lang="en"] {
+  --app-sans: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --app-display: "Fraunces", Georgia, serif;
+}
+html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3 { letter-spacing: -0.01em; }
