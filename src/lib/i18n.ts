@@ -1,6 +1,5 @@
 import en from "./i18n.en.json";
 import { getLang } from "./lang";
-import { t } from "@/lib/i18n";
 
 /**
  * Centralized localization. Arabic is the source language and the lookup key;
