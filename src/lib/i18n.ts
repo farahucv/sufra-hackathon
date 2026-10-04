@@ -10,7 +10,8 @@ import { getLang } from "./lang";
 const dict = en as Record<string, string>;
 const missing = new Set<string>();
 
-export function t(ar: string, vars?: Record<string, string | number>): string {
+export function t(ar: string | null | undefined, vars?: Record<string, string | number>): string {
+  if (ar == null) return "";
   let s = ar;
   if (getLang() === "en") {
     const e = dict[ar];
