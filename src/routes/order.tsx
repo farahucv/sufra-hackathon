@@ -45,8 +45,8 @@ function OrderPage() {
   return (
     <AppShell wide>
       <TopBar title={delivered ? t("وصل صندوقك") : t("صندوقك في الطريق")} sub={t("طلب {x}", { x: o.id })} />
-      <JourneyCallout step={4} hideNext />
-      <JourneyCallout step={5} hideNext />
+      <JourneyCallout step={4} action={{ label: t("محاكاة التسليم"), onClick: simulate }} />
+      <JourneyCallout step={5} action={{ label: t("ابدأ الطبخ"), onClick: () => nav({ to: "/cook/$id", params: { id: r.id } }) }} />
 
       <div className="space-y-6 px-5 pb-10 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-6">

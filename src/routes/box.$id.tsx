@@ -106,7 +106,7 @@ function BoxPage() {
             </div>
           </header>
 
-          <JourneyCallout step={3} hideNext />
+          <JourneyCallout step={3} action={{ label: t("متابعة إلى الطلب"), onClick: toCheckout }} />
 
           {/* Servings */}
           <section>
