@@ -4,8 +4,10 @@ import { ChevronRight, Clock, Minus, Plus, AlertTriangle, ShieldCheck, Sparkles,
 import { toast } from "sonner";
 import { AppShell, DemoBadge } from "@/components/AppShell";
 import { JourneyCallout } from "@/components/Journey";
+import { isBoxEligible } from "@/lib/box";
+import { Package } from "lucide-react";
 import { getRecipe, getChef, baseCost, cheapest, priceOf, sar } from "@/lib/data";
-import { hasPantry, matchesAllergy, toggleIn, useStore } from "@/lib/store";
+import { hasPantry, matchesAllergy, toggleIn, useStore , setStore } from "@/lib/store";
 
 export const Route = createFileRoute("/recipe/$id")({
   loader: ({ params }) => {
@@ -193,6 +195,12 @@ function RecipePage() {
               </div>
               {kcalDelta !== 0 && <p className="mt-2 text-[11px] text-olive">البدائل غيّرت السعرات بـ {Math.round(kcalDelta / r.servings)} سعرة/حصة</p>}
             </div>
+            {isBoxEligible(r) && (
+              <Link to="/box/$id" params={{ id: r.id }} onClick={() => { if (s.journey === 2) setStore(() => ({ journey: 3 })); }} className="press flex items-center gap-3 rounded-2xl bg-primary p-4 text-primary-foreground">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gold text-ink"><Package className="h-5 w-5" /></span>
+                <span className="min-w-0 flex-1"><span className="block font-semibold">اطلب صندوق الوصفة</span><span className="block text-xs opacity-75">مكونات بالحصة الدقيقة · Ready-to-Cook</span></span>
+              </Link>
+            )}
             <div className="rounded-2xl bg-card p-4 shadow-soft">
               <div className="flex items-center justify-between"><p className="font-semibold">تكلفة السلة التقديرية</p><DemoBadge /></div>
               <p className="mt-2 font-display text-3xl text-primary">{sar(cost)}</p>
