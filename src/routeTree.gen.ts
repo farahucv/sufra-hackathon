@@ -19,6 +19,7 @@ import { Route as ImportRouteImport } from './routes/import'
 import { Route as OrderRouteImport } from './routes/order'
 import { Route as PantryRouteImport } from './routes/pantry'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as SubmissionVisualRouteImport } from './routes/submission-visual'
 import { Route as BoxIdRouteImport } from './routes/box.$id'
 import { Route as ChefIdRouteImport } from './routes/chef.$id'
 import { Route as CookIdRouteImport } from './routes/cook.$id'
@@ -74,6 +75,11 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubmissionVisualRoute = SubmissionVisualRouteImport.update({
+  id: '/submission-visual',
+  path: '/submission-visual',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BoxIdRoute = BoxIdRouteImport.update({
   id: '/box/$id',
   path: '/box/$id',
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/order': typeof OrderRoute
   '/pantry': typeof PantryRoute
   '/profile': typeof ProfileRoute
+  '/submission-visual': typeof SubmissionVisualRoute
   '/box/$id': typeof BoxIdRoute
   '/chef/$id': typeof ChefIdRoute
   '/cook/$id': typeof CookIdRoute
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/order': typeof OrderRoute
   '/pantry': typeof PantryRoute
   '/profile': typeof ProfileRoute
+  '/submission-visual': typeof SubmissionVisualRoute
   '/box/$id': typeof BoxIdRoute
   '/chef/$id': typeof ChefIdRoute
   '/cook/$id': typeof CookIdRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/order': typeof OrderRoute
   '/pantry': typeof PantryRoute
   '/profile': typeof ProfileRoute
+  '/submission-visual': typeof SubmissionVisualRoute
   '/box/$id': typeof BoxIdRoute
   '/chef/$id': typeof ChefIdRoute
   '/cook/$id': typeof CookIdRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
     | '/order'
     | '/pantry'
     | '/profile'
+    | '/submission-visual'
     | '/box/$id'
     | '/chef/$id'
     | '/cook/$id'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
     | '/order'
     | '/pantry'
     | '/profile'
+    | '/submission-visual'
     | '/box/$id'
     | '/chef/$id'
     | '/cook/$id'
@@ -189,6 +200,7 @@ export interface FileRouteTypes {
     | '/order'
     | '/pantry'
     | '/profile'
+    | '/submission-visual'
     | '/box/$id'
     | '/chef/$id'
     | '/cook/$id'
@@ -206,6 +218,7 @@ export interface RootRouteChildren {
   OrderRoute: typeof OrderRoute
   PantryRoute: typeof PantryRoute
   ProfileRoute: typeof ProfileRoute
+  SubmissionVisualRoute: typeof SubmissionVisualRoute
   BoxIdRoute: typeof BoxIdRoute
   ChefIdRoute: typeof ChefIdRoute
   CookIdRoute: typeof CookIdRoute
@@ -284,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/submission-visual': {
+      id: '/submission-visual'
+      path: '/submission-visual'
+      fullPath: '/submission-visual'
+      preLoaderRoute: typeof SubmissionVisualRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/box/$id': {
       id: '/box/$id'
       path: '/box/$id'
@@ -326,6 +346,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrderRoute: OrderRoute,
   PantryRoute: PantryRoute,
   ProfileRoute: ProfileRoute,
+  SubmissionVisualRoute: SubmissionVisualRoute,
   BoxIdRoute: BoxIdRoute,
   ChefIdRoute: ChefIdRoute,
   CookIdRoute: CookIdRoute,

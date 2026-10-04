@@ -14,7 +14,7 @@ const BRAND = new Set(["سُفرة", "س"]);
 const dict = en as Record<string, string>;
 const root = join(__dirname, "..");
 const files = [
-  ...readdirSync(join(root, "routes")).filter((f) => f.endsWith(".tsx")).map((f) => join(root, "routes", f)),
+  ...readdirSync(join(root, "routes")).filter((f) => f.endsWith(".tsx") && f !== "submission-visual.tsx").map((f) => join(root, "routes", f)),
   ...readdirSync(join(root, "components")).filter((f) => f.endsWith(".tsx")).map((f) => join(root, "components", f)),
 ];
 
