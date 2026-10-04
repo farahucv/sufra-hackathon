@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
 import { getRecipe, recipes, stores, priceOf, cheapest, sar } from "@/lib/data";
 import { hasPantry, useStore } from "@/lib/store";
-import { t } from "@/lib/i18n";
+import { isEn, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/grocery")({
   validateSearch: (s) => z.object({ recipe: z.string().optional() }).parse(s),
@@ -91,7 +91,7 @@ function Grocery() {
                 <thead>
                   <tr className="border-b text-xs text-muted-foreground">
                     <th className="p-3 text-start font-medium">{t("المنتج")}</th>
-                    {stores.map((st, i) => <th key={st.id} className={`p-3 font-medium ${i === singleIdx ? "text-olive" : ""}`}>{t(st.name)}<span className="block text-[10px] font-normal opacity-70">{st.en}</span></th>)}
+                    {stores.map((st, i) => <th key={st.id} className={`p-3 font-medium ${i === singleIdx ? "text-olive" : ""}`}>{t(st.name)}{!isEn() && <span className="block text-[10px] font-normal opacity-70">{st.en}</span>}</th>)}
                   </tr>
                 </thead>
                 <tbody>

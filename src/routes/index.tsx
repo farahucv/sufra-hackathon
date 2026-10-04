@@ -7,7 +7,7 @@ import veggie from "@/assets/veggie.jpg";
 import { Chip, DemoBadge, Wordmark } from "@/components/AppShell";
 import { allergensList, diets, dislikesList } from "@/lib/data";
 import { setStore, toggleIn, useStore } from "@/lib/store";
-import { list, t } from "@/lib/i18n";
+import { isEn, list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
