@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { MapPin, BookOpen, CalendarHeart, ArrowLeft, Landmark } from "lucide-react";
-import { AppShell, Chip, DemoBadge, TopBar } from "@/components/AppShell";
+import { AppShell, Chip, TopBar } from "@/components/AppShell";
 import { regions, chefs, getRecipe } from "@/lib/data";
 import { useTr } from "@/lib/store";
 
@@ -24,13 +24,13 @@ function Explore() {
 
   return (
     <AppShell wide>
-      <TopBar back={false} title={tr("التراث الطهوي السعودي", "Saudi culinary heritage")} sub="لكل منطقة حكاية… ولكل طبق ذاكرة" action={<DemoBadge label="نصوص تعريفية" />} />
+      <TopBar back={false} title={tr("التراث الطهوي السعودي", "Saudi culinary heritage")} sub="لكل منطقة حكاية… ولكل طبق ذاكرة" />
 
       <div className="no-scrollbar flex gap-2 overflow-x-auto px-5 lg:px-8">
         {regions.map((r, i) => <Chip key={r.name} active={sel === i} onClick={() => setSel(i)}>{r.name}</Chip>)}
       </div>
 
-      <section key={sel} className="animate-float-up mx-5 mt-5 overflow-hidden rounded-3xl shadow-soft lg:mx-8">
+      <section key={sel} className="animate-float-up mx-5 mt-5 overflow-hidden rounded-2xl shadow-soft lg:mx-8">
         <div className="relative h-64 lg:h-80">
           <img src={region.img} alt={`مطبخ ${region.name}`} className="h-full w-full object-cover" loading="lazy" />
           <div className="absolute inset-0 scrim" />
@@ -46,7 +46,7 @@ function Explore() {
         {region.dishes.map((d, i) => {
           const r = d.recipeId ? getRecipe(d.recipeId) : undefined;
           return (
-            <article key={d.name} className="animate-float-up rounded-3xl border bg-card p-5" style={{ animationDelay: `${i * 80}ms` }}>
+            <article key={d.name} className="animate-float-up rounded-2xl border bg-card p-5" style={{ animationDelay: `${i * 80}ms` }}>
               <div className="flex gap-4">
                 {r && <img src={r.img} alt={d.name} className="h-20 w-20 shrink-0 rounded-2xl object-cover" loading="lazy" />}
                 <div className="min-w-0">
@@ -68,7 +68,7 @@ function Explore() {
         })}
       </section>
 
-      <section className="star-pattern mx-5 mt-8 rounded-3xl bg-ink p-6 text-ink-foreground lg:mx-8">
+      <section className="star-pattern mx-5 mt-8 rounded-2xl bg-ink p-6 text-ink-foreground lg:mx-8">
         <Landmark className="h-6 w-6 text-gold" />
         <h3 className="mt-3 text-xl">حفظ الإرث الطهوي للأجيال القادمة</h3>
         <p className="mt-2 text-sm leading-relaxed opacity-85">

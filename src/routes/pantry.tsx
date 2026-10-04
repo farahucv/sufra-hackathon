@@ -55,7 +55,7 @@ function Pantry() {
       <JourneyCallout step={3} />
       <div className="space-y-6 px-5 lg:grid lg:grid-cols-[1fr_380px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-5">
-          <div className="rounded-3xl bg-card p-4 shadow-soft">
+          <div className="rounded-2xl bg-card p-4 shadow-soft">
             <div className="flex gap-2">
               <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && add()} aria-label="اسم المكون"
                 placeholder="اكتب مكوّن… مثل: جزر" className="min-w-0 flex-1 rounded-2xl border bg-background px-4 py-3 outline-none transition focus:border-olive" />

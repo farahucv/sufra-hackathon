@@ -4,12 +4,17 @@ import type { ReactNode } from "react";
 import { useStore, useTr } from "@/lib/store";
 
 export function Wordmark({ size = "md", tone = "default" }: { size?: "sm" | "md" | "lg"; tone?: "default" | "light" }) {
-  const s = { sm: "text-2xl", md: "text-3xl", lg: "text-6xl" }[size];
+  const s = { sm: "text-xl", md: "text-2xl", lg: "text-5xl" }[size];
   return (
-    <span className={`inline-flex items-baseline gap-2 ${tone === "light" ? "text-ink-foreground" : "text-primary"}`}>
-      <span className={`font-display leading-none ${s}`}>سُفرة</span>
-      <span className="relative -top-1 h-1.5 w-1.5 rotate-45 bg-gold" aria-hidden />
-      <span className="text-[10px] font-medium tracking-[0.35em] opacity-70">SUFRA</span>
+    <span className={`inline-flex items-center gap-2.5 ${tone === "light" ? "text-ink-foreground" : "text-primary"}`} aria-label="سُفرة">
+      <span className={`relative grid shrink-0 place-items-center rounded-xl ${tone === "light" ? "bg-gold text-ink" : "bg-primary text-primary-foreground"} ${size === "lg" ? "h-16 w-16" : "h-9 w-9"}`} aria-hidden>
+        <span className={`font-display leading-none ${size === "lg" ? "text-3xl" : "text-lg"}`}>س</span>
+        <span className={`absolute -bottom-1 h-2 w-2 rotate-45 ${tone === "light" ? "bg-ink-foreground" : "bg-gold"}`} />
+      </span>
+      <span className="flex flex-col leading-none">
+        <span className={`font-display ${s}`}>سُفرة</span>
+        <span className="mt-1 text-[9px] font-medium tracking-[0.4em] opacity-60">SUFRA</span>
+      </span>
     </span>
   );
 }
@@ -54,12 +59,12 @@ export function AppShell({ children, nav: showNav = true, wide = false }: { chil
         </div>
       </aside>
 
-      <main className={`mx-auto w-full min-w-0 flex-1 ${wide ? "lg:max-w-5xl" : "max-w-md lg:max-w-3xl"} ${showNav ? "pb-24 lg:pb-10" : ""}`}>
+      <main className={`mx-auto w-full min-w-0 flex-1 ${wide ? "lg:max-w-5xl" : "max-w-md lg:max-w-3xl"} ${showNav ? "pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-10" : ""}`}>
         {children}
       </main>
 
       {showNav && (
-        <nav className="fixed inset-x-0 bottom-0 z-30 border-t bg-card/95 px-2 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-2 backdrop-blur lg:hidden">
+        <nav className="fixed inset-x-0 bottom-0 z-30 border-t bg-card px-2 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-2 lg:hidden">
           <ul className="mx-auto grid max-w-md grid-cols-5">
             {nav.map(({ to, ar, en, icon: Icon }) => (
               <li key={to}>
@@ -81,7 +86,7 @@ export function TopBar({ title, sub, back = true, action }: { title: string; sub
   const lang = useStore().lang;
   const Back = lang === "ar" ? ChevronRight : ChevronLeft;
   return (
-    <header className="sticky top-0 z-20 flex items-center gap-3 bg-background/90 px-5 pb-3 pt-6 backdrop-blur lg:px-8 lg:pt-10">
+    <header className="sticky top-0 z-20 flex items-center gap-3 bg-background/95 px-5 pb-3 pt-6 lg:px-8 lg:pt-10">
       {back && (
         <button onClick={() => history.back()} aria-label="رجوع" className="press grid h-10 w-10 shrink-0 place-items-center rounded-full bg-card shadow-soft">
           <Back className="h-5 w-5" />
@@ -115,7 +120,7 @@ export function Chip({ active, children, onClick }: { active?: boolean; children
 
 export function EmptyState({ icon, title, body, action }: { icon: ReactNode; title: string; body: string; action?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center rounded-3xl border border-dashed bg-card/60 px-6 py-10 text-center">
+    <div className="flex flex-col items-center rounded-2xl border border-dashed bg-card/60 px-6 py-10 text-center">
       <div className="grid h-14 w-14 place-items-center rounded-full bg-secondary text-primary">{icon}</div>
       <p className="mt-4 font-semibold">{title}</p>
       <p className="mt-1 max-w-xs text-sm text-muted-foreground">{body}</p>

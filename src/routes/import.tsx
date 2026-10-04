@@ -35,8 +35,8 @@ function ImportPage() {
     if (!/^https?:\/\/(www\.)?(tiktok\.com|youtube\.com|youtu\.be|instagram\.com)\//i.test(url.trim())) { setPhase("error"); return; }
     setRid(/youtu/i.test(url) ? "kabsa" : "mutabbaq");
     setPhase("loading"); setStage(0);
-    stages.forEach((_, i) => setTimeout(() => setStage(i + 1), 550 * (i + 1)));
-    setTimeout(() => setPhase("done"), 550 * stages.length + 300);
+    stages.forEach((_, i) => setTimeout(() => setStage(i + 1), 300 * (i + 1)));
+    setTimeout(() => setPhase("done"), 300 * stages.length + 200);
   };
 
   const r = getRecipe(rid)!;
@@ -46,7 +46,7 @@ function ImportPage() {
     <AppShell>
       <TopBar title="استيراد وصفة" sub="TikTok · YouTube · Instagram" action={<DemoBadge label="Demo AI extraction" />} />
       <div className="space-y-5 px-5 lg:px-8">
-        <div className="rounded-3xl bg-card p-5 shadow-soft">
+        <div className="rounded-2xl bg-card p-5 shadow-soft">
           <label className="text-sm font-medium" htmlFor="url">رابط الفيديو</label>
           <div className={`mt-2 flex items-center gap-2 rounded-2xl border bg-background px-3 transition ${phase === "error" ? "border-terracotta" : "focus-within:border-olive"}`}>
             <Clipboard className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -68,8 +68,8 @@ function ImportPage() {
         </div>
 
         {phase === "loading" && (
-          <div className="space-y-4 rounded-3xl bg-card p-5">
-            <div className="h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-olive transition-all duration-500" style={{ width: `${(stage / stages.length) * 100}%` }} /></div>
+          <div className="space-y-4 rounded-2xl bg-card p-5">
+            <div className="h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-olive transition-all duration-300 ease-out" style={{ width: `${(stage / stages.length) * 100}%` }} /></div>
             <ul className="space-y-2.5">
               {stages.map((st, i) => (
                 <li key={st} className={`flex items-center gap-3 text-sm transition ${i < stage ? "text-olive" : i === stage ? "text-foreground" : "text-muted-foreground/60"}`}>
@@ -83,12 +83,11 @@ function ImportPage() {
         )}
 
         {phase === "done" && (
-          <article className="animate-float-up overflow-hidden rounded-3xl bg-card shadow-soft">
+          <article className="animate-float-up overflow-hidden rounded-2xl bg-card shadow-soft">
             <div className="relative h-48">
               <img src={r.img} alt={r.title} className="h-full w-full object-cover" loading="lazy" />
               <div className="absolute inset-0 scrim" />
               <span className="absolute start-3 top-3 flex items-center gap-1 rounded-full bg-olive px-3 py-1 text-xs text-olive-foreground"><CheckCircle2 className="h-3.5 w-3.5" /> تم الاستخراج</span>
-              <span className="absolute end-3 top-3"><DemoBadge label="Demo AI extraction" /></span>
               <div className="absolute bottom-3 start-4 text-ink-foreground"><h2 className="text-2xl">{r.title}</h2><p className="text-xs opacity-80">{r.time} دقيقة · {r.servings} حصص · {r.difficulty}</p></div>
             </div>
             <div className="space-y-5 p-5">
