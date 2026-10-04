@@ -75,8 +75,8 @@ export function useStoreSync() {
     hydrated = true;
     subs.forEach((l) => l());
     loadDemoProfile({ data: { deviceId: getDeviceId() } })
-      .then(({ data }) => {
-        if (data) { state = { ...state, ...(data as Partial<State>), synced: true }; subs.forEach((l) => l()); }
+      .then(({ json }) => {
+        if (json) { state = { ...state, ...(JSON.parse(json) as Partial<State>), synced: true }; subs.forEach((l) => l()); }
         else persist();
       })
       .catch(() => {});

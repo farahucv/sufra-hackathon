@@ -9,7 +9,7 @@ export const loadDemoProfile = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row } = await supabaseAdmin.from("demo_profiles").select("data").eq("device_id", data.deviceId).maybeSingle();
-    return { data: (row?.data ?? null) as Record<string, unknown> | null };
+    return { json: row?.data ? JSON.stringify(row.data) : null };
   });
 
 export const saveDemoProfile = createServerFn({ method: "POST" })
