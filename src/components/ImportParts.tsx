@@ -12,8 +12,8 @@ export const importSamples = [
 ];
 export const importStages = () => [t("تحليل الفيديو والإطارات"), t("تفريغ الصوت والنص"), t("استخراج المقادير والكميات"), t("ترتيب الخطوات"), t("فحص الحساسية وحساب التكلفة")];
 
-export function ImportFormCard({ url, error, loading, onUrl, onSample, onRun, showNote = true }: {
-  url: string; error?: boolean; loading?: boolean; onUrl?: (v: string) => void; onSample?: (u: string) => void; onRun?: () => void; showNote?: boolean;
+export function ImportFormCard({ url, error, loading, onUrl, onSample, onRun, showNote = true, showRun = true }: {
+  url: string; error?: boolean; loading?: boolean; onUrl?: (v: string) => void; onSample?: (u: string) => void; onRun?: () => void; showNote?: boolean; showRun?: boolean;
 }) {
   return (
     <div className="rounded-2xl bg-card p-5 shadow-soft">
@@ -30,10 +30,10 @@ export function ImportFormCard({ url, error, loading, onUrl, onSample, onRun, sh
           <button key={label} onClick={() => onSample?.(u)} className="press inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs"><I className="h-3.5 w-3.5" />{label}</button>
         ))}
       </div>
-      <button onClick={onRun} disabled={loading || !url} className="press mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-ink py-4 font-semibold text-ink-foreground disabled:opacity-50">
+      {showRun && <button onClick={onRun} disabled={loading || !url} className="press mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-ink py-4 font-semibold text-ink-foreground disabled:opacity-50">
         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5 text-gold" />}
         {t("استخرج الوصفة")}
-      </button>
+      </button>}
       {showNote && <p className="mt-3 text-center text-[11px] text-muted-foreground">{t("نموذج عرض: النتيجة محاكاة من وصفات تجريبية، وليست استخراجاً حياً من الفيديو.")}</p>}
     </div>
   );
@@ -57,8 +57,8 @@ export function ImportAnalysisState({ stage, skeleton = true }: { stage: number;
   );
 }
 
-export function ImportResultCard({ rid, allergies, actions, layout = "stack", imgEager }: {
-  rid: string; allergies: string[]; actions?: ReactNode; layout?: "stack" | "wide"; imgEager?: boolean;
+export function ImportResultCard({ rid, allergies, actions, layout = "stack", imgEager, showCost = true }: {
+  rid: string; allergies: string[]; actions?: ReactNode; layout?: "stack" | "wide"; imgEager?: boolean; showCost?: boolean;
 }) {
   const r = getRecipe(rid)!;
   const warn = recipeAllergens(r).filter((a) => matchesAllergy(a, allergies));
@@ -78,22 +78,22 @@ export function ImportResultCard({ rid, allergies, actions, layout = "stack", im
     </div>
   );
   const panels = (
-    <div className="grid gap-3 sm:grid-cols-2">
+    <div className={`grid gap-3 ${showCost ? "sm:grid-cols-2" : ""}`}>
       <div className={`rounded-2xl p-3 text-sm ${warn.length ? "bg-terracotta-soft" : "bg-accent/50"}`}>
         <p className="font-semibold">{warn.length ? t("⚠ حساسية مكتشفة") : t("✓ لا حساسية من قائمتك")}</p>
         <p className="mt-1 text-xs text-muted-foreground">{t("يحتوي:")} {list(recipeAllergens(r)) || "—"}</p>
         {r.ingredients.filter((i) => i.allergen && matchesAllergy(i.allergen, allergies)).map((i) => <p key={i.key} className="mt-1 text-xs">{t("بديل")} {t(i.key)}: <b className="text-olive">{i.subs?.[0]?.name}</b></p>)}
       </div>
-      <div className="rounded-2xl bg-secondary p-3 text-sm">
+      {showCost && <div className="rounded-2xl bg-secondary p-3 text-sm">
         <p className="font-semibold">{t("التكلفة التقديرية")}</p>
         <p className="mt-1 font-display text-2xl text-primary">{sar(baseCost(r))}</p>
         <p className="text-[11px] text-muted-foreground">{t("بأسعار تجريبية")}</p>
-      </div>
+      </div>}
     </div>
   );
   return (
     <article className="animate-in fade-in duration-150 overflow-hidden rounded-2xl bg-card shadow-soft">
-      <div className={`relative ${wide ? "h-72" : "h-48"}`}>
+      <div className={`relative ${wide ? "h-52" : "h-48"}`}>
         <img src={r.img} alt={t(r.title)} className="h-full w-full object-cover" loading={imgEager ? "eager" : "lazy"} />
         <div className="absolute inset-0 scrim" />
         <span className="absolute start-3 top-3 flex items-center gap-1 rounded-full bg-olive px-3 py-1 text-xs text-olive-foreground"><CheckCircle2 className="h-3.5 w-3.5" /> {t("تم الاستخراج")}</span>
