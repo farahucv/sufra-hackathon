@@ -8,7 +8,7 @@ import { isBoxEligible } from "@/lib/box";
 import { Package } from "lucide-react";
 import { getRecipe, getChef, baseCost, cheapest, priceOf, sar } from "@/lib/data";
 import { hasPantry, matchesAllergy, toggleIn, useStore , setStore } from "@/lib/store";
-import { t } from "@/lib/i18n";
+import { list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/recipe/$id")({
   loader: ({ params }) => {
@@ -85,7 +85,7 @@ function RecipePage() {
             <div className="flex-1"><p className="flex items-center gap-1 font-semibold">{chef.name}<BadgeCheck className="h-4 w-4 text-olive" /></p><p className="text-xs text-muted-foreground">{chef.title}</p></div>
           </Link>
           <div className="mt-5 grid grid-cols-3 gap-2 text-center">
-            <Stat icon={<Clock className="h-4 w-4" />} v={`${r.time} د`} l={t("الوقت")} />
+            <Stat icon={<Clock className="h-4 w-4" />} v={t("{n} د", { n: r.time })} l={t("الوقت")} />
             <Stat icon={<Gauge className="h-4 w-4" />} v={r.difficulty} l={t("الصعوبة")} />
             <Stat icon={<Users className="h-4 w-4" />} v={`${serv}`} l={t("حصص")} />
           </div>
@@ -105,7 +105,7 @@ function RecipePage() {
               <section className={`rounded-2xl border p-4 transition-colors ${unresolved.length ? "border-terracotta/40 bg-terracotta-soft" : "border-olive/30 bg-accent/50"}`}>
                 <div className="flex items-center gap-2">
                   {unresolved.length ? <AlertTriangle className="h-5 w-5 text-terracotta" /> : <ShieldCheck className="h-5 w-5 text-olive" />}
-                  <p className="flex-1 font-semibold">{unresolved.length ? `اكتشفنا ${unresolved.length} مكوّن غير مناسب لك` : t("أصبحت الوصفة آمنة لك")}</p>
+                  <p className="flex-1 font-semibold">{unresolved.length ? t("اكتشفنا {n} مكوّن غير مناسب لك", { n: unresolved.length }) : t("أصبحت الوصفة آمنة لك")}</p>
                   <DemoBadge label={t("اقتراحات تجريبية")} />
                 </div>
                 <div className="mt-4 space-y-3">
@@ -150,7 +150,7 @@ function RecipePage() {
             <div className="grid grid-cols-2 rounded-2xl bg-muted p-1">
               {(["ing", "steps"] as const).map((t) => (
                 <button key={t} onClick={() => setTab(t)} className={`rounded-xl py-2.5 text-sm font-medium transition ${tab === t ? "bg-card shadow-soft" : "text-muted-foreground"}`}>
-                  {t === "ing" ? `المقادير (${r.ingredients.length})` : `الخطوات (${r.steps.length})`}
+                  {t === "ing" ? tr("المقادير ({n})", { n: r.ingredients.length }) : tr("الخطوات ({n})", { n: r.steps.length })}
                 </button>
               ))}
             </div>
@@ -211,7 +211,7 @@ function RecipePage() {
             {pantryView && (
               <div className="animate-float-up rounded-2xl border border-olive/30 bg-accent/40 p-4 text-sm">
                 <p className="font-semibold">{t("مطابقة مع مخزنك")}</p>
-                <p className="mt-1 text-muted-foreground">{t("لديك")} {r.ingredients.length - missing.length} {t("مكونات. الناقص:")} {missing.map((m) => m.key).join("، ") || t("لا شيء 🎉")}</p>
+                <p className="mt-1 text-muted-foreground">{t("لديك")} {r.ingredients.length - missing.length} {t("مكونات. الناقص:")} {list(missing.map((m) => m.key)) || t("لا شيء 🎉")}</p>
                 {missing.length > 0 && <p className="mt-1 text-xs">{t("أرخص سعر للناقص يبدأ من")} {sar(missing.reduce((a, m) => { const c = cheapest(m.key); return a + (c >= 0 ? (priceOf(m.key, c) as number) : 0); }, 0))}</p>}
               </div>
             )}

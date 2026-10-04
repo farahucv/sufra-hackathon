@@ -7,7 +7,7 @@ import veggie from "@/assets/veggie.jpg";
 import { Chip, DemoBadge, Wordmark } from "@/components/AppShell";
 import { allergensList, diets, dislikesList } from "@/lib/data";
 import { setStore, toggleIn, useStore } from "@/lib/store";
-import { t } from "@/lib/i18n";
+import { list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -149,7 +149,7 @@ function Onboarding() {
                 <div className="mt-8 space-y-1 rounded-2xl bg-secondary p-4 text-sm text-secondary-foreground">
                   <p className="font-semibold">{t("ملفك الغذائي")}</p>
                   <p>{t("النمط:")} {diets.find((d) => d.id === s.diet)?.ar} · {s.household} {t("أفراد")}</p>
-                  <p>{t("الحساسية:")} {s.allergies.length ? s.allergies.join("، ") : t("لا يوجد")}</p>
+                  <p>{t("الحساسية:")} {s.allergies.length ? list(s.allergies) : t("لا يوجد")}</p>
                   <div className="pt-2"><DemoBadge label={t("يُحفظ كملف تجريبي بدون تسجيل")} /></div>
                 </div>
               </>

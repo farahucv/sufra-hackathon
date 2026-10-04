@@ -70,7 +70,7 @@ function Grocery() {
         <div className="mt-5 space-y-3 px-5 lg:px-8"><div className="skeleton h-36" /><div className="skeleton h-64" /><p className="text-center text-xs text-muted-foreground">{t("نقارن الأسعار بين ٤ متاجر…")}</p></div>
       ) : items.length === 0 ? (
         <div className="mt-6 px-5 lg:px-8">
-          <EmptyState icon={<PartyPopper className="h-6 w-6" />} title={t("كل المكونات عندك!")} body={`مخزنك يغطي ${r.title} بالكامل — ما تحتاج تتسوّق.`}
+          <EmptyState icon={<PartyPopper className="h-6 w-6" />} title={t("كل المكونات عندك!")} body={t("مخزنك يغطي {x} بالكامل — ما تحتاج تتسوّق.", { x: t(r.title) })}
             action={<div className="flex gap-2"><Link to="/recipe/$id" params={{ id: r.id }} className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">{t("ابدأ الطبخ")}</Link><button onClick={() => setShowAll(true)} className="rounded-full border px-4 py-2 text-sm">{t("قارن كل المكونات")}</button></div>} />
         </div>
       ) : (

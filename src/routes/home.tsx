@@ -8,7 +8,7 @@ import { BoxArt } from "@/components/BoxArt";
 import { buildBox } from "@/lib/box";
 import { categories, sar, recipes, getChef, recipeAllergens, type Recipe } from "@/lib/data";
 import { matchesAllergy, toggleIn, useStore, useTr, type State } from "@/lib/store";
-import { t } from "@/lib/i18n";
+import { list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/home")({
   head: () => ({
@@ -119,7 +119,7 @@ function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
         {fit && <span className="flex items-center gap-1 rounded-full bg-olive px-3 py-1.5 text-xs font-medium text-olive-foreground"><Sparkles className="h-3.5 w-3.5" /> {t("مناسب لك")}</span>}
         {!fit && warn.length > 0 && (
           <span className="flex items-center gap-1 rounded-full bg-terracotta px-3 py-1.5 text-xs text-primary-foreground">
-            <AlertTriangle className="h-3.5 w-3.5" /> {warn.join("، ")}{adaptable ? t(" · قابل للتعديل") : ""}
+            <AlertTriangle className="h-3.5 w-3.5" /> {list(warn)}{adaptable ? t(" · قابل للتعديل") : ""}
           </span>
         )}
       </div>

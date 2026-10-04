@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { AppShell, DemoBadge, TopBar } from "@/components/AppShell";
 import { getRecipe, recipeAllergens, baseCost, sar } from "@/lib/data";
 import { matchesAllergy, toggleIn, useStore } from "@/lib/store";
-import { t } from "@/lib/i18n";
+import { list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/import")({
   head: () => ({
@@ -105,7 +105,7 @@ function ImportPage() {
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className={`rounded-2xl p-3 text-sm ${warn.length ? "bg-terracotta-soft" : "bg-accent/50"}`}>
                   <p className="font-semibold">{warn.length ? t("⚠ حساسية مكتشفة") : t("✓ لا حساسية من قائمتك")}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{t("يحتوي:")} {recipeAllergens(r).join("، ") || "—"}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{t("يحتوي:")} {list(recipeAllergens(r)) || "—"}</p>
                   {r.ingredients.filter((i) => i.allergen && matchesAllergy(i.allergen, s.allergies)).map((i) => <p key={i.key} className="mt-1 text-xs">{t("بديل")} {i.key}: <b className="text-olive">{i.subs?.[0]?.name}</b></p>)}
                 </div>
                 <div className="rounded-2xl bg-secondary p-3 text-sm">

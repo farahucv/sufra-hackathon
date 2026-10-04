@@ -154,7 +154,7 @@ function BoxPage() {
             </section>
           ) : (
             <section className="rounded-2xl bg-terracotta-soft p-4">
-              <p className="flex items-center gap-2 font-semibold"><AlertTriangle className="h-4 w-4 text-terracotta" />{t("يحتوي على")}: {left.map((i) => i.allergen).join("، ")}</p>
+              <p className="flex items-center gap-2 font-semibold"><AlertTriangle className="h-4 w-4 text-terracotta" />{t("يحتوي على")}: {list(left.map((i) => i.allergen!))}</p>
               <p className="mt-1 text-xs text-muted-foreground">{blocked ? t("لا يتوفر بديل آمن لبعض المكونات.") : t("يتعارض مع حساسيتك المحفوظة — لدينا بدائل آمنة جاهزة.")}</p>
               {!blocked && <button onClick={applySafe} className="press mt-3 w-full rounded-xl bg-olive py-3 text-sm font-semibold text-olive-foreground">{t("استبدل المكونات غير المناسبة")}</button>}
             </section>

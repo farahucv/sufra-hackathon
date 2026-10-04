@@ -99,8 +99,8 @@ function Checkout() {
         <aside>
           <div className="space-y-3 rounded-2xl border bg-card p-5 font-mono text-sm lg:sticky lg:top-24">
             <p className="font-sans font-semibold">{t("ملخص الطلب")} <span className="text-xs font-normal text-muted-foreground">· Order Summary</span></p>
-            <Row l={`صندوق الوصفة · ${s.box.serv} حصص`} v={sar(box.subtotal)} />
-            {swapped.length > 0 && <Row l={`بدائل آمنة (${swapped.length})`} v={t("مشمولة")} />}
+            <Row l={t("صندوق الوصفة · {n} حصص", { n: s.box.serv })} v={sar(box.subtotal)} />
+            {swapped.length > 0 && <Row l={t("بدائل آمنة ({n})", { n: swapped.length })} v={t("مشمولة")} />}
             <Row l={t("التوصيل")} v={sar(DELIVERY_FEE)} />
             <div className="border-t border-dashed pt-3"><Row l={t("الإجمالي")} v={sar(total)} bold /></div>
             <button onClick={confirm} disabled={busy}

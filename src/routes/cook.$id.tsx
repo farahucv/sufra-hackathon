@@ -70,7 +70,7 @@ function Cook() {
       <header className="flex items-center gap-3 px-5 pt-[max(env(safe-area-inset-top),1.25rem)]">
         <button onClick={() => history.back()} aria-label={t("إغلاق")} className="press grid h-11 w-11 place-items-center rounded-full bg-ink-foreground/10"><X className="h-5 w-5" /></button>
         <div className="flex-1">
-          <p className="text-xs opacity-70">{t("وضع الطبخ · Cook Mode")}{o ? ` · ${o.serv} حصص` : ""}</p>
+          <p className="text-xs opacity-70">{t("وضع الطبخ · Cook Mode")}{o ? ` · ${t("{n} حصص", { n: o.serv })}` : ""}</p>
           <p className="font-display text-lg">{r.title}</p>
         </div>
         <span className="text-sm tabular-nums opacity-80">{i + 1}/{r.steps.length}</span>

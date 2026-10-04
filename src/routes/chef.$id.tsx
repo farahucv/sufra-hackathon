@@ -38,7 +38,7 @@ function ChefPage() {
   const own = recipes.filter((r) => r.chefId === c.id);
   const [tab, setTab] = useState<"reels" | "recipes" | "reviews()" | "blog()">("reels");
   const [following, setFollowing] = useState(false);
-  const soon = (what: string) => toast(`${what} — قريباً`, { description: t("ميزة مستقبلية: جلسات مدفوعة مع الطهاة بالمحادثة أو الفيديو.") });
+  const soon = (what: string) => toast(t("{x} — قريباً", { x: what }), { description: t("ميزة مستقبلية: جلسات مدفوعة مع الطهاة بالمحادثة أو الفيديو.") });
 
   return (
     <AppShell wide>
@@ -66,7 +66,7 @@ function ChefPage() {
         </div>
 
         <div className="mt-4 grid grid-cols-3 gap-2">
-          <button onClick={() => { setFollowing(!following); toast.success(following ? t("ألغيت المتابعة") : `تتابع الآن ${c.name}`); }}
+          <button onClick={() => { setFollowing(!following); toast.success(following ? t("ألغيت المتابعة") : t("تتابع الآن {x}", { x: t(c.name) })); }}
             className={`press flex items-center justify-center gap-1.5 rounded-2xl py-3 text-sm font-semibold ${following ? "border bg-card" : "bg-primary text-primary-foreground"}`}>
             {following ? <UserCheck className="h-4 w-4" /> : <UserPlus className="h-4 w-4" />}{following ? t("تتابعه") : t("متابعة")}
           </button>

@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
 import { locations, quickAdd, recipes, type Loc } from "@/lib/data";
 import { hasPantry, setStore, togglePantry, useStore, useTr } from "@/lib/store";
-import { t } from "@/lib/i18n";
+import { list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/pantry")({
   head: () => ({
@@ -31,7 +31,7 @@ function Pantry() {
     const v = input.trim();
     if (!v) return;
     if (hasPantry(s, v)) toast("موجود مسبقاً في مخزنك");
-    else { togglePantry(v, loc); toast.success(`أُضيف «${v}»`); }
+    else { togglePantry(v, loc); toast.success(t("أُضيف «{x}»", { x: t(v) })); }
     setInput("");
   };
   const scan = () => {
@@ -40,7 +40,7 @@ function Pantry() {
       const found = [t("لحم مفروم"), t("جزر"), t("كوسا")].filter((x) => !hasPantry(s, x));
       setStore((st) => ({ pantry: [...st.pantry, ...found.map((name) => ({ name, loc: (name === t("لحم مفروم") ? "freezer" : "fridge") as Loc }))] }));
       setScanning(false);
-      toast.success(found.length ? `تعرّفنا على ${found.length} مكونات` : t("لا مكونات جديدة"), { description: t("مسح تجريبي — يحاكي التعرّف بالكاميرا.") });
+      toast.success(found.length ? t("تعرّفنا على {n} مكونات", { n: found.length }) : t("لا مكونات جديدة"), { description: t("مسح تجريبي — يحاكي التعرّف بالكاميرا.") });
     }, 1400);
   };
 
@@ -91,7 +91,7 @@ function Pantry() {
                       {items.map((p) => (
                         <span key={p.name} className="animate-in zoom-in-95 inline-flex items-center gap-1 rounded-full bg-secondary py-1 pe-1.5 ps-3 text-sm">
                           {p.name}
-                          <button onClick={() => togglePantry(p.name)} aria-label={`حذف ${p.name}`} className="grid h-5 w-5 place-items-center rounded-full hover:bg-muted"><X className="h-3 w-3" /></button>
+                          <button onClick={() => togglePantry(p.name)} aria-label={t("حذف {x}", { x: t(p.name) })} className="grid h-5 w-5 place-items-center rounded-full hover:bg-muted"><X className="h-3 w-3" /></button>
                         </span>
                       ))}
                     </div>
@@ -125,7 +125,7 @@ function Pantry() {
                   <Link to="/recipe/$id" params={{ id: r.id }}><img src={r.img} alt={r.title} className="h-14 w-14 rounded-xl object-cover" loading="lazy" /></Link>
                   <div className="min-w-0 flex-1">
                     <Link to="/recipe/$id" params={{ id: r.id }} className="font-semibold">{r.title}</Link>
-                    <p className="truncate text-xs text-terracotta">{t("ينقص:")} {miss.join("، ")}</p>
+                    <p className="truncate text-xs text-terracotta">{t("ينقص:")} {list(miss)}</p>
                   </div>
                   <Link to="/grocery" search={{ recipe: r.id }} className="press inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">
                     <ShoppingCart className="h-3.5 w-3.5" /> {t("اشترِ الناقص")}

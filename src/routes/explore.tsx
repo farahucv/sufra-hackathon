@@ -32,7 +32,7 @@ function Explore() {
 
       <section key={sel} className="animate-float-up mx-5 mt-5 overflow-hidden rounded-2xl shadow-soft lg:mx-8">
         <div className="relative h-64 lg:h-80">
-          <img src={region.img} alt={`مطبخ ${region.name}`} className="h-full w-full object-cover" loading="lazy" />
+          <img src={region.img} alt={t("مطبخ {x}", { x: t(region.name) })} className="h-full w-full object-cover" loading="lazy" />
           <div className="absolute inset-0 scrim" />
           <div className="absolute bottom-5 start-5 max-w-lg text-ink-foreground">
             <p className="flex items-center gap-1 text-xs opacity-80"><MapPin className="h-3.5 w-3.5" />{region.en} · {String(sel + 1).padStart(2, "0")}/{String(regions.length).padStart(2, "0")}</p>

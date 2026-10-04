@@ -54,7 +54,7 @@ function OrderPage() {
 
           <section className="rounded-2xl border bg-card p-5">
             <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-olive" />{delivered ? t("تم التسليم") : `الوصول المتوقع ${eta}`}</span>
+              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-olive" />{delivered ? t("تم التسليم") : t("الوصول المتوقع {x}", { x: eta })}</span>
               <span className="text-xs text-muted-foreground">{slots.find((x) => x.id === o.slot)?.label}</span>
             </div>
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted"><div className="me-auto h-full rounded-full bg-olive transition-[width] duration-200" style={{ width: `${((o.stage + 1) / 4) * 100}%` }} /></div>
