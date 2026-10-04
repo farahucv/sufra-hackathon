@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import en from "@/lib/i18n.en.json";
-import { setLang } from "@/lib/lang";
+import { setLangValue as setLang } from "@/lib/lang";
 import { t, list } from "@/lib/i18n";
 import { sar } from "@/lib/data";
 
