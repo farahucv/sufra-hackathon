@@ -89,7 +89,7 @@ function Profile() {
                 <button key={l} onClick={() => setStore(() => ({ lang: l }))} className={`rounded-lg py-2 transition ${s.lang === l ? "bg-card font-semibold shadow-soft" : "text-muted-foreground"}`}>{l === "ar" ? t("العربية") : "English"}</button>
               ))}
             </div>
-            <p className="mt-2 text-[11px] text-muted-foreground">{t("الإنجليزية تغيّر الاتجاه والقوائم الرئيسية (معاينة).")}</p>
+            <p className="mt-2 text-[11px] text-muted-foreground">{t("تتحول الواجهة والمحتوى بالكامل إلى اللغة المختارة.")}</p>
           </div>
 
           <div className="rounded-2xl bg-card p-4">

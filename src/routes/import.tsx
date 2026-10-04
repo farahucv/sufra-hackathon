@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sparkles, Loader2, CheckCircle2, Clipboard, AlertTriangle, Bookmark, RotateCcw, Youtube, Music2 } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, DemoBadge, TopBar } from "@/components/AppShell";
@@ -31,13 +31,20 @@ function ImportPage() {
   const [phase, setPhase] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [stage, setStage] = useState(0);
   const [rid, setRid] = useState("mutabbaq");
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
   const run = () => {
     if (!/^https?:\/\/(www\.)?(tiktok\.com|youtube\.com|youtu\.be|instagram\.com)\//i.test(url.trim())) { setPhase("error"); return; }
     setRid(/youtu/i.test(url) ? "kabsa" : "mutabbaq");
+    if (phase === "loading") return;
     setPhase("loading"); setStage(0);
-    stages().forEach((_, i) => setTimeout(() => setStage(i + 1), 300 * (i + 1)));
-    setTimeout(() => setPhase("done"), 300 * stages().length + 200);
+    timers.current.forEach(clearTimeout);
+    const n = stages().length;
+    timers.current = [
+      ...Array.from({ length: n }, (_, i) => setTimeout(() => setStage(i + 1), 230 * (i + 1))),
+      setTimeout(() => setPhase("done"), 230 * n + 120), // ~1.27s total
+    ];
   };
 
   const r = getRecipe(rid)!;
@@ -70,7 +77,7 @@ function ImportPage() {
 
         {phase === "loading" && (
           <div className="space-y-4 rounded-2xl bg-card p-5">
-            <div className="h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-olive transition-all duration-300 ease-out" style={{ width: `${(stage / stages().length) * 100}%` }} /></div>
+            <div className="h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-olive transition-[width] duration-200 ease-out" style={{ width: `${(stage / stages().length) * 100}%` }} /></div>
             <ul className="space-y-2.5">
               {stages().map((st, i) => (
                 <li key={st} className={`flex items-center gap-3 text-sm transition ${i < stage ? "text-olive" : i === stage ? "text-foreground" : "text-muted-foreground/60"}`}>
