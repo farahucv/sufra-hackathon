@@ -47,7 +47,7 @@ function SubmissionVisual() {
         {/* hero: result */}
         <div className="relative flex flex-col justify-center">
           {/* olive connector */}
-          <svg className="absolute -start-[76px] top-1/2 h-8 w-16 -translate-y-1/2 text-olive" viewBox="0 0 64 32" fill="none" aria-hidden>
+          <svg style={{ right: -72 }} className="absolute top-1/2 h-8 w-16 -translate-y-1/2 text-olive" viewBox="0 0 64 32" fill="none" aria-hidden>
             <path d="M60 16H8" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 4" strokeLinecap="round" />
             <path d="M14 9 6 16l8 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
