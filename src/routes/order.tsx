@@ -7,7 +7,7 @@ import { JourneyCallout } from "@/components/Journey";
 import { getRecipe, sar } from "@/lib/data";
 import { addresses, orderStages, slots } from "@/lib/box";
 import { setStore, useStore } from "@/lib/store";
-import { t } from "@/lib/i18n";
+import { isEn, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/order")({
   head: () => ({
@@ -40,7 +40,7 @@ function OrderPage() {
     setStore((st) => ({ order: st.order && { ...st.order, stage: 3 }, journey: st.journey === 4 ? 5 : st.journey }));
     toast.success("تم تسليم صندوقك", { description: t("محاكاة تسليم للعرض.") });
   };
-  const eta = new Date(o.placedAt + 90 * 60000).toLocaleTimeString("ar-SA", { hour: "numeric", minute: "2-digit" });
+  const eta = new Date(o.placedAt + 90 * 60000).toLocaleTimeString(isEn() ? "en-US" : "ar-SA", { hour: "numeric", minute: "2-digit" });
 
   return (
     <AppShell wide>
