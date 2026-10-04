@@ -41,6 +41,7 @@ const persist = (localOnly = false) => {
   }, 800);
 };
 
+export const getState = () => state;
 export const setStore = (fn: (s: State) => Partial<State>) => {
   const patch = fn(state);
   state = { ...state, ...patch };

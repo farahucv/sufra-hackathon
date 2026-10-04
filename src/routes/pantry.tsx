@@ -30,7 +30,7 @@ function Pantry() {
   const add = () => {
     const v = input.trim();
     if (!v) return;
-    if (hasPantry(s, v)) toast("موجود مسبقاً في مخزنك");
+    if (hasPantry(s, v)) toast(t("موجود مسبقاً في مخزنك"));
     else { togglePantry(v, loc); toast.success(t("أُضيف «{x}»", { x: t(v) })); }
     setInput("");
   };

@@ -51,7 +51,7 @@ function Checkout() {
       order: { ...st.box!, id: `SF-${Math.floor(1000 + Math.random() * 9000)}`, address, slot, pay, total, stage: 0, placedAt: Date.now() },
       journey: st.journey === 3 || st.journey === 4 ? 4 : st.journey,
     }));
-    toast.success("تم تأكيد الطلب", { description: t("طلب تجريبي — لم يتم خصم أي مبلغ.") });
+    toast.success(t("تم تأكيد الطلب"), { description: t("طلب تجريبي — لم يتم خصم أي مبلغ.") });
     nav({ to: "/order" });
   };
 

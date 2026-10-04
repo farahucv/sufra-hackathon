@@ -39,9 +39,9 @@ function Cook() {
   useEffect(() => { setLeft(null); setRun(false); }, [i]);
   useEffect(() => {
     if (!run || left === null) return;
-    if (left <= 0) { setRun(false); toast.success("انتهى المؤقت ⏰"); return; }
-    const t = setTimeout(() => setLeft((x) => (x ?? 1) - 1), 1000);
-    return () => clearTimeout(t);
+    if (left <= 0) { setRun(false); toast.success(t("انتهى المؤقت ⏰")); return; }
+    const tm = setTimeout(() => setLeft((x) => (x ?? 1) - 1), 1000);
+    return () => clearTimeout(tm);
   }, [run, left]);
 
   const startTimer = (min: number) => { setLeft(min * 60); setRun(true); };
@@ -54,9 +54,9 @@ function Cook() {
         <h1 className="mt-6 text-4xl">{t("تمت الوصفة!")}</h1>
         <p className="mt-2 max-w-xs opacity-80">{t("صحتين وعافية —")} {t(r.title)} {t("جاهزة على سفرتك.")}</p>
         <div className="mt-8 flex w-full max-w-xs flex-col gap-2">
-          <button onClick={() => { toast.success("شكراً لتقييمك", { description: t("يصل تقييمك للشيف (تجريبي).") }); }} className="press rounded-xl bg-gold py-3.5 font-semibold text-ink">{t("قيّم الوصفة ★★★★★")}</button>
+          <button onClick={() => { toast.success(t("شكراً لتقييمك"), { description: t("يصل تقييمك للشيف (تجريبي).") }); }} className="press rounded-xl bg-gold py-3.5 font-semibold text-ink">{t("قيّم الوصفة ★★★★★")}</button>
           {s.journey === 5 && (
-            <button onClick={() => { setStore(() => ({ journey: 0 })); toast.success("اكتملت رحلة العرض", { description: t("من ريل إلى طبق جاهز على سفرتك.") }); nav({ to: "/home" }); }}
+            <button onClick={() => { setStore(() => ({ journey: 0 })); toast.success(t("اكتملت رحلة العرض"), { description: t("من ريل إلى طبق جاهز على سفرتك.") }); nav({ to: "/home" }); }}
               className="press rounded-xl border border-ink-foreground/30 py-3.5">{t("إنهاء رحلة العرض ✓")}</button>
           )}
           <Link to="/home" className="press rounded-xl py-3 text-sm opacity-80">{t("العودة للرئيسية")}</Link>
@@ -77,7 +77,7 @@ function Cook() {
       </header>
       <div className="mx-5 mt-4 flex gap-1">{r.steps.map((_, n) => <span key={n} className={`h-1.5 flex-1 rounded-full transition-colors ${n <= i ? "bg-gold" : "bg-ink-foreground/15"}`} />)}</div>
 
-      <main key={i} className="animate-float-up mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center overflow-y-auto px-6 py-6">
+      <main key={i} className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center overflow-y-auto px-6 py-6">
         <p className="text-sm text-gold">{t("الخطوة")} {i + 1}</p>
         <p className="mt-3 font-display text-3xl leading-snug lg:text-5xl">{t(step.t)}</p>
         {used.length > 0 && (

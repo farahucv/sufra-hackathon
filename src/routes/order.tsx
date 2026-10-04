@@ -38,7 +38,7 @@ function OrderPage() {
   const advance = () => setStore((st) => ({ order: st.order && { ...st.order, stage: Math.min(3, st.order.stage + 1) } }));
   const simulate = () => {
     setStore((st) => ({ order: st.order && { ...st.order, stage: 3 }, journey: st.journey === 4 ? 5 : st.journey }));
-    toast.success("تم تسليم صندوقك", { description: t("محاكاة تسليم للعرض.") });
+    toast.success(t("تم تسليم صندوقك"), { description: t("محاكاة تسليم للعرض.") });
   };
   const eta = new Date(o.placedAt + 90 * 60000).toLocaleTimeString(isEn() ? "en-US" : "ar-SA", { hour: "numeric", minute: "2-digit" });
 
