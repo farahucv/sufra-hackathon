@@ -40,8 +40,8 @@ function Cook() {
   useEffect(() => {
     if (!run || left === null) return;
     if (left <= 0) { setRun(false); toast.success(t("انتهى المؤقت ⏰")); return; }
-    const t = setTimeout(() => setLeft((x) => (x ?? 1) - 1), 1000);
-    return () => clearTimeout(t);
+    const tm = setTimeout(() => setLeft((x) => (x ?? 1) - 1), 1000);
+    return () => clearTimeout(tm);
   }, [run, left]);
 
   const startTimer = (min: number) => { setLeft(min * 60); setRun(true); };

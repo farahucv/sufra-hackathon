@@ -36,8 +36,8 @@ function Onboarding() {
 
   useEffect(() => {
     if (phase !== "splash") return;
-    const t = setTimeout(() => setPhase("slides"), 1100);
-    return () => clearTimeout(t);
+    const tm = setTimeout(() => setPhase("slides"), 1100);
+    return () => clearTimeout(tm);
   }, [phase]);
 
   const finish = () => { setStore(() => ({ onboarded: true })); navigate({ to: "/home" }); };
