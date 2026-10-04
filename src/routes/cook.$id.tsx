@@ -13,7 +13,7 @@ export const Route = createFileRoute("/cook/$id")({
     const t = loaderData ? `وضع الطبخ: ${loaderData.title} — سُفرة` : "وضع الطبخ — سُفرة";
     return { meta: [
       { title: t }, { name: "description", content: "طبخ خطوة بخطوة مع مؤقتات ونصائح الشيف ومقادير صندوقك." },
-      { property: "og:title", content: t }, { property: "og:description", content: t("وضع طبخ مركّز خطوة بخطوة.") },
+      { property: "og:title", content: t }, { property: "og:description", content: "وضع طبخ مركّز خطوة بخطوة." },
       { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
     ] };
   },

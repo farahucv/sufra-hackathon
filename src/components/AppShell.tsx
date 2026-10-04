@@ -40,7 +40,7 @@ export function AppShell({ children, nav: showNav = true, wide = false }: { chil
           {nav.map(({ to, ar, en, icon: Icon }) => (
             <Link key={to} to={to} className="press flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
               activeProps={{ className: "bg-secondary text-primary font-semibold" }}>
-              <Icon className="h-5 w-5" strokeWidth={1.8} /> {tr(ar, en)}
+              <Icon className="h-5 w-5" strokeWidth={1.8} /> {t(ar)}
             </Link>
           ))}
           <Link to="/import" className="press flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
@@ -71,7 +71,7 @@ export function AppShell({ children, nav: showNav = true, wide = false }: { chil
                 <Link to={to} className="press flex flex-col items-center gap-1 rounded-xl py-1.5 text-[11px] text-muted-foreground"
                   activeProps={{ className: "text-primary font-semibold" }}>
                   <Icon className="h-5 w-5" strokeWidth={1.8} />
-                  {tr(ar, en)}
+                  {t(ar)}
                 </Link>
               </li>
             ))}

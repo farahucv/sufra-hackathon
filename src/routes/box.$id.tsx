@@ -8,7 +8,7 @@ import { JourneyCallout } from "@/components/Journey";
 import { getChef, getRecipe, ingredientLoc, sar } from "@/lib/data";
 import { BOX_SERVINGS, autoSubs, buildBox, householdBasics, isBoxEligible, unsafeLeft } from "@/lib/box";
 import { setStore, useStore, useTr } from "@/lib/store";
-import { t } from "@/lib/i18n";
+import { list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/box/$id")({
   loader: ({ params }) => {
@@ -136,7 +136,7 @@ function BoxPage() {
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-olive text-olive-foreground"><ShieldCheck className="h-5 w-5" /></span>
                 <div className="flex-1">
                   <p className="font-semibold text-accent-foreground">{t("نسخة مناسبة لك")}</p>
-                  <p className="text-xs text-muted-foreground">{tr(`خالية من ${flagged.map((i) => i.allergen).join("، t(")} حسب ملفك`, ")Adapted to your saved allergies")}</p>
+                  <p className="text-xs text-muted-foreground">{t("خالية من {x} حسب ملفك", { x: list(flagged.map((i) => i.allergen!)) })}</p>
                 </div>
               </div>
               <ul className="space-y-2 p-4">
@@ -176,7 +176,7 @@ function BoxPage() {
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium">{l.name}</p>
                       <p className="text-[11px] text-muted-foreground">
-                        {unsafe ? <span className="text-terracotta">{t("يحتوي")} {l.allergen}</span> : l.swapped ? <span className="text-olive">{t("بديل آمن")}</span> : tr(tag.ar, tag.en)}
+                        {unsafe ? <span className="text-terracotta">{t("يحتوي")} {t(l.allergen)}</span> : l.swapped ? <span className="text-olive">{t("بديل آمن")}</span> : t(tag.ar)}
                       </p>
                     </div>
                     <span className="shrink-0 rounded-md bg-primary px-2 py-1 text-[11px] font-semibold tabular-nums text-primary-foreground">{l.qty}</span>
@@ -214,13 +214,13 @@ function BoxPage() {
         {/* Summary (desktop) */}
         <aside className="hidden lg:block">
           <div className="sticky top-8 space-y-4 rounded-2xl bg-card p-6 shadow-soft">
-            <PriceBlock total={box.subtotal} per={box.perServing} serv={serv} tr={tr} />
+            <PriceBlock total={box.subtotal} per={box.perServing} serv={serv} />
             <div className="space-y-2 border-t pt-4 text-sm">
               <p className="flex items-center gap-2"><Truck className="h-4 w-4 text-olive" />{t("التوصيل المتوقع: خلال ٩٠ دقيقة")}</p>
               <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-olive" />{t("الرياض — ضمن نطاق التوصيل")}</p>
               <p className="flex items-center gap-2"><Check className="h-4 w-4 text-olive" />{t("عبوات مقسّمة بدقة")}</p>
             </div>
-            <CTA disabled={left.length > 0} onClick={toCheckout} tr={tr} />
+            <CTA disabled={left.length > 0} onClick={toCheckout} />
             <p className="text-center text-[11px] text-muted-foreground">{t("الأسعار والتوصيل بيانات تجريبية")}</p>
           </div>
         </aside>
@@ -234,7 +234,7 @@ function BoxPage() {
             <p key={box.subtotal} className="animate-float-up font-display text-2xl leading-none text-primary tabular-nums">{sar(box.subtotal)}</p>
             <p className="mt-1 text-[11px] text-muted-foreground">{serv} {t("حصص · Demo data")}</p>
           </div>
-          <div className="flex-1"><CTA disabled={left.length > 0} onClick={toCheckout} tr={tr} /></div>
+          <div className="flex-1"><CTA disabled={left.length > 0} onClick={toCheckout} /></div>
         </div>
       </div>
     </AppShell>
@@ -242,10 +242,10 @@ function BoxPage() {
 }
 
 function SectionTitle({ ar, en }: { ar: string; en: string }) {
-  return <h2 className="text-xl">{tr(ar, en)}</h2>;
+  return <h2 className="text-xl">{t(ar)}</h2>;
 }
 
-function PriceBlock({ total, per, serv, tr }: { total: number; per: number; serv: number; tr: (a: string, e: string) => string }) {
+function PriceBlock({ total, per, serv }: { total: number; per: number; serv: number }) {
   return (
     <div>
       <p className="text-xs text-muted-foreground">{t("سعر الصندوق")} · {serv} {t("حصص")}</p>
@@ -255,7 +255,7 @@ function PriceBlock({ total, per, serv, tr }: { total: number; per: number; serv
   );
 }
 
-function CTA({ disabled, onClick, tr }: { disabled: boolean; onClick: () => void; tr: (a: string, e: string) => string }) {
+function CTA({ disabled, onClick }: { disabled: boolean; onClick: () => void }) {
   return (
     <button disabled={disabled} onClick={onClick}
       className="press flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 font-semibold text-primary-foreground disabled:opacity-40">

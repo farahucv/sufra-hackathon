@@ -1,3 +1,5 @@
+import { t } from "@/lib/i18n";
+
 /** Branded Sufra Ready-to-Cook Box: cream carton, date-brown wordmark, olive Sadu band. */
 export function BoxArt({ title, serv, size = "md", img }: { title: string; serv: number; size?: "sm" | "md" | "lg"; img?: string }) {
   const dims = { sm: "w-full aspect-[5/3]", md: "w-full aspect-[5/3]", lg: "w-full aspect-[4/3]" }[size];

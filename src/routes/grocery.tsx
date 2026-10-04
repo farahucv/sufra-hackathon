@@ -114,7 +114,7 @@ function Grocery() {
                   })}
                   <tr className="bg-secondary font-semibold">
                     <td className="p-3">{t("الإجمالي")}</td>
-                    {totals.map((t, i) => <td key={i} className="p-2 text-center tabular-nums">{t.total.toFixed(2)}{t.missing > 0 && <span className="block text-[10px] font-normal text-terracotta">{t("ينقص")} {t.missing}</span>}</td>)}
+                    {totals.map((tot, i) => <td key={i} className="p-2 text-center tabular-nums">{tot.total.toFixed(2)}{tot.missing > 0 && <span className="block text-[10px] font-normal text-terracotta">{t("ينقص")} {tot.missing}</span>}</td>)}
                   </tr>
                 </tbody>
               </table>

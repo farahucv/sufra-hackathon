@@ -116,8 +116,8 @@ function ChefPage() {
         )}
         {tab === "blog" && (
           <div className="grid gap-3 lg:grid-cols-3">
-            {blog.map((t) => (
-              <article key={t} className="rounded-2xl bg-card p-4"><p className="font-semibold">{t}</p><p className="mt-1 text-xs text-muted-foreground">{t("مقال · ٤ دقائق قراءة")}</p>
+            {blog.map((b) => (
+              <article key={b} className="rounded-2xl bg-card p-4"><p className="font-semibold">{t(b)}</p><p className="mt-1 text-xs text-muted-foreground">{t("مقال · ٤ دقائق قراءة")}</p>
                 <Link to="/future" className="mt-3 inline-block text-xs text-olive">{t("المدونات قادمة قريباً ←")}</Link></article>
             ))}
           </div>
