@@ -11,3 +11,5 @@
 
 - Prototype is frontend-only: demo data lives in src/lib/data.ts and shared user state in src/lib/store.ts — keeps the hackathon demo self-contained with no backend.
 - Every screen wraps content in AppShell (phone-width frame, RTL, bottom nav) — consistent mobile-first layout.
+- Demo user state persists to localStorage plus the `demo_profiles` table via server functions keyed by an anonymous device id (service role only, no client RLS policies) — gives persistence without mandatory sign-up.
+- Never add artificial loading delays for local interactions; only the Import extraction demo is staged (~1.7s) — keeps the prototype feeling instant.
