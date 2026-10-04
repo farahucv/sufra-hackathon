@@ -14,3 +14,4 @@
 - Demo user state persists to localStorage plus the `demo_profiles` table via server functions keyed by an anonymous device id (service role only, no client RLS policies) — gives persistence without mandatory sign-up.
 - Never add artificial loading delays for local interactions; only the Import extraction demo is staged (~1.7s) — keeps the prototype feeling instant.
 - Ready-to-Cook Box logic (pricing, portions, substitutions, order stages) lives in src/lib/box.ts; box draft and order live in the shared store — keeps the box → checkout → tracking → cook flow consistent.
+- All user-facing text goes through t() from src/lib/i18n.ts with Arabic source strings as keys and English in src/lib/i18n.en.json; demo data stays Arabic-keyed and is translated at render — keeps both languages complete, enforced by src/test/i18n.test.tsx.
