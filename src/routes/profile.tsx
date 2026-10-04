@@ -1,3 +1,4 @@
+import { Package } from "lucide-react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bookmark, ChevronLeft, Rocket, Refrigerator, Languages, Cloud, RotateCcw, Minus, Plus, Route as RouteIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -77,6 +78,9 @@ function Profile() {
         <div className="space-y-4">
           <Link to="/pantry" className="press flex items-center gap-3 rounded-2xl bg-card p-4">
             <Refrigerator className="h-5 w-5 text-olive" /><span className="flex-1">مخزني</span><span className="text-xs text-muted-foreground">{s.pantry.length} مكوّن</span><ChevronLeft className="h-4 w-4 ltr:rotate-180" />
+          </Link>
+          <Link to="/order" className="press flex items-center gap-3 rounded-2xl bg-card p-4">
+            <Package className="h-5 w-5 text-olive" /><span className="flex-1">طلباتي · صناديق الوصفات</span><span className="text-xs text-muted-foreground">{s.order ? s.order.id : "لا توجد"}</span><ChevronLeft className="h-4 w-4 ltr:rotate-180" />
           </Link>
 
           <div className="rounded-2xl bg-card p-4">

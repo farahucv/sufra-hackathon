@@ -4,7 +4,9 @@ import { Heart, Bookmark, Clock, Link2, Play, Sparkles, AlertTriangle, BadgeChec
 import { toast } from "sonner";
 import { AppShell, Chip, EmptyState, Wordmark } from "@/components/AppShell";
 import { JourneyCallout, startJourney } from "@/components/Journey";
-import { categories, recipes, getChef, recipeAllergens, type Recipe } from "@/lib/data";
+import { BoxArt } from "@/components/BoxArt";
+import { buildBox } from "@/lib/box";
+import { categories, sar, recipes, getChef, recipeAllergens, type Recipe } from "@/lib/data";
 import { matchesAllergy, toggleIn, useStore, useTr, type State } from "@/lib/store";
 
 export const Route = createFileRoute("/home")({
@@ -64,6 +66,24 @@ function HomePage() {
           <div className="min-w-0 flex-1"><p className="font-semibold">مكوّن في مخزنك</p><p className="text-xs text-muted-foreground">شوف وش تقدر تطبخ الحين</p></div>
         </Link>
       </div>
+
+      <section className="mt-7">
+        <div className="flex items-baseline justify-between px-5 lg:px-8">
+          <h2 className="text-xl">جاهز للطبخ <span className="ms-1 text-[10px] tracking-[0.25em] text-muted-foreground">READY-TO-COOK</span></h2>
+          <span className="text-[11px] text-muted-foreground">أسعار تجريبية</span>
+        </div>
+        <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto px-5 pb-1 lg:grid lg:grid-cols-3 lg:px-8">
+          {["kabsa", "jareesh", "freekeh"].map((id) => {
+            const r = recipes.find((x) => x.id === id)!;
+            return (
+              <Link key={id} to="/box/$id" params={{ id }} className="press w-64 shrink-0 lg:w-auto">
+                <BoxArt img={r.img} title={r.title} serv={4} compact />
+                <p className="mt-2 flex justify-between text-sm"><span>{r.time} د · {r.difficulty}</span><b className="text-primary">{sar(buildBox(r, 4, {}).subtotal)}</b></p>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
 
       <div className="no-scrollbar mt-5 flex gap-2 overflow-x-auto px-5 lg:px-8">
         <Chip active={!cat} onClick={() => setCat(null)}>الكل</Chip>

@@ -4,7 +4,6 @@ import { z } from "zod";
 import { Trophy, X, Truck, Store, PiggyBank, Info, PartyPopper } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
-import { JourneyCallout } from "@/components/Journey";
 import { getRecipe, recipes, stores, priceOf, cheapest, sar } from "@/lib/data";
 import { hasPantry, useStore } from "@/lib/store";
 
@@ -53,7 +52,6 @@ function Grocery() {
   return (
     <AppShell wide>
       <TopBar title="مقارنة الأسعار" sub={`${showAll ? "كل مكونات" : "الناقص من"} ${r.title} · الرياض`} action={<DemoBadge label="أسعار تجريبية" />} />
-      <JourneyCallout step={4} />
 
       <div className="px-5 lg:px-8">
         <div className="flex items-start gap-2 rounded-2xl bg-gold/15 p-3 text-xs leading-relaxed">
