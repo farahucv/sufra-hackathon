@@ -92,6 +92,7 @@ function BoxPage() {
 
       <div className="px-5 pt-6 lg:grid lg:grid-cols-[1fr_340px] lg:gap-10 lg:px-8">
         <div className="space-y-8">
+          <div className="-mx-5 -my-4 lg:-mx-8"><JourneyCallout step={3} action={{ label: t("متابعة إلى الطلب"), onClick: toCheckout }} /></div>
           <header className="text-center lg:text-start">
             <p className="text-xs font-medium tracking-wide text-olive">{t("صندوق جاهز للطبخ")}</p>
             <h1 className="mt-1 text-4xl lg:text-5xl">{t(r.title)}</h1>
@@ -105,8 +106,6 @@ function BoxPage() {
               <span className="flex items-center gap-1"><Truck className="h-3.5 w-3.5" />{t("يصل خلال ٩٠ د")}</span>
             </div>
           </header>
-
-          <JourneyCallout step={3} hideNext />
 
           {/* Servings */}
           <section>

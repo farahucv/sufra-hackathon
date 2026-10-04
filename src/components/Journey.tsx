@@ -22,7 +22,8 @@ const next = {
 export function startJourney() { setStore(() => ({ journey: 1, allergies: ["مكسرات"] })); }
 
 /** Inline, dismissible callout — never a modal. Renders only during the matching journey step. */
-export function JourneyCallout({ step, hideNext }: { step: 1 | 2 | 3 | 4 | 5; hideNext?: boolean }) {
+/** `action` replaces the default next link with a page-specific forward action (always visible). */
+export function JourneyCallout({ step, action }: { step: 1 | 2 | 3 | 4 | 5; action?: { label: string; onClick: () => void } }) {
   const s = useStore();
   if (s.journey !== step) return null;
   const j = journeySteps()[step - 1]!;
@@ -37,9 +38,12 @@ export function JourneyCallout({ step, hideNext }: { step: 1 | 2 | 3 | 4 | 5; hi
         <button onClick={() => setStore(() => ({ journey: 0 }))} aria-label={t("إنهاء الرحلة")} className="text-muted-foreground"><X className="h-4 w-4" /></button>
       </div>
       <p className="mt-2 flex gap-2 text-sm leading-relaxed"><Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-gold" />{t(j.insight)}</p>
-      {!hideNext && (
-        <div className="mt-3 flex justify-end">
-          {!last ? (
+      <div className="mt-3 flex justify-end">
+          {action ? (
+            <button onClick={action.onClick} className="press inline-flex items-center gap-1 rounded-full bg-olive px-4 py-2 text-xs font-semibold text-olive-foreground">
+              {action.label} <ArrowLeft className="h-3.5 w-3.5 ltr:rotate-180" />
+            </button>
+          ) : !last ? (
             <Link {...next[step as 1 | 2 | 3 | 4]} onClick={go} className="press inline-flex items-center gap-1 rounded-full bg-olive px-4 py-2 text-xs font-semibold text-olive-foreground">
               {t("الخطوة التالية")} <ArrowLeft className="h-3.5 w-3.5" />
             </Link>
@@ -47,8 +51,7 @@ export function JourneyCallout({ step, hideNext }: { step: 1 | 2 | 3 | 4 | 5; hi
             <button onClick={() => { setStore(() => ({ journey: 0 })); toast.success(t("اكتملت رحلة العرض"), { description: t("من ريل إلى طبق جاهز على سفرتك.") }); }}
               className="press rounded-full bg-olive px-4 py-2 text-xs font-semibold text-olive-foreground">{t("إنهاء الرحلة ✓")}</button>
           )}
-        </div>
-      )}
+      </div>
     </aside>
   );
 }

@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Apple, CreditCard, Banknote, Check, Lock, MapPin, Clock, PackageOpen } from "lucide-react";
 import { toast } from "sonner";
+import { JourneyCallout } from "@/components/Journey";
 import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
 import { getRecipe, sar } from "@/lib/data";
 import { DELIVERY_FEE, addresses, buildBox, payments, slots } from "@/lib/box";
@@ -58,6 +59,7 @@ function Checkout() {
   return (
     <AppShell wide>
       <TopBar title={t("راجع صندوقك")} action={<DemoBadge label={t("نموذج دفع تجريبي")} />} />
+      <JourneyCallout step={4} action={{ label: t("تأكيد الطلب"), onClick: confirm }} />
       <div className="space-y-6 px-5 pb-10 lg:grid lg:grid-cols-[1fr_340px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-6">
           <section className="flex items-center gap-4">
