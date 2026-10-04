@@ -59,9 +59,9 @@ function Profile() {
           <section className="rounded-2xl bg-card p-5">
             <h2 className="text-lg">{t("ملفك الغذائي")}</h2>
             <p className="mt-4 text-sm font-medium">{t("الحساسية")}</p>
-            <div className="mt-2 flex flex-wrap gap-2">{allergensList.map((a) => <Chip key={a} active={s.allergies.includes(a)} onClick={() => toggleIn("allergies", a)}>{a}</Chip>)}</div>
+            <div className="mt-2 flex flex-wrap gap-2">{allergensList.map((a) => <Chip key={a} active={s.allergies.includes(a)} onClick={() => toggleIn("allergies", a)}>{t(a)}</Chip>)}</div>
             <p className="mt-5 text-sm font-medium">{t("مكونات لا تفضّلها")}</p>
-            <div className="mt-2 flex flex-wrap gap-2">{dislikesList.map((d) => <Chip key={d} active={s.dislikes.includes(d)} onClick={() => toggleIn("dislikes", d)}>{d}</Chip>)}</div>
+            <div className="mt-2 flex flex-wrap gap-2">{dislikesList.map((d) => <Chip key={d} active={s.dislikes.includes(d)} onClick={() => toggleIn("dislikes", d)}>{t(d)}</Chip>)}</div>
             <p className="mt-5 text-sm font-medium">{t("نمط الأكل")}</p>
             <div className="mt-2 flex flex-wrap gap-2">{diets.map((d) => <Chip key={d.id} active={s.diet === d.id} onClick={() => setStore(() => ({ diet: d.id }))}>{t(d.ar)}</Chip>)}</div>
             <div className="mt-5 flex items-center justify-between">

@@ -87,7 +87,7 @@ function HomePage() {
 
       <div className="no-scrollbar mt-5 flex gap-2 overflow-x-auto px-5 lg:px-8">
         <Chip active={!cat} onClick={() => setCat(null)}>{t("الكل")}</Chip>
-        {categories.map((c) => <Chip key={c} active={cat === c} onClick={() => setCat(c)}>{c}</Chip>)}
+        {categories.map((c) => <Chip key={c} active={cat === c} onClick={() => setCat(c)}>{t(c)}</Chip>)}
       </div>
 
       <section className="mt-5 grid gap-5 px-5 lg:grid-cols-2 lg:px-8 xl:grid-cols-3">

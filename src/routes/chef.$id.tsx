@@ -54,7 +54,7 @@ function ChefPage() {
             <p className="mt-1 flex items-center justify-center gap-1 text-xs text-muted-foreground lg:justify-start"><MapPin className="h-3.5 w-3.5" />{t(c.city)} {t("· جذوره")} {t(c.roots)}</p>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed lg:mx-0">{t(c.bio)}</p>
             <div className="mt-3 flex flex-wrap justify-center gap-1.5 lg:justify-start">
-              {c.specialties.map((x) => <span key={x} className="rounded-full bg-secondary px-3 py-1 text-xs">{x}</span>)}
+              {c.specialties.map((x) => <span key={x} className="rounded-full bg-secondary px-3 py-1 text-xs">{t(x)}</span>)}
             </div>
           </div>
         </div>

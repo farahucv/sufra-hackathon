@@ -187,7 +187,7 @@ function BoxPage() {
             <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
               <HomeIcon className="h-4 w-4" />
               <span>{t("غير مشمول — من أساسيات البيت:")}</span>
-              {householdBasics.map((b) => <span key={b} className="rounded-full border border-dashed px-2.5 py-0.5">{b}</span>)}
+              {householdBasics.map((b) => <span key={b} className="rounded-full border border-dashed px-2.5 py-0.5">{t(b)}</span>)}
             </div>
           </section>
 

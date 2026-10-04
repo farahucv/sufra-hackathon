@@ -77,8 +77,8 @@ function Checkout() {
             )}
           </section>
 
-          <Picker title={t("عنوان التوصيل")} icon={<MapPin className="h-4 w-4" />} value={address} onChange={setAddress} items={addresses.map((a) => ({ id: a.id, label: a.label, sub: a.line }))} />
-          <Picker title={t("وقت التوصيل")} icon={<Clock className="h-4 w-4" />} value={slot} onChange={setSlot} items={slots} />
+          <Picker title={t("عنوان التوصيل")} icon={<MapPin className="h-4 w-4" />} value={address} onChange={setAddress} items={addresses.map((a) => ({ id: a.id, label: t(a.label), sub: t(a.line) }))} />
+          <Picker title={t("وقت التوصيل")} icon={<Clock className="h-4 w-4" />} value={slot} onChange={setSlot} items={slots.map((x) => ({ ...x, label: t(x.label), sub: t(x.sub) }))} />
 
           <section>
             <p className="text-sm font-semibold">{t("طريقة الدفع")}</p>

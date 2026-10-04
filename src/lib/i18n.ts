@@ -1,5 +1,6 @@
 import en from "./i18n.en.json";
 import { getLang } from "./lang";
+import { t } from "@/lib/i18n";
 
 /**
  * Centralized localization. Arabic is the source language and the lookup key;
@@ -16,9 +17,14 @@ export function t(ar: string | null | undefined, vars?: Record<string, string | 
   if (getLang() === "en") {
     const e = dict[ar];
     if (e === undefined) {
+      if (!/[\u0600-\u06FF]/.test(ar)) return interpolate(ar, vars); // already English / user input
       if (!missing.has(ar)) { missing.add(ar); console.warn("[i18n] missing English for:", ar); }
     } else s = e;
   }
+  return interpolate(s, vars);
+}
+
+function interpolate(s: string, vars?: Record<string, string | number>) {
   if (vars) for (const k in vars) s = s.split(`{${k}}`).join(String(vars[k]));
   return s;
 }

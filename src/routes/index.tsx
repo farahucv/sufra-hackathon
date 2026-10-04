@@ -107,7 +107,7 @@ function Onboarding() {
                   {diets.map((d) => (
                     <button key={d.id} onClick={() => setStore(() => ({ diet: d.id }))}
                       className={`press rounded-2xl border p-4 text-start ${s.diet === d.id ? "border-primary bg-secondary" : "bg-card"}`}>
-                      <p className="font-medium">{t(d.ar)}</p><p className="text-[11px] text-muted-foreground">{d.en}</p>
+                      <p className="font-medium">{t(d.ar)}</p>{!isEn() && <p className="text-[11px] text-muted-foreground">{d.en}</p>}
                     </button>
                   ))}
                 </div>
@@ -131,7 +131,7 @@ function Onboarding() {
                     return (
                       <button key={a} onClick={() => toggleIn("allergies", a)} aria-pressed={on}
                         className={`press flex items-center justify-between rounded-2xl border p-4 text-start ${on ? "border-terracotta bg-terracotta-soft" : "bg-card"}`}>
-                        <span className="font-medium">{a}</span>
+                        <span className="font-medium">{t(a)}</span>
                         <span className={`grid h-5 w-5 place-items-center rounded-full border ${on ? "border-terracotta bg-terracotta text-primary-foreground" : ""}`}>{on && <Check className="h-3 w-3" />}</span>
                       </button>
                     );
@@ -144,7 +144,7 @@ function Onboarding() {
                 <h1 className="text-3xl">{t("مكونات لا تحبها")}</h1>
                 <p className="mt-2 text-muted-foreground">{t("نقلل ظهورها في اقتراحاتك.")}</p>
                 <div className="mt-6 flex flex-wrap gap-2">
-                  {dislikesList.map((d) => <Chip key={d} active={s.dislikes.includes(d)} onClick={() => toggleIn("dislikes", d)}>{d}</Chip>)}
+                  {dislikesList.map((d) => <Chip key={d} active={s.dislikes.includes(d)} onClick={() => toggleIn("dislikes", d)}>{t(d)}</Chip>)}
                 </div>
                 <div className="mt-8 space-y-1 rounded-2xl bg-secondary p-4 text-sm text-secondary-foreground">
                   <p className="font-semibold">{t("ملفك الغذائي")}</p>

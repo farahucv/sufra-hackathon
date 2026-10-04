@@ -29,7 +29,7 @@ export function JourneyCallout({ step, hideNext }: { step: 1 | 2 | 3 | 4 | 5; hi
   const last = step === journeySteps().length;
   const go = () => setStore(() => ({ journey: step + 1 }));
   return (
-    <aside className="animate-float-up mx-5 my-4 rounded-2xl border-s-4 border-olive bg-card p-4 shadow-soft lg:mx-8" aria-label={t("رحلة العرض")}>
+    <aside className="mx-5 my-4 rounded-2xl border-s-4 border-olive bg-card p-4 shadow-soft lg:mx-8" aria-label={t("رحلة العرض")}>
       <div className="flex items-center gap-2">
         <span className="grid h-7 w-7 place-items-center rounded-full bg-olive text-xs font-bold text-olive-foreground">{step}</span>
         <p className="flex-1 text-sm font-semibold text-accent-foreground">{t("رحلة العرض ·")} {t(j.title)}</p>
