@@ -50,7 +50,7 @@ function OrderPage() {
 
       <div className="space-y-6 px-5 pb-10 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-6">
-          <div className="animate-float-up"><BoxArt img={r.img} title={t(r.title)} serv={o.serv} size="lg" /></div>
+          <div><BoxArt img={r.img} title={t(r.title)} serv={o.serv} size="lg" /></div>
 
           <section className="rounded-2xl border bg-card p-5">
             <div className="flex items-center justify-between text-sm">

@@ -27,8 +27,7 @@ function Grocery() {
   const s = useStore();
   const [showAll, setShowAll] = useState(false);
   const [mode, setMode] = useState<"cheap" | "single">("cheap");
-  const [loading, setLoading] = useState(true);
-  useEffect(() => { setLoading(true); const t = setTimeout(() => setLoading(false), 700); return () => clearTimeout(t); }, [r.id]);
+  const loading = false;
 
   const missing = r.ingredients.filter((i) => !hasPantry(s, i.key)).map((i) => i.key);
   const items = showAll ? r.ingredients.map((i) => i.key) : missing;

@@ -81,7 +81,7 @@ function ChefPage() {
         ))}
       </div>
 
-      <div key={tab} className="animate-float-up mt-4 px-5 lg:px-8">
+      <div key={tab} className="mt-4 px-5 lg:px-8">
         {tab === "reels" && (
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
             {own.map((r, i) => (

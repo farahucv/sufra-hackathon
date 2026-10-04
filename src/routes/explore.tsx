@@ -46,7 +46,7 @@ function Explore() {
         {region.dishes.map((d, i) => {
           const r = d.recipeId ? getRecipe(d.recipeId) : undefined;
           return (
-            <article key={d.name} className="animate-float-up rounded-2xl border bg-card p-5" style={{ animationDelay: `${i * 80}ms` }}>
+            <article key={d.name} className="rounded-2xl border bg-card p-5" style={{ animationDelay: `${i * 80}ms` }}>
               <div className="flex gap-4">
                 {r && <img src={r.img} alt={t(d.name)} className="h-20 w-20 shrink-0 rounded-2xl object-cover" loading="lazy" />}
                 <div className="min-w-0">
