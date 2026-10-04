@@ -93,7 +93,7 @@ export function ImportResultCard({ rid, allergies, actions, layout = "stack", im
   );
   return (
     <article className="animate-in fade-in duration-150 overflow-hidden rounded-2xl bg-card shadow-soft">
-      <div className={`relative ${wide ? "h-72" : "h-48"}`}>
+      <div className={`relative ${wide ? "h-52" : "h-48"}`}>
         <img src={r.img} alt={t(r.title)} className="h-full w-full object-cover" loading={imgEager ? "eager" : "lazy"} />
         <div className="absolute inset-0 scrim" />
         <span className="absolute start-3 top-3 flex items-center gap-1 rounded-full bg-olive px-3 py-1 text-xs text-olive-foreground"><CheckCircle2 className="h-3.5 w-3.5" /> {t("تم الاستخراج")}</span>

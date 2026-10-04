@@ -29,23 +29,23 @@ const eco = [
 function SubmissionVisual() {
   return (
     <div dir="rtl" lang="ar" className="relative mx-auto flex h-[900px] w-[1600px] flex-col overflow-hidden bg-background px-24 pb-9 pt-14">
-      <div className="sadu pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full opacity-25" />
+      <div className="sadu pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full opacity-15" />
 
-      <header className="flex items-start justify-between">
-        <div>
+      <header>
+        <Wordmark size="sm" />
+        <div className="mt-6">
           <h1 className="text-[46px] leading-tight text-primary">من الفيديو إلى الوصفة</h1>
           <p className="mt-2 text-[17px] text-muted-foreground">الصق رابط فيديو طبخ، وسُفرة تستخرج الوصفة والمكونات والخطوات.</p>
         </div>
-        <Wordmark size="sm" />
       </header>
 
-      <div dir="ltr" className="relative mt-8 flex flex-1 items-center gap-10">
+      <div dir="ltr" className="relative mt-6 flex flex-1 items-center gap-10">
         <div dir="rtl" className="w-[440px] shrink-0">
           <ImportFormCard url={importSamples[1].url} showNote={false} showRun={false} />
         </div>
 
         <div className="flex w-[120px] shrink-0 flex-col items-center gap-3 text-olive">
-          <span className="h-1.5 w-6 rotate-45 rounded-sm bg-gold" />
+          <span className="h-1.5 w-1.5 rotate-45 bg-gold" />
           <div className="relative h-px w-full bg-olive/30">
             <div className="absolute inset-y-0 left-0 w-2/3 bg-olive" />
             <span className="absolute -right-0.5 -top-[3px] h-[7px] w-[7px] rotate-45 border-r border-t border-olive" />
