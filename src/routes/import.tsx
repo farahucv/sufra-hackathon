@@ -63,7 +63,7 @@ function ImportPage() {
           </div>
           <button onClick={run} disabled={phase === "loading" || !url} className="press mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-ink py-4 font-semibold text-ink-foreground disabled:opacity-50">
             {phase === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5 text-gold" />}
-            استخرج الوصفة
+            {t("استخرج الوصفة")}
           </button>
           <p className="mt-3 text-center text-[11px] text-muted-foreground">{t("نموذج عرض: النتيجة محاكاة من وصفات تجريبية، وليست استخراجاً حياً من الفيديو.")}</p>
         </div>

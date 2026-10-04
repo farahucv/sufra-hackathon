@@ -41,7 +41,7 @@ export function JourneyCallout({ step, hideNext }: { step: 1 | 2 | 3 | 4 | 5; hi
         <div className="mt-3 flex justify-end">
           {!last ? (
             <Link {...next[step as 1 | 2 | 3 | 4]} onClick={go} className="press inline-flex items-center gap-1 rounded-full bg-olive px-4 py-2 text-xs font-semibold text-olive-foreground">
-              الخطوة التالية <ArrowLeft className="h-3.5 w-3.5" />
+              {t("الخطوة التالية")} <ArrowLeft className="h-3.5 w-3.5" />
             </Link>
           ) : (
             <button onClick={() => { setStore(() => ({ journey: 0 })); toast.success("اكتملت رحلة العرض", { description: t("من ريل إلى طبق جاهز على سفرتك.") }); }}
