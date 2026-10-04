@@ -13,7 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "sonner";
-import { useStoreSync } from "../lib/store";
+import { useStore, useStoreSync } from "../lib/store";
 
 function NotFoundComponent() {
   return (
