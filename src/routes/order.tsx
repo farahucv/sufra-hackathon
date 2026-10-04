@@ -25,6 +25,7 @@ export const Route = createFileRoute("/order")({
 
 function OrderPage() {
   const s = useStore();
+  const nav = useNavigate();
   const o = s.order;
   const r = o ? getRecipe(o.recipeId) : undefined;
   if (!o || !r) {
