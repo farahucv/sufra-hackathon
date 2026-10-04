@@ -1,93 +1,139 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Heart, Bookmark, Clock, Link2, Play, Sparkles, AlertTriangle } from "lucide-react";
-import { AppShell, Chip, DemoBadge } from "@/components/AppShell";
-import { recipes, getChef } from "@/lib/data";
-import { matchesAllergy, toggleIn, useStore } from "@/lib/store";
+import { useEffect, useState } from "react";
+import { Heart, Bookmark, Clock, Link2, Play, Sparkles, AlertTriangle, BadgeCheck, Share2, Flame, Gauge, Route as RouteIcon, SearchX } from "lucide-react";
+import { toast } from "sonner";
+import { AppShell, Chip, DemoBadge, EmptyState, Wordmark } from "@/components/AppShell";
+import { JourneyCallout, startJourney } from "@/components/Journey";
+import { categories, recipes, getChef, recipeAllergens, type Recipe } from "@/lib/data";
+import { matchesAllergy, toggleIn, useStore, useTr, type State } from "@/lib/store";
 
 export const Route = createFileRoute("/home")({
   head: () => ({
     meta: [
       { title: "ريلز الطهاة — سُفرة" },
-      { name: "description", content: "شاهد ريلز قصيرة لطهاة سعوديين واحفظ وصفاتك المفضلة." },
+      { name: "description", content: "ريلز قصيرة لطهاة سعوديين مع شارة «مناسب لك» حسب حساسيتك ونمط أكلك." },
       { property: "og:title", content: "ريلز الطهاة — سُفرة" },
-      { property: "og:description", content: "ريلز وصفات سعودية قصيرة من طهاة محليين." },
+      { property: "og:description", content: "اكتشف وصفات سعودية قصيرة مخصصة لك." },
     ],
   }),
   component: HomePage,
 });
 
-const cats = ["الكل", "تراثي", "أطباق رئيسية", "مقبلات"];
+export function fitFor(r: Recipe, s: State) {
+  const warn = recipeAllergens(r).filter((a) => matchesAllergy(a, s.allergies));
+  const dietOk = s.diet === "veg" ? r.cats.includes("نباتي") : s.diet === "healthy" ? r.nutrition.kcal < 560 : s.diet === "highprotein" ? r.nutrition.protein >= 30 : true;
+  return { warn, fit: warn.length === 0 && dietOk, adaptable: warn.length > 0 && r.ingredients.every((i) => !i.allergen || !s.allergies.includes(i.allergen) || i.subs?.length) };
+}
 
 function HomePage() {
-  const [cat, setCat] = useState("الكل");
+  const [cat, setCat] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const s = useStore();
-  const list = recipes.filter((r) => cat === "الكل" || r.category === cat);
+  const tr = useTr();
+  useEffect(() => { setLoading(true); const t = setTimeout(() => setLoading(false), 450); return () => clearTimeout(t); }, [cat]);
+  const list = recipes.filter((r) => !cat || r.cats.includes(cat))
+    .sort((a, b) => Number(fitFor(b, s).fit) - Number(fitFor(a, s).fit));
+  const hour = new Date().getHours();
 
   return (
-    <AppShell>
-      <header className="flex items-center justify-between px-5 pb-2 pt-6">
-        <div>
-          <p className="text-sm text-muted-foreground">مساء الخير، {s.name}</p>
-          <h1 className="text-2xl">وش نطبخ اليوم؟</h1>
+    <AppShell wide>
+      <header className="flex items-center justify-between px-5 pb-2 pt-6 lg:px-8 lg:pt-10">
+        <div className="lg:hidden"><Wordmark size="sm" /></div>
+        <div className="hidden lg:block">
+          <p className="text-sm text-muted-foreground">{hour < 12 ? "صباح الخير" : "مساء الخير"}، {s.name}</p>
+          <h1 className="text-3xl">{tr("وش نطبخ اليوم؟", "What's cooking today?")}</h1>
         </div>
-        <DemoBadge />
+        <button onClick={() => { startJourney(); toast("بدأت رحلة العرض", { description: "٤ خطوات قصيرة تشرح الفكرة كاملة." }); }}
+          className="press inline-flex items-center gap-1.5 rounded-full border border-olive/40 px-3 py-1.5 text-xs font-medium text-olive hover:bg-accent">
+          <RouteIcon className="h-3.5 w-3.5" /> Demo Journey
+        </button>
       </header>
+      <p className="px-5 text-sm text-muted-foreground lg:hidden">{hour < 12 ? "صباح الخير" : "مساء الخير"}، {s.name} — {tr("وش نطبخ اليوم؟", "what's cooking?")}</p>
 
-      <Link to="/import" className="mx-5 mt-3 flex items-center gap-3 rounded-2xl bg-ink p-4 text-ink-foreground">
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gold text-ink"><Link2 className="h-5 w-5" /></span>
-        <div className="min-w-0 flex-1">
-          <p className="font-semibold">استورد وصفة من تيك توك أو يوتيوب</p>
-          <p className="truncate text-xs opacity-70">الصق الرابط والذكاء الاصطناعي يستخرج المقادير</p>
-        </div>
-        <Sparkles className="h-5 w-5 text-gold" />
-      </Link>
+      <JourneyCallout step={1} />
 
-      <div className="no-scrollbar mt-5 flex gap-2 overflow-x-auto px-5">
-        {cats.map((c) => <Chip key={c} active={cat === c} onClick={() => setCat(c)}>{c}</Chip>)}
+      <div className="grid gap-3 px-5 pt-3 lg:grid-cols-2 lg:px-8">
+        <Link to="/import" className="press flex items-center gap-3 rounded-2xl bg-ink p-4 text-ink-foreground">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gold text-ink"><Link2 className="h-5 w-5" /></span>
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold">{tr("استورد وصفة من تيك توك أو يوتيوب", "Import from TikTok / YouTube")}</p>
+            <p className="truncate text-xs opacity-70">الصق الرابط ونستخرج المقادير والخطوات</p>
+          </div>
+          <Sparkles className="h-5 w-5 text-gold" />
+        </Link>
+        <Link to="/pantry" className="press hidden items-center gap-3 rounded-2xl bg-secondary p-4 lg:flex">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-olive text-olive-foreground font-display">{s.pantry.length}</span>
+          <div className="min-w-0 flex-1"><p className="font-semibold">مكوّن في مخزنك</p><p className="text-xs text-muted-foreground">شوف وش تقدر تطبخ الحين</p></div>
+        </Link>
       </div>
 
-      <section className="mt-5 space-y-5 px-5">
-        {list.map((r) => {
-          const chef = getChef(r.chefId)!;
-          const warn = r.allergens.filter((a) => matchesAllergy(a, s.allergies));
-          const liked = s.liked.includes(r.id), saved = s.saved.includes(r.id);
-          return (
-            <article key={r.id} className="relative h-[520px] overflow-hidden rounded-3xl shadow-soft">
-              <img src={r.img} alt={r.title} className="absolute inset-0 h-full w-full object-cover" loading="lazy" width={768} height={1024} />
-              <div className="absolute inset-0 scrim" />
-              <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-ink/60 px-3 py-1.5 text-xs text-ink-foreground backdrop-blur">
-                <Play className="h-3.5 w-3.5 fill-current" /> ريل · ٠:٤٥
-              </div>
-              {warn.length > 0 && (
-                <div className="absolute left-4 top-4 flex items-center gap-1 rounded-full bg-destructive px-3 py-1.5 text-xs text-destructive-foreground">
-                  <AlertTriangle className="h-3.5 w-3.5" /> يحتوي {warn.join("، ")} · له بديل
-                </div>
-              )}
-              <div className="absolute bottom-24 left-4 flex flex-col gap-4 text-ink-foreground">
-                <button onClick={() => toggleIn("liked", r.id)} className="flex flex-col items-center text-xs" aria-label="إعجاب">
-                  <span className="grid h-11 w-11 place-items-center rounded-full bg-ink/50 backdrop-blur"><Heart className={`h-5 w-5 ${liked ? "fill-destructive text-destructive" : ""}`} /></span>{r.likes}
-                </button>
-                <button onClick={() => toggleIn("saved", r.id)} className="flex flex-col items-center text-xs" aria-label="حفظ">
-                  <span className="grid h-11 w-11 place-items-center rounded-full bg-ink/50 backdrop-blur"><Bookmark className={`h-5 w-5 ${saved ? "fill-gold text-gold" : ""}`} /></span>حفظ
-                </button>
-              </div>
-              <div className="absolute inset-x-0 bottom-0 space-y-3 p-5 text-ink-foreground">
-                <Link to="/chef/$id" params={{ id: chef.id }} className="flex items-center gap-2">
-                  <img src={chef.img} alt={chef.name} className="h-9 w-9 rounded-full border-2 border-gold object-cover" loading="lazy" />
-                  <span className="text-sm font-medium">{chef.name}</span>
-                </Link>
-                <h2 className="text-3xl">{r.title}</h2>
-                <div className="flex items-center gap-3 text-xs opacity-85">
-                  <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{r.time} دقيقة</span>
-                  <span>· {r.region}</span><span>· ~{r.cost} ر.س</span>
-                </div>
-                <Link to="/recipe/$id" params={{ id: r.id }} className="block rounded-2xl bg-card py-3 text-center font-semibold text-foreground">عرض الوصفة</Link>
-              </div>
-            </article>
-          );
-        })}
+      <div className="no-scrollbar mt-5 flex gap-2 overflow-x-auto px-5 lg:px-8">
+        <Chip active={!cat} onClick={() => setCat(null)}>الكل</Chip>
+        {categories.map((c) => <Chip key={c} active={cat === c} onClick={() => setCat(c)}>{c}</Chip>)}
+      </div>
+
+      <section className="mt-5 grid gap-5 px-5 lg:grid-cols-2 lg:px-8 xl:grid-cols-3">
+        {loading && [0, 1].map((i) => <div key={i} className="skeleton h-[540px] rounded-3xl" />)}
+        {!loading && list.length === 0 && (
+          <div className="lg:col-span-2"><EmptyState icon={<SearchX className="h-6 w-6" />} title="لا توجد ريلز هنا بعد" body="جرّب تصنيفاً آخر — نضيف ريلز جديدة أسبوعياً." action={<Chip onClick={() => setCat(null)}>عرض الكل</Chip>} /></div>
+        )}
+        {!loading && list.map((r, idx) => <Reel key={r.id} r={r} s={s} idx={idx} />)}
       </section>
     </AppShell>
+  );
+}
+
+function Reel({ r, s, idx }: { r: Recipe; s: State; idx: number }) {
+  const chef = getChef(r.chefId)!;
+  const { warn, fit, adaptable } = fitFor(r, s);
+  const liked = s.liked.includes(r.id), saved = s.saved.includes(r.id);
+  const share = async () => {
+    const url = `${location.origin}/recipe/${r.id}`;
+    try { await navigator.clipboard.writeText(url); toast.success("تم نسخ رابط الوصفة"); } catch { toast("رابط الوصفة", { description: url }); }
+  };
+  return (
+    <article className="animate-float-up relative h-[540px] overflow-hidden rounded-3xl shadow-soft" style={{ animationDelay: `${idx * 60}ms` }}>
+      <Link to="/recipe/$id" params={{ id: r.id }} aria-label={r.title} className="absolute inset-0">
+        <img src={r.img} alt={r.title} className="h-full w-full object-cover transition duration-700 hover:scale-105" loading={idx ? "lazy" : "eager"} width={768} height={1024} />
+        <div className="absolute inset-0 scrim" />
+      </Link>
+      <div className="pointer-events-none absolute inset-x-4 top-4 flex flex-wrap items-start justify-between gap-2">
+        <span className="flex items-center gap-1.5 rounded-full bg-ink/55 px-3 py-1.5 text-xs text-ink-foreground backdrop-blur"><Play className="h-3.5 w-3.5 fill-current" /> ٠:٤٥</span>
+        {fit && <span className="flex items-center gap-1 rounded-full bg-olive px-3 py-1.5 text-xs font-medium text-olive-foreground"><Sparkles className="h-3.5 w-3.5" /> مناسب لك</span>}
+        {!fit && warn.length > 0 && (
+          <span className="flex items-center gap-1 rounded-full bg-terracotta px-3 py-1.5 text-xs text-primary-foreground">
+            <AlertTriangle className="h-3.5 w-3.5" /> {warn.join("، ")}{adaptable ? " · قابل للتعديل" : ""}
+          </span>
+        )}
+      </div>
+      <div className="absolute bottom-40 end-4 flex flex-col gap-4 text-ink-foreground">
+        <ActionBtn label={r.likes} aria="إعجاب" onClick={() => toggleIn("liked", r.id)}><Heart className={`h-5 w-5 ${liked ? "fill-terracotta text-terracotta" : ""}`} /></ActionBtn>
+        <ActionBtn label={saved ? "محفوظ" : "حفظ"} aria="حفظ" onClick={() => { toggleIn("saved", r.id); toast.success(saved ? "أُزيلت من المحفوظات" : "حُفظت في وصفاتك"); }}><Bookmark className={`h-5 w-5 ${saved ? "fill-gold text-gold" : ""}`} /></ActionBtn>
+        <ActionBtn label="مشاركة" aria="مشاركة" onClick={share}><Share2 className="h-5 w-5" /></ActionBtn>
+      </div>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 space-y-2.5 p-5 text-ink-foreground">
+        <Link to="/chef/$id" params={{ id: chef.id }} className="pointer-events-auto flex w-fit items-center gap-2">
+          <img src={chef.img} alt={chef.name} className="h-9 w-9 rounded-full border-2 border-gold object-cover" loading="lazy" />
+          <span className="text-sm font-medium">{chef.name}</span><BadgeCheck className="h-4 w-4 text-gold" />
+        </Link>
+        <h2 className="text-3xl">{r.title}</h2>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs opacity-90">
+          <span>{r.region}</span>
+          <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{r.time} د</span>
+          <span className="flex items-center gap-1"><Flame className="h-3.5 w-3.5" />{r.nutrition.kcal} سعرة</span>
+          <span className="flex items-center gap-1"><Gauge className="h-3.5 w-3.5" />{r.difficulty}</span>
+        </div>
+        <Link to="/recipe/$id" params={{ id: r.id }} className="press pointer-events-auto block rounded-2xl bg-card py-3 text-center font-semibold text-foreground">عرض الوصفة</Link>
+      </div>
+      {idx === 0 && <div className="absolute end-4 top-14"><DemoBadge label="محتوى تجريبي" /></div>}
+    </article>
+  );
+}
+
+function ActionBtn({ children, label, aria, onClick }: { children: React.ReactNode; label: string; aria: string; onClick: () => void }) {
+  return (
+    <button onClick={onClick} aria-label={aria} className="press flex flex-col items-center gap-1 text-[11px]">
+      <span className="grid h-11 w-11 place-items-center rounded-full bg-ink/50 backdrop-blur">{children}</span>{label}
+    </button>
   );
 }
