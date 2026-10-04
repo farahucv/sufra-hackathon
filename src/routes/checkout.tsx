@@ -36,7 +36,7 @@ function Checkout() {
   if (!s.box || !r) {
     return (
       <AppShell><TopBar title="مراجعة الطلب" />
-        <div className="px-5"><EmptyState icon={<PackageOpen className="h-6 w-6" />} title="لا يوجد صندouق في السلة".replace("ouق", "وق") as never body="اختر وصفة واطلب صندوقها الجاهز للطبخ." action={<Link to="/box/$id" params={{ id: "kabsa" }} className="rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">جرّب صندوق الكبسة</Link>} /></div>
+        <div className="px-5"><EmptyState icon={<PackageOpen className="h-6 w-6" />} title="لا يوجد صندوق في السلة" body="اختر وصفة واطلب صندوقها الجاهز للطبخ." action={<Link to="/box/$id" params={{ id: "kabsa" }} className="rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">جرّب صندوق الكبسة</Link>} /></div>
       </AppShell>
     );
   }
