@@ -12,6 +12,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Toaster } from "sonner";
+import { useStoreSync } from "../lib/store";
 
 function NotFoundComponent() {
   return (
@@ -97,9 +99,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useStoreSync();
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <Toaster position="top-center" toastOptions={{ style: { background: "var(--card)", color: "var(--foreground)", border: "1px solid var(--border)", fontFamily: "var(--font-sans)", borderRadius: "1rem" } }} />
     </QueryClientProvider>
   );
 }
