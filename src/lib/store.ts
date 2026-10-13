@@ -1,5 +1,7 @@
 import { useEffect, useSyncExternalStore } from "react";
-import { ingredientLoc, type Loc } from "./data";
+import { ingredientLoc, recipes, type Loc } from "./data";
+import { registerImported, type ImportedRecipe } from "./import";
+import "./import-backups";
 import { loadDemoProfile, saveDemoProfile } from "./profile.functions";
 import { setLangValue } from "./lang";
 
@@ -9,6 +11,8 @@ export type State = {
   allergies: string[]; dislikes: string[]; saved: string[]; liked: string[];
   pantry: PantryItem[]; lang: "ar" | "en"; journey: number; synced: boolean;
   box: BoxDraft | null; order: Order | null;
+  /** Recipes imported from YouTube, newest first. localStorage only — never synced to demo_profiles. */
+  imported: ImportedRecipe[];
 };
 export type BoxDraft = { recipeId: string; serv: number; subs: Record<string, number> };
 export type Order = BoxDraft & { id: string; address: string; slot: string; pay: string; total: number; stage: number; placedAt: number };
@@ -18,8 +22,9 @@ export const defaults: State = {
   onboarded: false, name: "ضيف سُفرة", diet: "all", household: 4,
   allergies: ["مكسرات"], dislikes: [], saved: ["jareesh"], liked: [],
   pantry: defaultPantry.map((name) => ({ name, loc: ingredientLoc[name] ?? "pantry" })),
-  lang: "ar", journey: 0, synced: false, box: null, order: null,
+  lang: "ar", journey: 0, synced: false, box: null, order: null, imported: [],
 };
+const MAX_IMPORTED = 10;
 
 let state: State = defaults;
 const subs = new Set<() => void>();
@@ -33,23 +38,26 @@ const persist = (localOnly = false) => {
   const { synced: _s, ...data } = state;
   try { localStorage.setItem("sufra-state", JSON.stringify(data)); } catch { /* quota */ }
   if (localOnly) return;
+  const { imported: _i, ...cloud } = data;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
-    saveDemoProfile({ data: { deviceId: getDeviceId(), data } })
+    saveDemoProfile({ data: { deviceId: getDeviceId(), data: cloud } })
       .then(() => { if (!state.synced) setStore(() => ({ synced: true })); })
       .catch(() => {});
   }, 800);
 };
 
 export const getState = () => state;
+/** True once local state (incl. imported recipes) has been loaded in the browser. */
+export const isHydrated = () => hydrated;
 export const setStore = (fn: (s: State) => Partial<State>) => {
   const patch = fn(state);
   state = { ...state, ...patch };
   emit();
   const keys = Object.keys(patch);
   if (keys.length === 1 && keys[0] === "synced") return;
-  // Transient demo-journey steps stay local; never trigger a cloud write.
-  persist(keys.every((k) => k === "journey"));
+  // Transient demo-journey steps and imported recipes stay local; never trigger a cloud write.
+  persist(keys.every((k) => k === "journey" || k === "imported"));
 };
 
 export const toggleIn = (key: "allergies" | "dislikes" | "saved" | "liked", v: string) =>
@@ -60,6 +68,15 @@ export const togglePantry = (name: string, loc?: Loc) =>
   setStore((s) => ({
     pantry: hasPantry(s, name) ? s.pantry.filter((p) => p.name !== name) : [...s.pantry, { name, loc: loc ?? ingredientLoc[name] ?? "pantry" }],
   }));
+
+/** Keep an imported recipe on this device (newest first, capped) and make it resolvable right away. */
+export const addImported = (x: ImportedRecipe) => {
+  registerImported(x);
+  setStore((s) => ({ imported: [x, ...s.imported.filter((i) => i.recipe.id !== x.recipe.id)].slice(0, MAX_IMPORTED) }));
+};
+
+/** Demo recipes plus this device's imported ones (pantry suggestions). */
+export const allRecipes = (s: State) => [...recipes, ...s.imported.map((i) => i.recipe)];
 
 export function useStore() {
   return useSyncExternalStore(
@@ -83,11 +100,13 @@ export function useStoreSync() {
       const local = localStorage.getItem("sufra-state");
       if (local) state = { ...state, ...JSON.parse(local) };
     } catch { /* ignore */ }
+    state = { ...state, imported: Array.isArray(state.imported) ? state.imported.slice(0, MAX_IMPORTED) : [] };
+    state.imported.forEach(registerImported);
     hydrated = true;
     emit();
     loadDemoProfile({ data: { deviceId: getDeviceId() } })
       .then(({ json }) => {
-        if (json) { state = { ...state, ...(JSON.parse(json) as Partial<State>), synced: true }; emit(); }
+        if (json) { const { imported: _i, ...remote } = JSON.parse(json) as Partial<State>; state = { ...state, ...remote, synced: true }; emit(); }
         else persist();
       })
       .catch(() => {});

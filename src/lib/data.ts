@@ -192,7 +192,10 @@ export const regions: { name: string; en: string; img: string; tagline: string; 
     ] },
 ];
 
-export const getRecipe = (id: string) => recipes.find((r) => r.id === id);
+/** Recipes added at runtime (imported from YouTube, demo backups) so getRecipe resolves "imp-*" ids. */
+const registry = new Map<string, Recipe>();
+export const registerRecipes = (rs: Recipe[]) => rs.forEach((r) => registry.set(r.id, r));
+export const getRecipe = (id: string) => recipes.find((r) => r.id === id) ?? registry.get(id);
 export const getChef = (id: string) => chefs.find((c) => c.id === id);
 export const sar = (n: number) => (getLang() === "en" ? `SAR ${n.toFixed(2)}` : `${n.toFixed(2)} ر.س`);
 export const recipeAllergens = (r: Recipe) => [...new Set(r.ingredients.map((i) => i.allergen).filter(Boolean) as string[])];

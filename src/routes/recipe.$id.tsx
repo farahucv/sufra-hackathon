@@ -6,15 +6,18 @@ import { AppShell, DemoBadge } from "@/components/AppShell";
 import { JourneyCallout } from "@/components/Journey";
 import { isBoxEligible } from "@/lib/box";
 import { Package } from "lucide-react";
-import { getRecipe, getChef, baseCost, cheapest, priceOf, sar } from "@/lib/data";
+import { getRecipe, getChef, baseCost, cheapest, priceOf, sar, type Recipe } from "@/lib/data";
+import { isImportedId } from "@/lib/import";
+import { ImportedRecipeFallback, ImportedSource } from "@/components/ImportParts";
 import { hasPantry, matchesAllergy, toggleIn, useStore , setStore } from "@/lib/store";
 import { isEn, list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/recipe/$id")({
   loader: ({ params }) => {
     const r = getRecipe(params.id);
-    if (!r) throw notFound();
-    return { id: r.id, title: r.title };
+    // Imported recipes live in this device's localStorage, so the server can't resolve them — the page does after hydration.
+    if (!r && !isImportedId(params.id)) throw notFound();
+    return { id: params.id, title: r?.title ?? "وصفة مستوردة" };
   },
   head: ({ loaderData }) => ({
     meta: loaderData
@@ -36,8 +39,13 @@ export const Route = createFileRoute("/recipe/$id")({
 
 function RecipePage() {
   const { id } = Route.useLoaderData();
-  const r = getRecipe(id)!;
-  const chef = getChef(r.chefId)!;
+  useStore(); // re-render once hydration registers this device's imported recipes
+  const r = getRecipe(id);
+  return r ? <RecipeView r={r} /> : <ImportedRecipeFallback />;
+}
+
+function RecipeView({ r }: { r: Recipe }) {
+  const chef = getChef(r.chefId);
   const s = useStore();
   const [serv, setServ] = useState(s.household || r.servings);
   const [chosen, setChosen] = useState<Record<string, number>>({});
@@ -80,10 +88,10 @@ function RecipePage() {
 
       <div className="relative -mt-5 rounded-t-3xl bg-background pb-40 pt-6 lg:mt-0 lg:pb-16">
         <div className="px-5 lg:px-8">
-          <Link to="/chef/$id" params={{ id: chef.id }} className="flex items-center gap-3">
+          {chef ? <Link to="/chef/$id" params={{ id: chef.id }} className="flex items-center gap-3">
             <img src={chef.img} alt={t(chef.name)} className="h-11 w-11 rounded-full object-cover" loading="lazy" />
             <div className="flex-1"><p className="flex items-center gap-1 font-semibold">{t(chef.name)}<BadgeCheck className="h-4 w-4 text-olive" /></p><p className="text-xs text-muted-foreground">{t(chef.title)}</p></div>
-          </Link>
+          </Link> : <ImportedSource id={r.id} />}
           <div className="mt-5 grid grid-cols-3 gap-2 text-center">
             <Stat icon={<Clock className="h-4 w-4" />} v={t("{n} د", { n: r.time })} l={t("الوقت")} />
             <Stat icon={<Gauge className="h-4 w-4" />} v={t(r.difficulty)} l={t("الصعوبة")} />

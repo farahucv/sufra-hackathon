@@ -4,57 +4,112 @@ import { Bookmark, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, DemoBadge, TopBar } from "@/components/AppShell";
 import { ImportAnalysisState, ImportFormCard, ImportPrimaryAction, ImportResultCard, importStages } from "@/components/ImportParts";
-import { toggleIn, useStore } from "@/lib/store";
+import { extractRecipe } from "@/lib/import.functions";
+import { backupFor } from "@/lib/import-backups";
+import { addImported, toggleIn, useStore } from "@/lib/store";
+import { parseYouTubeId } from "@/lib/youtube";
 import { t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/import")({
   head: () => ({
     meta: [
       { title: "استيراد وصفة من تيك توك ويوتيوب — سُفرة" },
-      { name: "description", content: "الصق رابط فيديو طبخ وشاهد استخراجاً تجريبياً للمقادير والخطوات والحساسية والتكلفة." },
+      { name: "description", content: "الصق رابط فيديو طبخ من يوتيوب واستخرج المقادير والخطوات والحساسية والتكلفة بالذكاء الاصطناعي." },
       { property: "og:title", content: "استيراد وصفة — سُفرة" },
-      { property: "og:description", content: "حوّل فيديو الطبخ إلى وصفة مكتوبة (عرض تجريبي)." },
+      { property: "og:description", content: "حوّل فيديو الطبخ إلى وصفة مكتوبة بالذكاء الاصطناعي." },
     ],
   }),
   component: ImportPage,
 });
 
+// Live extraction takes ~15s: stages advance on this schedule and the last one spins until the response arrives.
+const LIVE_STAGE_AT = [1200, 3500, 7000, 11000];
+const CLIENT_TIMEOUT_MS = 60_000;
+
+const errorText = (code: string) => {
+  switch (code) {
+    case "NOT_A_RECIPE": return t("هذا الفيديو لا يبدو وصفة طبخ.");
+    case "VIDEO_UNAVAILABLE": return t("الفيديو غير متاح (خاص أو محذوف).");
+    case "TIMEOUT": return t("استغرق الاستخراج وقتاً طويلاً. حاول مرة أخرى.");
+    case "NOT_CONFIGURED": return t("الاستخراج غير مُعدّ على الخادم.");
+    default: return t("تعذّر استخراج الوصفة. حاول مرة أخرى.");
+  }
+};
+
 function ImportPage() {
   const s = useStore();
   const [url, setUrl] = useState("");
   const [phase, setPhase] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState<string>();
   const [stage, setStage] = useState(0);
   const [rid, setRid] = useState("mutabbaq");
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
-  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+  const request = useRef(0); // bumping it makes in-flight responses stale
+  const clear = () => { timers.current.forEach(clearTimeout); timers.current = []; };
+  useEffect(() => () => { clear(); request.current++; }, []);
 
-  const run = () => {
-    if (!/^https?:\/\/(www\.)?(tiktok\.com|youtube\.com|youtu\.be|instagram\.com)\//i.test(url.trim())) { setPhase("error"); return; }
-    setRid(/youtu/i.test(url) ? "kabsa" : "mutabbaq");
-    if (phase === "loading") return;
-    setPhase("loading"); setStage(0);
-    timers.current.forEach(clearTimeout);
+  const finish = (id: string) => { clear(); setStage(importStages().length); setRid(id); setPhase("done"); };
+  const fail = (msg?: string) => { clear(); setErrorMsg(msg); setPhase("error"); };
+  const reset = () => { clear(); request.current++; setPhase("idle"); setErrorMsg(undefined); };
+
+  const live = async (videoId: string, link: string) => {
+    const mine = ++request.current;
+    timers.current = LIVE_STAGE_AT.map((ms, i) => setTimeout(() => setStage(i + 1), ms));
+    let code = "GEMINI_FAILED";
+    try {
+      const x = await Promise.race([
+        extractRecipe({ data: { url: link } }),
+        new Promise<never>((_, reject) => { timers.current.push(setTimeout(() => reject(new Error("TIMEOUT")), CLIENT_TIMEOUT_MS)); }),
+      ]);
+      if (mine !== request.current) return;
+      addImported(x);
+      finish(x.recipe.id);
+      return;
+    } catch (e) {
+      if (mine !== request.current) return;
+      if (e instanceof Error && e.message) code = e.message;
+      console.warn("[import] live extraction failed:", code);
+    }
+    const backup = backupFor(videoId);
+    if (!backup) return fail(errorText(code));
+    addImported(backup);
+    finish(backup.recipe.id);
+    toast(t("عرضنا نسخة محفوظة من هذه الوصفة"), { description: t("تعذّر الاستخراج المباشر الآن.") });
+  };
+
+  // TikTok / Instagram stay a staged demo with a sample recipe.
+  const simulate = () => {
     const n = importStages().length;
     timers.current = [
       ...Array.from({ length: n }, (_, i) => setTimeout(() => setStage(i + 1), 230 * (i + 1))),
-      setTimeout(() => setPhase("done"), 230 * n + 120),
+      setTimeout(() => finish("mutabbaq"), 230 * n + 120),
     ];
+  };
+
+  const run = () => {
+    if (phase === "loading") return;
+    const link = url.trim();
+    const videoId = parseYouTubeId(link);
+    if (!videoId && !/^https?:\/\/(www\.)?(tiktok\.com|instagram\.com)\//i.test(link)) return fail();
+    clear(); setErrorMsg(undefined); setPhase("loading"); setStage(0);
+    if (videoId) void live(videoId, link);
+    else simulate();
   };
 
   return (
     <AppShell>
-      <TopBar title={t("استيراد وصفة")} sub="TikTok · YouTube · Instagram" action={<DemoBadge label={t("استخراج تجريبي")} />} />
+      <TopBar title={t("استيراد وصفة")} sub="TikTok · YouTube · Instagram" action={<DemoBadge label={t("استخراج بالذكاء الاصطناعي")} />} />
       <div className="space-y-5 px-5 lg:px-8">
-        <ImportFormCard url={url} error={phase === "error"} loading={phase === "loading"}
-          onUrl={(v) => { setUrl(v); if (phase === "error") setPhase("idle"); }}
-          onSample={(u) => { setUrl(u); setPhase("idle"); }} onRun={run} />
+        <ImportFormCard url={url} error={phase === "error"} errorMsg={errorMsg} loading={phase === "loading"}
+          onUrl={(v) => { setUrl(v); if (phase === "error") reset(); }}
+          onSample={(u) => { setUrl(u); reset(); }} onRun={run} />
         {phase === "loading" && <ImportAnalysisState stage={stage} />}
         {phase === "done" && (
           <ImportResultCard rid={rid} allergies={s.allergies} actions={
             <div className="flex gap-2">
               <ImportPrimaryAction rid={rid} />
               <button onClick={() => { if (!s.saved.includes(rid)) toggleIn("saved", rid); toast.success(t("حُفظت في وصفاتك")); }} className="press grid w-12 place-items-center rounded-2xl border" aria-label={t("حفظ")}><Bookmark className="h-5 w-5" /></button>
-              <button onClick={() => { setPhase("idle"); setUrl(""); }} className="press grid w-12 place-items-center rounded-2xl border" aria-label={t("استيراد آخر")}><RotateCcw className="h-5 w-5" /></button>
+              <button onClick={() => { reset(); setUrl(""); }} className="press grid w-12 place-items-center rounded-2xl border" aria-label={t("استيراد آخر")}><RotateCcw className="h-5 w-5" /></button>
             </div>
           } />
         )}

@@ -10,7 +10,7 @@ if (!url) {
 
 const started = Date.now();
 try {
-  const { recipe, en, source } = await extractImportedRecipe(url, model ? { model } : {});
+  const { recipe, en, source } = await extractImportedRecipe(url, { model });
   console.log(`# Extracted in ${((Date.now() - started) / 1000).toFixed(1)}s by ${source.model} from ${source.url}\n`);
   console.log("## Recipe");
   console.log(JSON.stringify(recipe, null, 2));

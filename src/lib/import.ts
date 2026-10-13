@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { allergensList, categories, prices, recipes, type Ingredient, type Recipe, type Sub } from "./data";
-import { hasTranslation } from "./i18n";
-import { youtubeThumb } from "./youtube";
+import { allergensList, categories, prices, recipes, registerRecipes, type Ingredient, type Recipe, type Sub } from "./data";
+import { hasTranslation, registerTranslations } from "./i18n";
+import { youtubeThumb, youtubeWatchUrl } from "./youtube";
 
 // Real recipe import: shape of the Gemini extraction and its mapping onto the app's Recipe type.
 // Client-safe (no secrets) — the Gemini call itself lives in gemini.server.ts.
@@ -50,6 +50,16 @@ export type ImportedRecipe = {
   en: Record<string, string>;
   source: { videoId: string; url: string; model: string };
 };
+
+export const isImportedId = (id: string) => id.startsWith("imp-");
+/** Original video for an imported recipe id ("imp-<videoId>"). */
+export const importSourceUrl = (id: string) => (isImportedId(id) ? youtubeWatchUrl(id.slice(4)) : undefined);
+
+/** Make an imported recipe resolvable by getRecipe and its dynamic text translatable by t(). */
+export function registerImported(x: ImportedRecipe) {
+  registerRecipes([x.recipe]);
+  registerTranslations(x.en);
+}
 
 const int = (n: number, min = 0) => Math.max(min, Math.round(n));
 

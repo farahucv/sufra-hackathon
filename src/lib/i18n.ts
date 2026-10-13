@@ -8,13 +8,19 @@ import { getLang } from "./lang";
  * Use {name} placeholders for interpolation: t("{n} حصص", { n: 4 }).
  */
 const dict = en as Record<string, string>;
+/** Runtime translations for dynamic content (imported recipes); never overrides the curated dictionary. */
+const extra: Record<string, string> = {};
 const missing = new Set<string>();
+
+export function registerTranslations(m: Record<string, string>) {
+  for (const k in m) if (!(k in dict) && m[k]) extra[k] = m[k];
+}
 
 export function t(ar: string | null | undefined, vars?: Record<string, string | number>): string {
   if (ar == null) return "";
   let s = ar;
   if (getLang() === "en") {
-    const e = dict[ar];
+    const e = dict[ar] ?? extra[ar];
     if (e === undefined) {
       if (!/[\u0600-\u06FF]/.test(ar)) return interpolate(ar, vars); // already English / user input
       if (!missing.has(ar)) { missing.add(ar); console.warn("[i18n] missing English for:", ar); }

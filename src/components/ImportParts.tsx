@@ -2,18 +2,19 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Sparkles, Loader2, CheckCircle2, Clipboard, AlertTriangle, Youtube, Music2 } from "lucide-react";
 import { getRecipe, recipeAllergens, baseCost, sar } from "@/lib/data";
-import { matchesAllergy } from "@/lib/store";
+import { importSourceUrl, isImportedId } from "@/lib/import";
+import { isHydrated, matchesAllergy } from "@/lib/store";
 import { list, t } from "@/lib/i18n";
 
 /** Shared presentational pieces of the Import screen (used by /import and /submission-visual). */
 export const importSamples = [
   { icon: Music2, label: "TikTok", url: "https://www.tiktok.com/@chef.noura/video/7391022", id: "mutabbaq" },
-  { icon: Youtube, label: "YouTube", url: "https://youtu.be/kabsa-najdi-2026", id: "kabsa" },
+  { icon: Youtube, label: "YouTube", url: "https://youtu.be/wHonhtAaXos", id: "imp-wHonhtAaXos" },
 ];
 export const importStages = () => [t("تحليل الفيديو والإطارات"), t("تفريغ الصوت والنص"), t("استخراج المقادير والكميات"), t("ترتيب الخطوات"), t("فحص الحساسية وحساب التكلفة")];
 
-export function ImportFormCard({ url, error, loading, onUrl, onSample, onRun, showNote = true, showRun = true }: {
-  url: string; error?: boolean; loading?: boolean; onUrl?: (v: string) => void; onSample?: (u: string) => void; onRun?: () => void; showNote?: boolean; showRun?: boolean;
+export function ImportFormCard({ url, error, errorMsg, loading, onUrl, onSample, onRun, showNote = true, showRun = true }: {
+  url: string; error?: boolean; errorMsg?: string | undefined; loading?: boolean; onUrl?: (v: string) => void; onSample?: (u: string) => void; onRun?: () => void; showNote?: boolean; showRun?: boolean;
 }) {
   return (
     <div className="rounded-2xl bg-card p-5 shadow-soft">
@@ -23,7 +24,7 @@ export function ImportFormCard({ url, error, loading, onUrl, onSample, onRun, sh
         <input id="url" dir="ltr" value={url} readOnly={!onUrl} placeholder="https://www.tiktok.com/@chef/video/…" onChange={(e) => onUrl?.(e.target.value)}
           className="min-w-0 flex-1 bg-transparent py-3 text-sm outline-none" />
       </div>
-      {error && <p className="mt-2 flex items-center gap-1 text-xs text-terracotta"><AlertTriangle className="h-3.5 w-3.5" /> {t("الرابط غير مدعوم. جرّب رابط تيك توك أو يوتيوب أو إنستغرام.")}</p>}
+      {error && <p className="mt-2 flex items-center gap-1 text-xs text-terracotta"><AlertTriangle className="h-3.5 w-3.5 shrink-0" /> {errorMsg ?? t("الرابط غير مدعوم. جرّب رابط تيك توك أو يوتيوب أو إنستغرام.")}</p>}
       <div className="mt-3 flex flex-wrap gap-2">
         <span className="text-xs text-muted-foreground">{t("جرّب مثالاً:")}</span>
         {importSamples.map(({ icon: I, label, url: u }) => (
@@ -34,7 +35,7 @@ export function ImportFormCard({ url, error, loading, onUrl, onSample, onRun, sh
         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5 text-gold" />}
         {t("استخرج الوصفة")}
       </button>}
-      {showNote && <p className="mt-3 text-center text-[11px] text-muted-foreground">{t("نموذج عرض: النتيجة محاكاة من وصفات تجريبية، وليست استخراجاً حياً من الفيديو.")}</p>}
+      {showNote && <p className="mt-3 text-center text-[11px] text-muted-foreground">{t("روابط يوتيوب تُستخرج فعلياً بالذكاء الاصطناعي؛ تيك توك وإنستغرام عرض تجريبي.")}</p>}
     </div>
   );
 }
@@ -82,7 +83,7 @@ export function ImportResultCard({ rid, allergies, actions, layout = "stack", im
       <div className={`rounded-2xl p-3 text-sm ${warn.length ? "bg-terracotta-soft" : "bg-accent/50"}`}>
         <p className="font-semibold">{warn.length ? t("⚠ حساسية مكتشفة") : t("✓ لا حساسية من قائمتك")}</p>
         <p className="mt-1 text-xs text-muted-foreground">{t("يحتوي:")} {list(recipeAllergens(r)) || "—"}</p>
-        {r.ingredients.filter((i) => i.allergen && matchesAllergy(i.allergen, allergies)).map((i) => <p key={i.key} className="mt-1 text-xs">{t("بديل")} {t(i.key)}: <b className="text-olive">{i.subs?.[0]?.name}</b></p>)}
+        {r.ingredients.filter((i) => i.allergen && matchesAllergy(i.allergen, allergies)).map((i) => <p key={i.key} className="mt-1 text-xs">{t("بديل")} {t(i.key)}: <b className="text-olive">{t(i.subs?.[0]?.name)}</b></p>)}
       </div>
       {showCost && <div className="rounded-2xl bg-secondary p-3 text-sm">
         <p className="font-semibold">{t("التكلفة التقديرية")}</p>
@@ -107,7 +108,38 @@ export function ImportResultCard({ rid, allergies, actions, layout = "stack", im
       ) : (
         <div className="space-y-5 p-5">{ingredients}{steps}{panels}{actions}</div>
       )}
+      {isImportedId(rid) && <div className={wide ? "px-6 pb-6" : "px-5 pb-5"}><ImportedNote /></div>}
     </article>
+  );
+}
+
+/** Shown wherever an AI-imported recipe is displayed. */
+export function ImportedNote() {
+  return <p className="flex items-center gap-1.5 rounded-xl bg-gold/15 px-3 py-2 text-xs"><Sparkles className="h-3.5 w-3.5 shrink-0 text-gold" />{t("مستخرجة بالذكاء الاصطناعي، راجع المقادير")}</p>;
+}
+
+/** Source row shown instead of the chef on imported recipes. */
+export function ImportedSource({ id }: { id: string }) {
+  const href = importSourceUrl(id);
+  return (
+    <div className="space-y-3">
+      {href && <a href={href} target="_blank" rel="noreferrer" className="flex items-center gap-3">
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-terracotta-soft text-terracotta"><Youtube className="h-5 w-5" /></span>
+        <span className="flex-1"><span className="block font-semibold">{t("وصفة مستوردة من يوتيوب")}</span><span className="block text-xs text-muted-foreground">{t("شاهد الفيديو الأصلي")}</span></span>
+      </a>}
+      <ImportedNote />
+    </div>
+  );
+}
+
+/** For "imp-*" pages whose recipe isn't registered yet: loading until local state hydrates, then not found. */
+export function ImportedRecipeFallback() {
+  return (
+    <div className="grid min-h-screen place-items-center p-8 text-center">
+      {isHydrated() ? (
+        <div><p className="font-display text-2xl">{t("الوصفة غير موجودة")}</p><Link to="/import" className="mt-4 inline-block rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">{t("استيراد وصفة")}</Link></div>
+      ) : <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" aria-label={t("جارٍ تحميل الوصفة…")} />}
+    </div>
   );
 }
 

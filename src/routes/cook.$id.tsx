@@ -1,14 +1,20 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { X, Timer, Lightbulb, PartyPopper, Pause, Play, RotateCcw } from "lucide-react";
-import { getRecipe } from "@/lib/data";
+import { getRecipe, type Recipe } from "@/lib/data";
+import { isImportedId } from "@/lib/import";
+import { ImportedRecipeFallback } from "@/components/ImportParts";
 import { buildBox, chefTips } from "@/lib/box";
 import { setStore, useStore } from "@/lib/store";
 import { toast } from "sonner";
 import { t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/cook/$id")({
-  loader: ({ params }) => { const r = getRecipe(params.id); if (!r) throw notFound(); return { id: r.id, title: r.title }; },
+  loader: ({ params }) => {
+    const r = getRecipe(params.id);
+    if (!r && !isImportedId(params.id)) throw notFound(); // imported recipes resolve after hydration
+    return { id: params.id, title: r?.title ?? "وصفة مستوردة" };
+  },
   head: ({ loaderData }) => {
     const t = loaderData ? `وضع الطبخ: ${loaderData.title} — سُفرة` : "وضع الطبخ — سُفرة";
     return { meta: [
@@ -22,7 +28,12 @@ export const Route = createFileRoute("/cook/$id")({
 
 function Cook() {
   const { id } = Route.useLoaderData();
-  const r = getRecipe(id)!;
+  useStore(); // re-render once hydration registers this device's imported recipes
+  const r = getRecipe(id);
+  return r ? <CookView r={r} /> : <ImportedRecipeFallback />;
+}
+
+function CookView({ r }: { r: Recipe }) {
   const s = useStore();
   const nav = useNavigate();
   const o = s.order?.recipeId === r.id ? s.order : null;

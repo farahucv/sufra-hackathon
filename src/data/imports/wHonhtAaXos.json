@@ -1,0 +1,155 @@
+{
+  "recipe": {
+    "id": "imp-wHonhtAaXos",
+    "title": "كبسة دجاج",
+    "en": "Chicken Kabsa",
+    "img": "https://i.ytimg.com/vi/wHonhtAaXos/hqdefault.jpg",
+    "chefId": "imported",
+    "region": "من يوتيوب",
+    "likes": "جديد",
+    "time": 60,
+    "servings": 4,
+    "difficulty": "متوسط",
+    "cats": [
+      "سعودي"
+    ],
+    "nutrition": {
+      "kcal": 650,
+      "protein": 35,
+      "carbs": 85,
+      "fat": 18
+    },
+    "ingredients": [
+      {
+        "key": "أرز",
+        "qty": 2.5,
+        "unit": "كوب"
+      },
+      {
+        "key": "دجاج",
+        "qty": 900,
+        "unit": "غ"
+      },
+      {
+        "key": "بصل",
+        "qty": 2,
+        "unit": "حبة"
+      },
+      {
+        "key": "طماطم",
+        "qty": 2,
+        "unit": "حبة"
+      },
+      {
+        "key": "مكسرات مشكلة",
+        "qty": 0.5,
+        "unit": "كوب",
+        "allergen": "مكسرات",
+        "subs": [
+          {
+            "name": "بذور دوار الشمس",
+            "reason": "بديل مقرمش وخالٍ من المكسرات.",
+            "impact": "نكهة مختلفة · قوام مشابه",
+            "kcal": 0,
+            "cost": -5
+          }
+        ]
+      },
+      {
+        "key": "زبيب",
+        "qty": 0.25,
+        "unit": "كوب"
+      },
+      {
+        "key": "بهارات كبسة",
+        "qty": 0.75,
+        "unit": "م.ص"
+      },
+      {
+        "key": "جوزة الطيب",
+        "qty": 0.25,
+        "unit": "م.ص"
+      },
+      {
+        "key": "فلفل أسود",
+        "qty": 0.75,
+        "unit": "م.ص"
+      },
+      {
+        "key": "زنجبيل وثوم",
+        "qty": 1,
+        "unit": "م.ص"
+      },
+      {
+        "key": "قرفة",
+        "qty": 2,
+        "unit": "حبة"
+      },
+      {
+        "key": "زيت",
+        "qty": 0.5,
+        "unit": "كوب"
+      }
+    ],
+    "steps": [
+      {
+        "t": "اغسل الأرز وانقعه مع البهارات (غرام ماسالا، جوزة الطيب، فلفل أسود) لمدة نصف ساعة.",
+        "min": 30
+      },
+      {
+        "t": "اسلق الدجاج مع أعواد القرفة في الماء حتى ينضج نصف نضج، ثم ارفعه واترك المرق جانباً.",
+        "min": 15
+      },
+      {
+        "t": "حمّر البصل في الزيت، ثم أضف معجون الزنجبيل والثوم والطماطم المقطعة وقلبها.",
+        "min": 5
+      },
+      {
+        "t": "أضف الأرز المتبل إلى القدر وقلبه مع البصل والطماطم لمدة دقيقتين.",
+        "min": 2
+      },
+      {
+        "t": "اسكب مرق الدجاج فوق الأرز واتركه يغلي حتى ينضج.",
+        "min": 10
+      },
+      {
+        "t": "غطِّ القدر بقطعة قماش واتركه على نار هادئة ليتشرب النكهات.",
+        "min": 8
+      },
+      {
+        "t": "حمّر قطع الدجاج المسلوقة في مقلاة منفصلة مع القليل من الزيت.",
+        "min": 5
+      },
+      {
+        "t": "حمّص المكسرات والزبيب في الزيت.",
+        "min": 2
+      },
+      {
+        "t": "قدّم الأرز في طبق كبير، وزيّنه بالدجاج المحمّر والمكسرات والزبيب."
+      }
+    ]
+  },
+  "en": {
+    "مكسرات مشكلة": "Mixed nuts",
+    "بذور دوار الشمس": "Sunflower seeds",
+    "بديل مقرمش وخالٍ من المكسرات.": "A crunchy, nut-free alternative.",
+    "نكهة مختلفة · قوام مشابه": "Different flavor · Similar texture",
+    "جوزة الطيب": "Nutmeg powder",
+    "زنجبيل وثوم": "Ginger garlic paste",
+    "قرفة": "Cinnamon sticks",
+    "اغسل الأرز وانقعه مع البهارات (غرام ماسالا، جوزة الطيب، فلفل أسود) لمدة نصف ساعة.": "Wash and soak the rice with the spices (garam masala, nutmeg, black pepper) for half an hour.",
+    "اسلق الدجاج مع أعواد القرفة في الماء حتى ينضج نصف نضج، ثم ارفعه واترك المرق جانباً.": "Boil the chicken with cinnamon sticks in water until half-cooked, then remove and set the broth aside.",
+    "حمّر البصل في الزيت، ثم أضف معجون الزنجبيل والثوم والطماطم المقطعة وقلبها.": "Sauté the onions in oil, then add the ginger-garlic paste and chopped tomatoes and stir.",
+    "أضف الأرز المتبل إلى القدر وقلبه مع البصل والطماطم لمدة دقيقتين.": "Add the seasoned rice to the pot and stir with the onions and tomatoes for two minutes.",
+    "اسكب مرق الدجاج فوق الأرز واتركه يغلي حتى ينضج.": "Pour the chicken broth over the rice and let it boil until cooked.",
+    "غطِّ القدر بقطعة قماش واتركه على نار هادئة ليتشرب النكهات.": "Cover the pot with a cloth and let it simmer on low heat to absorb the flavors.",
+    "حمّر قطع الدجاج المسلوقة في مقلاة منفصلة مع القليل من الزيت.": "Fry the boiled chicken pieces in a separate pan with a little oil.",
+    "حمّص المكسرات والزبيب في الزيت.": "Roast the nuts and raisins in oil.",
+    "قدّم الأرز في طبق كبير، وزيّنه بالدجاج المحمّر والمكسرات والزبيب.": "Serve the rice on a large platter, topped with the fried chicken, nuts, and raisins."
+  },
+  "source": {
+    "videoId": "wHonhtAaXos",
+    "url": "https://www.youtube.com/watch?v=wHonhtAaXos",
+    "model": "gemini-3.1-flash-lite"
+  }
+}

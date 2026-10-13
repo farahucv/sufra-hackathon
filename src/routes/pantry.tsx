@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Plus, CheckCircle2, ScanLine, Loader2, Refrigerator, Snowflake, Archive, X, ShoppingCart, PackageOpen } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
-import { locations, quickAdd, recipes, type Loc } from "@/lib/data";
-import { hasPantry, setStore, togglePantry, useStore, useTr } from "@/lib/store";
+import { locations, quickAdd, type Loc } from "@/lib/data";
+import { allRecipes, hasPantry, setStore, togglePantry, useStore, useTr } from "@/lib/store";
 import { list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/pantry")({
@@ -44,7 +44,7 @@ function Pantry() {
     }, 600);
   };
 
-  const scored = recipes.map((r) => ({ r, miss: r.ingredients.filter((i) => !hasPantry(s, i.key)).map((i) => i.key) }));
+  const scored = allRecipes(s).map((r) => ({ r, miss: r.ingredients.filter((i) => !hasPantry(s, i.key)).map((i) => i.key) }));
   const ready = scored.filter((x) => x.miss.length === 0);
   const almost = scored.filter((x) => x.miss.length > 0 && x.miss.length <= 2).sort((a, b) => a.miss.length - b.miss.length);
 

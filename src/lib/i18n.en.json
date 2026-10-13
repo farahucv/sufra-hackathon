@@ -673,5 +673,18 @@
  "شريحة": "slice",
  "رشة": "pinch",
  "من يوتيوب": "From YouTube",
- "جديد": "New"
+ "جديد": "New",
+ "مستخرجة بالذكاء الاصطناعي، راجع المقادير": "AI-extracted — please double-check the ingredients",
+ "روابط يوتيوب تُستخرج فعلياً بالذكاء الاصطناعي؛ تيك توك وإنستغرام عرض تجريبي.": "YouTube links are extracted live with AI; TikTok and Instagram are a demo.",
+ "وصفة مستوردة من يوتيوب": "Imported from YouTube",
+ "شاهد الفيديو الأصلي": "Watch the original video",
+ "جارٍ تحميل الوصفة…": "Loading recipe…",
+ "استخراج بالذكاء الاصطناعي": "AI extraction",
+ "هذا الفيديو لا يبدو وصفة طبخ.": "This video doesn’t look like a cooking recipe.",
+ "الفيديو غير متاح (خاص أو محذوف).": "This video is unavailable (private or removed).",
+ "استغرق الاستخراج وقتاً طويلاً. حاول مرة أخرى.": "Extraction took too long. Please try again.",
+ "الاستخراج غير مُعدّ على الخادم.": "Extraction isn’t configured on the server.",
+ "تعذّر استخراج الوصفة. حاول مرة أخرى.": "Couldn’t extract the recipe. Please try again.",
+ "عرضنا نسخة محفوظة من هذه الوصفة": "Showing a saved copy of this recipe",
+ "تعذّر الاستخراج المباشر الآن.": "Live extraction failed just now."
 }
