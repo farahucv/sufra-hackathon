@@ -30,6 +30,7 @@ const subSchema = obj({
   impact_ar: S("Effect on taste/health/price, 2 short phrases joined by ' · '"), impact_en: S(),
   kcal: I("Change in total recipe kcal vs the original ingredient (negative = fewer)"),
   cost: N("Change in cost in SAR vs the original ingredient at Saudi supermarket prices (negative = cheaper)"),
+  allergen: { type: "STRING", enum: [...allergensList, NO_ALLERGEN], description: "Allergen the substitute itself contains, else none" },
 });
 
 const ingredientSchema = obj({
@@ -72,7 +73,7 @@ function ingredientRules() {
   KNOWN KEYS: ${knownIngredientKeys.join("، ")}
 - unit: exactly one of: ${IMPORT_UNITS.join("، ")} (م.ك = tablespoon, م.ص = teaspoon, غ = grams, كغ = kg, مل = ml, حبة = piece, فص = clove, رشة = pinch).
 - allergen: exactly one of: ${allergensList.join("، ")} — or "${NO_ALLERGEN}". Nuts = tree nuts and peanuts; dairy (ألبان) = milk, butter, ghee (سمن), cheese, yogurt, cream; gluten (جلوتين) = wheat flour, bread, pasta, bulgur, freekeh, semolina, dough, vermicelli; seafood = fish and shellfish; sesame = seeds and tahini; soy = soy sauce, tofu.
-- subs: for an ingredient with an allergen, give 1-2 realistic substitutes free of that allergen. Return an empty array if allergen is "${NO_ALLERGEN}" or the key is one of: ${curatedSubKeys.join("، ")}.`;
+- subs: for an ingredient with an allergen, give 1-2 realistic substitutes free of that allergen. A substitute must never contain any of the 7 allergens above unless unavoidable, and must be tagged with that allergen if it does (e.g. almond flour → مكسرات, oat milk → جلوتين, yogurt → ألبان); otherwise tag it "${NO_ALLERGEN}". Return an empty array if allergen is "${NO_ALLERGEN}" or the key is one of: ${curatedSubKeys.join("، ")}.`;
 }
 
 type GeminiResponse = {

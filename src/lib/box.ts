@@ -1,4 +1,4 @@
-import { cheapest, priceOf, type Recipe } from "./data";
+import { cheapest, priceOf, safeSubs, type Recipe } from "./data";
 import { t } from "./i18n";
 
 // ⚠ Demo data only — box pricing, suppliers and delivery are illustrative.
@@ -40,7 +40,7 @@ export function buildBox(r: Recipe, serv: number, subs: Record<string, number>) 
 /** Pick the first safe substitute for every ingredient that conflicts with the user's allergies. */
 export function autoSubs(r: Recipe, allergies: string[]) {
   const out: Record<string, number> = {};
-  r.ingredients.forEach((i) => { if (i.allergen && allergies.includes(i.allergen) && i.subs?.length) out[i.key] = 0; });
+  r.ingredients.forEach((i) => { const first = safeSubs(i, allergies)[0]; if (i.allergen && allergies.includes(i.allergen) && first) out[i.key] = first.n; });
   return out;
 }
 export const unsafeLeft = (r: Recipe, allergies: string[], subs: Record<string, number>) =>

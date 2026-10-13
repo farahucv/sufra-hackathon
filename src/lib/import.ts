@@ -26,6 +26,7 @@ const text = z.string().trim().min(1);
 const rawSub = z.object({
   name_ar: text, name_en: text, reason_ar: text, reason_en: text, impact_ar: text, impact_en: text,
   kcal: z.number(), cost: z.number(),
+  allergen: z.string(),
 });
 export const extractionSchema = z.object({
   isRecipe: z.boolean(),
@@ -61,6 +62,10 @@ export function registerImported(x: ImportedRecipe) {
   registerTranslations(x.en);
 }
 
+/** "crushed biscuits" → "Crushed biscuits" (matches the curated dictionary's style). */
+export const capFirst = (s: string) => { const x = s.trim(); return x.charAt(0).toUpperCase() + x.slice(1); };
+const tag = (a: string) => (allergensList.includes(a) ? a : null);
+
 const int = (n: number, min = 0) => Math.max(min, Math.round(n));
 
 /** Map a validated extraction onto Recipe. Throws "NOT_A_RECIPE" if the video isn't a usable recipe. */
@@ -72,7 +77,7 @@ export function toImportedRecipe(x: Extraction, source: ImportedRecipe["source"]
 
   const ingredients: Ingredient[] = [];
   for (const i of x.ingredients) {
-    const key = tr(i.key_ar.trim(), i.name_en);
+    const key = tr(i.key_ar.trim(), capFirst(i.name_en));
     const qty = Math.round(Math.max(0, i.qty) * 100) / 100;
     const dup = ingredients.find((g) => g.key === key);
     if (dup) { if (dup.unit === i.unit) dup.qty = Math.round((dup.qty + qty) * 100) / 100; continue; }
@@ -82,8 +87,8 @@ export function toImportedRecipe(x: Extraction, source: ImportedRecipe["source"]
     if (allergen) {
       ing.allergen = allergen;
       const subs = known?.subs ?? i.subs.slice(0, MAX_SUBS).map((s): Sub => ({
-        name: tr(s.name_ar, s.name_en), reason: tr(s.reason_ar, s.reason_en), impact: tr(s.impact_ar, s.impact_en),
-        kcal: Math.round(s.kcal), cost: Math.round(s.cost * 100) / 100,
+        name: tr(s.name_ar, capFirst(s.name_en)), reason: tr(s.reason_ar, s.reason_en), impact: tr(s.impact_ar, s.impact_en),
+        kcal: Math.round(s.kcal), cost: Math.round(s.cost * 100) / 100, allergen: tag(s.allergen),
       }));
       if (subs.length) ing.subs = subs;
     }

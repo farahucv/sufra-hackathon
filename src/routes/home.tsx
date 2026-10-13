@@ -6,7 +6,7 @@ import { AppShell, Chip, EmptyState, Wordmark } from "@/components/AppShell";
 import { JourneyCallout, startJourney } from "@/components/Journey";
 import { BoxArt } from "@/components/BoxArt";
 import { buildBox } from "@/lib/box";
-import { categories, sar, recipes, getChef, recipeAllergens, type Recipe } from "@/lib/data";
+import { categories, sar, recipes, getChef, recipeAllergens, safeSubs, type Recipe } from "@/lib/data";
 import { matchesAllergy, toggleIn, useStore, useTr, type State } from "@/lib/store";
 import { isEn, list, t } from "@/lib/i18n";
 
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/home")({
 export function fitFor(r: Recipe, s: State) {
   const warn = recipeAllergens(r).filter((a) => matchesAllergy(a, s.allergies));
   const dietOk = s.diet === "veg" ? r.cats.includes("نباتي") : s.diet === "healthy" ? r.nutrition.kcal < 560 : s.diet === "highprotein" ? r.nutrition.protein >= 30 : true;
-  return { warn, fit: warn.length === 0 && dietOk, adaptable: warn.length > 0 && r.ingredients.every((i) => !i.allergen || !s.allergies.includes(i.allergen) || i.subs?.length) };
+  return { warn, fit: warn.length === 0 && dietOk, adaptable: warn.length > 0 && r.ingredients.every((i) => !i.allergen || !s.allergies.includes(i.allergen) || safeSubs(i, s.allergies).length > 0) };
 }
 
 function HomePage() {

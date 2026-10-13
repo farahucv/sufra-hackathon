@@ -25,6 +25,8 @@ export const Route = createFileRoute("/import")({
 // Live extraction takes ~15s: stages advance on this schedule and the last one spins until the response arrives.
 const LIVE_STAGE_AT = [1200, 3500, 7000, 11000];
 const CLIENT_TIMEOUT_MS = 60_000;
+/** Demo videos with a bundled backup don't keep the audience waiting: after this, show the saved copy. */
+const BACKUP_TIMEOUT_MS = 25_000;
 
 const errorText = (code: string) => {
   switch (code) {
@@ -54,12 +56,14 @@ function ImportPage() {
 
   const live = async (videoId: string, link: string) => {
     const mine = ++request.current;
+    const backup = backupFor(videoId);
+    const limit = backup ? BACKUP_TIMEOUT_MS : CLIENT_TIMEOUT_MS;
     timers.current = LIVE_STAGE_AT.map((ms, i) => setTimeout(() => setStage(i + 1), ms));
     let code = "GEMINI_FAILED";
     try {
       const x = await Promise.race([
         extractRecipe({ data: { url: link } }),
-        new Promise<never>((_, reject) => { timers.current.push(setTimeout(() => reject(new Error("TIMEOUT")), CLIENT_TIMEOUT_MS)); }),
+        new Promise<never>((_, reject) => { timers.current.push(setTimeout(() => reject(new Error("TIMEOUT")), limit)); }),
       ]);
       if (mine !== request.current) return;
       addImported(x);
@@ -70,7 +74,6 @@ function ImportPage() {
       if (e instanceof Error && e.message) code = e.message;
       console.warn("[import] live extraction failed:", code);
     }
-    const backup = backupFor(videoId);
     if (!backup) return fail(errorText(code));
     addImported(backup);
     finish(backup.recipe.id);

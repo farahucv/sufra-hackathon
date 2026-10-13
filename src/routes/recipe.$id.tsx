@@ -6,7 +6,7 @@ import { AppShell, DemoBadge } from "@/components/AppShell";
 import { JourneyCallout } from "@/components/Journey";
 import { isBoxEligible } from "@/lib/box";
 import { Package } from "lucide-react";
-import { getRecipe, getChef, baseCost, cheapest, priceOf, sar, type Recipe } from "@/lib/data";
+import { getRecipe, getChef, baseCost, cheapest, priceOf, safeSubs, sar, type Recipe } from "@/lib/data";
 import { isImportedId } from "@/lib/import";
 import { ImportedRecipeFallback, ImportedSource } from "@/components/ImportParts";
 import { hasPantry, matchesAllergy, toggleIn, useStore , setStore } from "@/lib/store";
@@ -64,7 +64,7 @@ function RecipeView({ r }: { r: Recipe }) {
 
   const applyAll = () => {
     const next = { ...chosen };
-    flagged.forEach((i) => { if (i.subs?.length && next[i.key] === undefined) next[i.key] = 0; });
+    flagged.forEach((i) => { const first = safeSubs(i, s.allergies)[0]; if (first && next[i.key] === undefined) next[i.key] = first.n; });
     setChosen(next);
     toast.success(t("طُبّقت البدائل الآمنة"), { description: t("أصبحت الوصفة مناسبة لملفك الغذائي.") });
   };
@@ -122,7 +122,8 @@ function RecipeView({ r }: { r: Recipe }) {
                       <p className="text-sm"><span className="font-semibold">{t(i.key)}</span> <span className="text-xs text-terracotta">{t("· يحتوي")} {t(i.allergen)}</span></p>
                       <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground"><Sparkles className="h-3.5 w-3.5 text-gold" /> {t("بدائل مقترحة")}</p>
                       <div className="mt-2 space-y-2">
-                        {i.subs?.map((sub, n) => {
+                        {safeSubs(i, s.allergies).length === 0 && <p className="text-xs text-terracotta">{t("لا يوجد بديل آمن لملفك الغذائي")}</p>}
+                        {safeSubs(i, s.allergies).map(({ sub, n }) => {
                           const on = chosen[i.key] === n;
                           return (
                             <button key={sub.name} onClick={() => setChosen((c) => { const x = { ...c }; if (on) delete x[i.key]; else x[i.key] = n; return x; })}

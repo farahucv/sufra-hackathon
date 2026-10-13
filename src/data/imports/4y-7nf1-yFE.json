@@ -1,0 +1,199 @@
+{
+  "recipe": {
+    "id": "imp-4y-7nf1-yFE",
+    "title": "بسبوسة بطبقة البسكويت والقشطة",
+    "en": "Biscuit Base Cream Basbousa",
+    "img": "https://i.ytimg.com/vi/4y-7nf1-yFE/hqdefault.jpg",
+    "chefId": "imported",
+    "region": "من يوتيوب",
+    "likes": "جديد",
+    "time": 25,
+    "servings": 6,
+    "difficulty": "سهل",
+    "cats": [
+      "حلويات",
+      "سريع"
+    ],
+    "nutrition": {
+      "kcal": 380,
+      "protein": 6,
+      "carbs": 44,
+      "fat": 20
+    },
+    "ingredients": [
+      {
+        "key": "بسكويت مطحون",
+        "qty": 1,
+        "unit": "كوب",
+        "allergen": "جلوتين",
+        "subs": [
+          {
+            "name": "بسكويت خالي من الجلوتين",
+            "reason": "بديل مناسب لمرضى حساسية القمح مع نفس القوام المقرمش",
+            "impact": "قوام مشابه · تكلفة أعلى قليلاً",
+            "kcal": 0,
+            "cost": 4,
+            "allergen": "ألبان"
+          }
+        ]
+      },
+      {
+        "key": "زبدة",
+        "qty": 50,
+        "unit": "غ",
+        "allergen": "ألبان",
+        "subs": [
+          {
+            "name": "زيت جوز الهند",
+            "reason": "يتماسك بالتبريد ويعطي تماسكاً ممتازاً لقاعدة البسكويت",
+            "impact": "نكهة جوز هند خفيفة · خيار نباتي",
+            "kcal": 15,
+            "cost": 1,
+            "allergen": null
+          }
+        ]
+      },
+      {
+        "key": "قشطة",
+        "qty": 1.5,
+        "unit": "علبة",
+        "allergen": "ألبان",
+        "subs": [
+          {
+            "name": "كريمة جوز الهند المركزة",
+            "reason": "قوام كثيف ودسم يماثل قشطة الحليب",
+            "impact": "نكهة استوائية معتدلة · خالية من اللاكتوز",
+            "kcal": 20,
+            "cost": 3,
+            "allergen": null
+          }
+        ]
+      },
+      {
+        "key": "سميد",
+        "qty": 0.5,
+        "unit": "كوب",
+        "allergen": "جلوتين",
+        "subs": [
+          {
+            "name": "دقيق ذرة خشن",
+            "reason": "قوام رملي مشابه للسميد وخالٍ من الجلوتين",
+            "impact": "لون أصفر خفيف · سعر أقل",
+            "kcal": 10,
+            "cost": -1,
+            "allergen": null
+          }
+        ]
+      },
+      {
+        "key": "حليب بودرة",
+        "qty": 0.25,
+        "unit": "كوب",
+        "allergen": "ألبان",
+        "subs": [
+          {
+            "name": "مسحوق حليب جوز الهند",
+            "reason": "يضفي طعماً غنياً دون ألبان",
+            "impact": "نكهة جوز هند لطيفة · خالي من اللاكتوز",
+            "kcal": 10,
+            "cost": 2,
+            "allergen": null
+          }
+        ]
+      },
+      {
+        "key": "سكر",
+        "qty": 2,
+        "unit": "م.ك"
+      },
+      {
+        "key": "باكنج باودر",
+        "qty": 0.5,
+        "unit": "م.ص"
+      },
+      {
+        "key": "زيت",
+        "qty": 0.25,
+        "unit": "كوب"
+      },
+      {
+        "key": "حليب مكثف محلى",
+        "qty": 0.3,
+        "unit": "كوب",
+        "allergen": "ألبان",
+        "subs": [
+          {
+            "name": "حليب مكثف نباتي محلى",
+            "reason": "بديل حليبي نباتي حلو لتسقية البسبوسة",
+            "impact": "حلاوة ممتازة · أغلى قليلاً",
+            "kcal": 0,
+            "cost": 3.5,
+            "allergen": null
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "t": "اخلط البسكويت المطحون مع الزبدة المذابة جيداً وافرده واضغطه في قاع طاجن الفخار."
+      },
+      {
+        "t": "وزع علبة من القشطة بالتساوي فوق طبقة البسكويت لتكوين الحشوة."
+      },
+      {
+        "t": "في وعاء منفصل، اخلط السميد، حليب البودرة، السكر، الباكنج باودر، الزيت ونصف علبة من القشطة حتى تتجانس المكونات."
+      },
+      {
+        "t": "اسكب خليط البسبوسة برفق فوق طبقة القشطة وساوِ السطح بالملعقة."
+      },
+      {
+        "t": "اخبز الطاجن في فرن محمى مسبقاً على حرارة 180 درجة مئوية حتى يتحمر الوجه ويصبح ذهبياً.",
+        "min": 18
+      },
+      {
+        "t": "اسكب الحليب المكثف المحلى على وجه البسبوسة مباشرة وهي ساخنة واتركها تتشربه قبل التقديم.",
+        "min": 2
+      }
+    ]
+  },
+  "en": {
+    "بسكويت مطحون": "Crushed biscuits",
+    "بسكويت خالي من الجلوتين": "Gluten-free biscuits",
+    "بديل مناسب لمرضى حساسية القمح مع نفس القوام المقرمش": "Suitable for gluten sensitivity while retaining the crunchy crust",
+    "قوام مشابه · تكلفة أعلى قليلاً": "Similar texture · slightly higher cost",
+    "زبدة": "Butter",
+    "زيت جوز الهند": "Coconut oil",
+    "يتماسك بالتبريد ويعطي تماسكاً ممتازاً لقاعدة البسكويت": "Hardens as it cools, providing a firm base without dairy",
+    "نكهة جوز هند خفيفة · خيار نباتي": "Subtle coconut aroma · dairy-free",
+    "قشطة": "Table cream",
+    "كريمة جوز الهند المركزة": "Coconut cream",
+    "قوام كثيف ودسم يماثل قشطة الحليب": "Thick and rich consistency mirroring traditional dairy cream",
+    "نكهة استوائية معتدلة · خالية من اللاكتوز": "Mild tropical flavour · lactose-free",
+    "سميد": "Semolina",
+    "حليب بودرة": "Milk powder",
+    "مسحوق حليب جوز الهند": "Coconut milk powder",
+    "يضفي طعماً غنياً دون ألبان": "Adds creaminess and richness without dairy",
+    "نكهة جوز هند لطيفة · خالي من اللاكتوز": "Pleasant coconut note · lactose-free",
+    "سكر": "Sugar",
+    "باكنج باودر": "Baking powder",
+    "حليب مكثف محلى": "Sweetened condensed milk",
+    "حليب مكثف نباتي محلى": "Sweetened condensed coconut milk",
+    "بديل حليبي نباتي حلو لتسقية البسبوسة": "Plant-based sweet milk alternative for soaking the hot cake",
+    "حلاوة ممتازة · أغلى قليلاً": "Great sweetness · slightly higher cost",
+    "اخلط البسكويت المطحون مع الزبدة المذابة جيداً وافرده واضغطه في قاع طاجن الفخار.": "Mix crushed biscuits with melted butter and press firmly into the base of a baking dish.",
+    "وزع علبة من القشطة بالتساوي فوق طبقة البسكويت لتكوين الحشوة.": "Spread a layer of table cream evenly over the biscuit base.",
+    "في وعاء منفصل، اخلط السميد، حليب البودرة، السكر، الباكنج باودر، الزيت ونصف علبة من القشطة حتى تتجانس المكونات.": "In a bowl, mix semolina, milk powder, sugar, baking powder, vegetable oil, and the remaining cream until smooth.",
+    "اسكب خليط البسبوسة برفق فوق طبقة القشطة وساوِ السطح بالملعقة.": "Pour the semolina batter gently over the cream layer and smooth the surface.",
+    "اخبز الطاجن في فرن محمى مسبقاً على حرارة 180 درجة مئوية حتى يتحمر الوجه ويصبح ذهبياً.": "Bake in a preheated oven at 180°C until the top is golden brown.",
+    "اسكب الحليب المكثف المحلى على وجه البسبوسة مباشرة وهي ساخنة واتركها تتشربه قبل التقديم.": "Pour sweetened condensed milk over the hot basbousa immediately and let it absorb before serving.",
+    "بسبوسة بطبقة البسكويت والقشطة": "Biscuit Base Cream Basbousa",
+    "دقيق ذرة خشن": "Coarse cornmeal",
+    "قوام رملي مشابه للسميد وخالٍ من الجلوتين": "Sandy texture like semolina, gluten-free",
+    "لون أصفر خفيف · سعر أقل": "Slightly yellow · Cheaper"
+  },
+  "source": {
+    "videoId": "4y-7nf1-yFE",
+    "url": "https://www.youtube.com/watch?v=4y-7nf1-yFE",
+    "model": "gemini-flash-latest"
+  }
+}

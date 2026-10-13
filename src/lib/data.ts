@@ -13,7 +13,8 @@ import chef2 from "@/assets/chef2.jpg";
 
 // ⚠ Demo data only — بيانات تجريبية للعرض، ليست أسعاراً أو معلومات موثّقة.
 
-export type Sub = { name: string; reason: string; impact: string; kcal: number; cost: number };
+/** allergen: one of allergensList if the substitute itself contains it, else null. */
+export type Sub = { name: string; reason: string; impact: string; kcal: number; cost: number; allergen: string | null };
 export type Ingredient = { key: string; qty: number; unit: string; allergen?: string; subs?: Sub[] };
 export type Recipe = {
   id: string; title: string; en: string; img: string; chefId: string; region: string;
@@ -46,20 +47,20 @@ export const chefs: Chef[] = [
 ];
 
 const nutSubs: Sub[] = [
-  { name: "بذور اليقطين المحمصة", reason: "قرمشة مشابهة وخالية من المكسرات الشجرية", impact: "نكهة أخف · بروتين أعلى", kcal: -10, cost: -2 },
-  { name: "حمص محمّص", reason: "يحافظ على القوام المقرمش", impact: "ألياف أعلى · سعر أقل", kcal: -25, cost: -4 },
+  { name: "بذور اليقطين المحمصة", reason: "قرمشة مشابهة وخالية من المكسرات الشجرية", impact: "نكهة أخف · بروتين أعلى", kcal: -10, cost: -2, allergen: null },
+  { name: "حمص محمّص", reason: "يحافظ على القوام المقرمش", impact: "ألياف أعلى · سعر أقل", kcal: -25, cost: -4, allergen: null },
 ];
 const dairySubs = (x: string): Sub[] => [
-  { name: x === "سمن" ? "زيت زيتون" : "حليب جوز الهند", reason: "خالٍ من اللاكتوز ويعطي قواماً كريمياً", impact: x === "سمن" ? "دهون صحية · نكهة أخف" : "نكهة استوائية خفيفة", kcal: -15, cost: 1 },
-  { name: x === "سمن" ? "زيت أفوكادو" : "حليب الشوفان", reason: "بديل نباتي محايد الطعم", impact: "سعرات أقل", kcal: -30, cost: 2 },
+  { name: x === "سمن" ? "زيت زيتون" : "حليب جوز الهند", reason: "خالٍ من اللاكتوز ويعطي قواماً كريمياً", impact: x === "سمن" ? "دهون صحية · نكهة أخف" : "نكهة استوائية خفيفة", kcal: -15, cost: 1, allergen: null },
+  { name: x === "سمن" ? "زيت أفوكادو" : "حليب الشوفان", reason: "بديل نباتي محايد الطعم", impact: "سعرات أقل", kcal: -30, cost: 2, allergen: x === "سمن" ? null : "جلوتين" }, // oat milk: oats count as gluten
 ];
 const glutenSubs = (x: string): Sub[] => [
-  { name: x === "جريش" ? "كينوا مجروشة" : x === "مكرونة" ? "مكرونة أرز" : "عجينة أرز", reason: "خالية من الجلوتين بقوام مقارب", impact: "وقت طهي أقصر", kcal: -20, cost: 6 },
+  { name: x === "جريش" ? "كينوا مجروشة" : x === "مكرونة" ? "مكرونة أرز" : "عجينة أرز", reason: "خالية من الجلوتين بقوام مقارب", impact: "وقت طهي أقصر", kcal: -20, cost: 6, allergen: null },
 ];
 const eggSubs: Sub[] = [
-  { name: "بذر كتان + ماء", reason: "يربط المكونات كالبيض تماماً", impact: "أوميغا ٣ · بدون كوليسترول", kcal: -40, cost: 0 },
+  { name: "بذر كتان + ماء", reason: "يربط المكونات كالبيض تماماً", impact: "أوميغا ٣ · بدون كوليسترول", kcal: -40, cost: 0, allergen: null },
 ];
-const sesameSubs: Sub[] = [{ name: "رقائق جوز الهند", reason: "زينة مقرمشة دون سمسم", impact: "حلاوة طبيعية", kcal: 10, cost: 1 }];
+const sesameSubs: Sub[] = [{ name: "رقائق جوز الهند", reason: "زينة مقرمشة دون سمسم", impact: "حلاوة طبيعية", kcal: 10, cost: 1, allergen: null }];
 
 export const recipes: Recipe[] = [
   { id: "kabsa", title: "كبسة دجاج", en: "Chicken Kabsa", img: kabsa, chefId: "faisal", region: "نجد", time: 75, servings: 4, difficulty: "متوسط", likes: "١٢٫٤ ألف",
@@ -123,7 +124,7 @@ export const recipes: Recipe[] = [
     cats: ["صحي", "سريع", "نباتي"], nutrition: { kcal: 410, protein: 15, carbs: 54, fat: 14 },
     ingredients: [
       { key: "فريكة", qty: 1, unit: "كوب", allergen: "جلوتين", subs: glutenSubs("دقيق").map((s) => ({ ...s, name: "كينوا" })) }, { key: "حمص", qty: 1, unit: "علبة" },
-      { key: "كوسا", qty: 1, unit: "حبة" }, { key: "جزر", qty: 2, unit: "حبة" }, { key: "طحينة", qty: 3, unit: "م.ك", allergen: "سمسم", subs: [{ name: "زبادي يوناني", reason: "صلصة كريمية بدون سمسم", impact: "بروتين أعلى", kcal: -20, cost: 1 }] },
+      { key: "كوسا", qty: 1, unit: "حبة" }, { key: "جزر", qty: 2, unit: "حبة" }, { key: "طحينة", qty: 3, unit: "م.ك", allergen: "سمسم", subs: [{ name: "زبادي يوناني", reason: "صلصة كريمية بدون سمسم", impact: "بروتين أعلى", kcal: -20, cost: 1, allergen: "ألبان" }] },
     ],
     steps: [{ t: "اسلق الفريكة.", min: 15 }, { t: "اشوِ الخضار والحمص في الفرن.", min: 15 }, { t: "اخلط الطحينة بالليمون والماء." }, { t: "رتّب الطبق وزيّن بالرمان." }] },
 ];
@@ -196,6 +197,9 @@ export const regions: { name: string; en: string; img: string; tagline: string; 
 const registry = new Map<string, Recipe>();
 export const registerRecipes = (rs: Recipe[]) => rs.forEach((r) => registry.set(r.id, r));
 export const getRecipe = (id: string) => recipes.find((r) => r.id === id) ?? registry.get(id);
+/** Substitutes this profile can use: drops any that carry one of the user's allergens. n = index in i.subs (chosen-sub state stores it). */
+export const safeSubs = (i: Ingredient, allergies: string[]) =>
+  (i.subs ?? []).map((sub, n) => ({ sub, n })).filter(({ sub }) => !sub.allergen || !allergies.includes(sub.allergen));
 export const getChef = (id: string) => chefs.find((c) => c.id === id);
 export const sar = (n: number) => (getLang() === "en" ? `SAR ${n.toFixed(2)}` : `${n.toFixed(2)} ر.س`);
 export const recipeAllergens = (r: Recipe) => [...new Set(r.ingredients.map((i) => i.allergen).filter(Boolean) as string[])];

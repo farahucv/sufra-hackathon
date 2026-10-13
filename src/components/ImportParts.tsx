@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Sparkles, Loader2, CheckCircle2, Clipboard, AlertTriangle, Youtube } from "lucide-react";
-import { getRecipe, recipeAllergens, baseCost, sar } from "@/lib/data";
+import { getRecipe, recipeAllergens, baseCost, safeSubs, sar } from "@/lib/data";
 import { importSourceUrl, isImportedId } from "@/lib/import";
 import { backupList } from "@/lib/import-backups";
 import { isHydrated, matchesAllergy } from "@/lib/store";
@@ -9,7 +9,7 @@ import { list, t } from "@/lib/i18n";
 
 /** Shared presentational pieces of the Import screen (used by /import and /submission-visual). */
 /** Demo video order on the Import screen (video ids); backups not listed here follow at the end. */
-const SAMPLE_ORDER = ["wHonhtAaXos", "BO4rJBMBS-M", "ElhIU-i2FJs"];
+const SAMPLE_ORDER = ["wHonhtAaXos", "BO4rJBMBS-M", "ElhIU-i2FJs", "4y-7nf1-yFE"];
 const rank = (id: string) => { const i = SAMPLE_ORDER.indexOf(id); return i < 0 ? SAMPLE_ORDER.length : i; };
 
 /** Sample buttons = the demo videos that have a bundled backup (src/data/imports). */
@@ -93,7 +93,7 @@ export function ImportResultCard({ rid, allergies, actions, layout = "stack", im
       <div className={`rounded-2xl p-3 text-sm ${warn.length ? "bg-terracotta-soft" : "bg-accent/50"}`}>
         <p className="font-semibold">{warn.length ? t("⚠ حساسية مكتشفة") : t("✓ لا حساسية من قائمتك")}</p>
         <p className="mt-1 text-xs text-muted-foreground">{t("يحتوي:")} {list(recipeAllergens(r)) || "—"}</p>
-        {r.ingredients.filter((i) => i.allergen && matchesAllergy(i.allergen, allergies)).map((i) => <p key={i.key} className="mt-1 text-xs">{t("بديل")} {t(i.key)}: <b className="text-olive">{t(i.subs?.[0]?.name)}</b></p>)}
+        {r.ingredients.filter((i) => i.allergen && matchesAllergy(i.allergen, allergies)).map((i) => <p key={i.key} className="mt-1 text-xs">{t("بديل")} {t(i.key)}: {(() => { const first = safeSubs(i, allergies)[0]; return first ? <b className="text-olive">{t(first.sub.name)}</b> : <span className="text-terracotta">{t("لا يوجد بديل آمن لملفك الغذائي")}</span>; })()}</p>)}
       </div>
       {showCost && <div className="rounded-2xl bg-secondary p-3 text-sm">
         <p className="font-semibold">{t("التكلفة التقديرية")}</p>

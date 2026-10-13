@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { BoxArt } from "@/components/BoxArt";
 import { JourneyCallout } from "@/components/Journey";
-import { getChef, getRecipe, ingredientLoc, sar } from "@/lib/data";
+import { getChef, getRecipe, ingredientLoc, safeSubs, sar } from "@/lib/data";
 import { BOX_SERVINGS, autoSubs, buildBox, householdBasics, isBoxEligible, unsafeLeft } from "@/lib/box";
 import { setStore, useStore, useTr } from "@/lib/store";
 import { isEn, list, t } from "@/lib/i18n";
@@ -69,7 +69,7 @@ function BoxPage() {
   const box = buildBox(r, serv, subs);
   const delta = box.subtotal - buildBox(r, serv, {}).subtotal;
   const personalized = flagged.length > 0 && left.length === 0;
-  const blocked = left.some((i) => !i.subs?.length);
+  const blocked = left.some((i) => safeSubs(i, s.allergies).length === 0);
   const Back = s.lang === "ar" ? ChevronRight : ArrowLeft;
 
   const applySafe = () => { setSubs(autoSubs(r, s.allergies)); toast.success(t("تم تطبيق البديل الآمن"), { description: t("صار الصندوق مخصصاً لملفك الغذائي.") }); };
