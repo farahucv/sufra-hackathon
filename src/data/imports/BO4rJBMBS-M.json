@@ -1,0 +1,184 @@
+{
+  "recipe": {
+    "id": "imp-BO4rJBMBS-M",
+    "title": "جريش سعودي",
+    "en": "Saudi Jareesh",
+    "img": "https://i.ytimg.com/vi/BO4rJBMBS-M/hqdefault.jpg",
+    "chefId": "imported",
+    "region": "من يوتيوب",
+    "likes": "جديد",
+    "time": 150,
+    "servings": 5,
+    "difficulty": "متوسط",
+    "cats": [
+      "سعودي"
+    ],
+    "nutrition": {
+      "kcal": 450,
+      "protein": 15,
+      "carbs": 65,
+      "fat": 18
+    },
+    "ingredients": [
+      {
+        "key": "جريش",
+        "qty": 1,
+        "unit": "كوب",
+        "allergen": "جلوتين",
+        "subs": [
+          {
+            "name": "كينوا مجروشة",
+            "reason": "خالية من الجلوتين بقوام مقارب",
+            "impact": "وقت طهي أقصر",
+            "kcal": -20,
+            "cost": 6
+          }
+        ]
+      },
+      {
+        "key": "أرز",
+        "qty": 0.5,
+        "unit": "كوب"
+      },
+      {
+        "key": "سمن",
+        "qty": 1,
+        "unit": "م.ك",
+        "allergen": "ألبان",
+        "subs": [
+          {
+            "name": "زيت زيتون",
+            "reason": "خالٍ من اللاكتوز ويعطي قواماً كريمياً",
+            "impact": "دهون صحية · نكهة أخف",
+            "kcal": -15,
+            "cost": 1
+          },
+          {
+            "name": "زيت أفوكادو",
+            "reason": "بديل نباتي محايد الطعم",
+            "impact": "سعرات أقل",
+            "kcal": -30,
+            "cost": 2
+          }
+        ]
+      },
+      {
+        "key": "بصل",
+        "qty": 3,
+        "unit": "حبة"
+      },
+      {
+        "key": "ثوم",
+        "qty": 2,
+        "unit": "فص"
+      },
+      {
+        "key": "مرق لحم",
+        "qty": 500,
+        "unit": "مل"
+      },
+      {
+        "key": "فلفل أبيض",
+        "qty": 0.5,
+        "unit": "م.ص"
+      },
+      {
+        "key": "كمون",
+        "qty": 2,
+        "unit": "م.ص"
+      },
+      {
+        "key": "كركم",
+        "qty": 1,
+        "unit": "م.ص"
+      },
+      {
+        "key": "فلفل أسود",
+        "qty": 1,
+        "unit": "م.ص"
+      },
+      {
+        "key": "لومي",
+        "qty": 1,
+        "unit": "م.ص"
+      },
+      {
+        "key": "معجون طماطم",
+        "qty": 2,
+        "unit": "م.ك"
+      },
+      {
+        "key": "لبن",
+        "qty": 1,
+        "unit": "لتر",
+        "allergen": "ألبان",
+        "subs": [
+          {
+            "name": "حليب جوز الهند",
+            "reason": "خالٍ من اللاكتوز ويعطي قواماً كريمياً",
+            "impact": "نكهة استوائية خفيفة",
+            "kcal": -15,
+            "cost": 1
+          },
+          {
+            "name": "حليب الشوفان",
+            "reason": "بديل نباتي محايد الطعم",
+            "impact": "سعرات أقل",
+            "kcal": -30,
+            "cost": 2
+          }
+        ]
+      },
+      {
+        "key": "زيت",
+        "qty": 3,
+        "unit": "م.ك"
+      }
+    ],
+    "steps": [
+      {
+        "t": "اغسل الجريش والأرز وانقعهما في الماء لمدة ساعتين.",
+        "min": 120
+      },
+      {
+        "t": "حمّر البصل المفروم في السمن، ثم أضف الثوم المهروس.",
+        "min": 5
+      },
+      {
+        "t": "أضف مرق اللحم والجريش والأرز المصفى، ثم غطِّ القدر وأدخله الفرن.",
+        "min": 45
+      },
+      {
+        "t": "حضّر المسمنة بقلي البصل المفروم مع الزيت والبهارات ومعجون الطماطم.",
+        "min": 20
+      },
+      {
+        "t": "أضف اللبن إلى الجريش وحركه جيداً، ثم أعده للفرن ليتسبك.",
+        "min": 20
+      },
+      {
+        "t": "اسكب الجريش في طبق التقديم وزينه بالمسمنة والسمن."
+      }
+    ]
+  },
+  "en": {
+    "ثوم": "Garlic",
+    "مرق لحم": "Meat broth",
+    "فلفل أبيض": "White pepper",
+    "كمون": "Cumin",
+    "كركم": "Turmeric",
+    "معجون طماطم": "Tomato paste",
+    "اغسل الجريش والأرز وانقعهما في الماء لمدة ساعتين.": "Wash the cracked wheat and rice and soak them in water for two hours.",
+    "حمّر البصل المفروم في السمن، ثم أضف الثوم المهروس.": "Sauté the chopped onion in ghee, then add the minced garlic.",
+    "أضف مرق اللحم والجريش والأرز المصفى، ثم غطِّ القدر وأدخله الفرن.": "Add the meat broth, soaked wheat, and rice, then cover the pot and place it in the oven.",
+    "حضّر المسمنة بقلي البصل المفروم مع الزيت والبهارات ومعجون الطماطم.": "Prepare the 'musammana' by frying chopped onion with oil, spices, and tomato paste.",
+    "أضف اللبن إلى الجريش وحركه جيداً، ثم أعده للفرن ليتسبك.": "Add the laban to the jareesh, stir well, and return to the oven to thicken.",
+    "اسكب الجريش في طبق التقديم وزينه بالمسمنة والسمن.": "Pour the jareesh into a serving dish and garnish with the musammana and ghee.",
+    "جريش سعودي": "Saudi Jareesh"
+  },
+  "source": {
+    "videoId": "BO4rJBMBS-M",
+    "url": "https://www.youtube.com/watch?v=BO4rJBMBS-M",
+    "model": "gemini-3.1-flash-lite"
+  }
+}

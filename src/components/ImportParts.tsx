@@ -1,16 +1,19 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Sparkles, Loader2, CheckCircle2, Clipboard, AlertTriangle, Youtube, Music2 } from "lucide-react";
+import { Sparkles, Loader2, CheckCircle2, Clipboard, AlertTriangle, Youtube } from "lucide-react";
 import { getRecipe, recipeAllergens, baseCost, sar } from "@/lib/data";
 import { importSourceUrl, isImportedId } from "@/lib/import";
+import { backupList } from "@/lib/import-backups";
 import { isHydrated, matchesAllergy } from "@/lib/store";
 import { list, t } from "@/lib/i18n";
 
 /** Shared presentational pieces of the Import screen (used by /import and /submission-visual). */
-export const importSamples = [
-  { icon: Music2, label: "TikTok", url: "https://www.tiktok.com/@chef.noura/video/7391022", id: "mutabbaq" },
-  { icon: Youtube, label: "YouTube", url: "https://youtu.be/wHonhtAaXos", id: "imp-wHonhtAaXos" },
-];
+/** Demo video order on the Import screen (video ids); backups not listed here follow at the end. */
+const SAMPLE_ORDER = ["wHonhtAaXos", "BO4rJBMBS-M", "ElhIU-i2FJs"];
+const rank = (id: string) => { const i = SAMPLE_ORDER.indexOf(id); return i < 0 ? SAMPLE_ORDER.length : i; };
+
+/** Sample buttons = the demo videos that have a bundled backup (src/data/imports). */
+export const importSamples = backupList().sort((a, b) => rank(a.source.videoId) - rank(b.source.videoId)).map((b) => ({ videoId: b.source.videoId, url: `https://youtu.be/${b.source.videoId}`, title: b.recipe.title, img: b.recipe.img }));
 export const importStages = () => [t("تحليل الفيديو والإطارات"), t("تفريغ الصوت والنص"), t("استخراج المقادير والكميات"), t("ترتيب الخطوات"), t("فحص الحساسية وحساب التكلفة")];
 
 export function ImportFormCard({ url, error, errorMsg, loading, onUrl, onSample, onRun, showNote = true, showRun = true }: {
@@ -21,21 +24,28 @@ export function ImportFormCard({ url, error, errorMsg, loading, onUrl, onSample,
       <label className="text-sm font-medium" htmlFor="url">{t("رابط الفيديو")}</label>
       <div className={`mt-2 flex items-center gap-2 rounded-2xl border bg-background px-3 transition ${error ? "border-terracotta" : "focus-within:border-olive"}`}>
         <Clipboard className="h-4 w-4 shrink-0 text-muted-foreground" />
-        <input id="url" dir="ltr" value={url} readOnly={!onUrl} placeholder="https://www.tiktok.com/@chef/video/…" onChange={(e) => onUrl?.(e.target.value)}
+        <input id="url" dir="ltr" value={url} readOnly={!onUrl} placeholder="https://youtu.be/…" onChange={(e) => onUrl?.(e.target.value)}
           className="min-w-0 flex-1 bg-transparent py-3 text-sm outline-none" />
       </div>
-      {error && <p className="mt-2 flex items-center gap-1 text-xs text-terracotta"><AlertTriangle className="h-3.5 w-3.5 shrink-0" /> {errorMsg ?? t("الرابط غير مدعوم. جرّب رابط تيك توك أو يوتيوب أو إنستغرام.")}</p>}
-      <div className="mt-3 flex flex-wrap gap-2">
-        <span className="text-xs text-muted-foreground">{t("جرّب مثالاً:")}</span>
-        {importSamples.map(({ icon: I, label, url: u }) => (
-          <button key={label} onClick={() => onSample?.(u)} className="press inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs"><I className="h-3.5 w-3.5" />{label}</button>
+      {error && <p className="mt-2 flex items-center gap-1 text-xs text-terracotta"><AlertTriangle className="h-3.5 w-3.5 shrink-0" /> {errorMsg ?? t("الرابط غير مدعوم. الصق رابط فيديو من يوتيوب.")}</p>}
+      <p className="mt-4 text-xs text-muted-foreground">{t("جرّب مثالاً:")}</p>
+      <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {importSamples.map((x) => (
+          <button key={x.videoId} onClick={() => onSample?.(x.url)} aria-pressed={url === x.url}
+            className={`press overflow-hidden rounded-xl border text-start transition ${url === x.url ? "border-olive ring-1 ring-olive" : "hover:bg-muted"}`}>
+            <span className="relative block aspect-video bg-muted">
+              <img src={x.img} alt="" className="h-full w-full object-cover" loading="lazy" />
+              <Youtube className="absolute bottom-1 end-1 h-4 w-4 text-white drop-shadow" />
+            </span>
+            <span className="block truncate px-2 py-1.5 text-xs font-medium">{t(x.title)}</span>
+          </button>
         ))}
       </div>
       {showRun && <button onClick={onRun} disabled={loading || !url} className="press mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-ink py-4 font-semibold text-ink-foreground disabled:opacity-50">
         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5 text-gold" />}
         {t("استخرج الوصفة")}
       </button>}
-      {showNote && <p className="mt-3 text-center text-[11px] text-muted-foreground">{t("روابط يوتيوب تُستخرج فعلياً بالذكاء الاصطناعي؛ تيك توك وإنستغرام عرض تجريبي.")}</p>}
+      {showNote && <p className="mt-3 text-center text-[11px] text-muted-foreground">{t("حالياً ندعم روابط يوتيوب، تيك توك قريباً")}</p>}
     </div>
   );
 }

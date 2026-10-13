@@ -1,0 +1,131 @@
+{
+  "recipe": {
+    "id": "imp-ElhIU-i2FJs",
+    "title": "شاي كرك",
+    "en": "Karak Tea",
+    "img": "https://i.ytimg.com/vi/ElhIU-i2FJs/hqdefault.jpg",
+    "chefId": "imported",
+    "region": "من يوتيوب",
+    "likes": "جديد",
+    "time": 15,
+    "servings": 3,
+    "difficulty": "سهل",
+    "cats": [
+      "سريع"
+    ],
+    "nutrition": {
+      "kcal": 120,
+      "protein": 4,
+      "carbs": 15,
+      "fat": 5
+    },
+    "ingredients": [
+      {
+        "key": "حليب",
+        "qty": 1,
+        "unit": "لتر",
+        "allergen": "ألبان",
+        "subs": [
+          {
+            "name": "حليب جوز الهند",
+            "reason": "خالٍ من اللاكتوز ويعطي قواماً كريمياً",
+            "impact": "نكهة استوائية خفيفة",
+            "kcal": -15,
+            "cost": 1
+          },
+          {
+            "name": "حليب الشوفان",
+            "reason": "بديل نباتي محايد الطعم",
+            "impact": "سعرات أقل",
+            "kcal": -30,
+            "cost": 2
+          }
+        ]
+      },
+      {
+        "key": "هيل",
+        "qty": 10,
+        "unit": "حبة"
+      },
+      {
+        "key": "قرنفل",
+        "qty": 1,
+        "unit": "حبة"
+      },
+      {
+        "key": "قرفة",
+        "qty": 1,
+        "unit": "شريحة"
+      },
+      {
+        "key": "زنجبيل",
+        "qty": 0.5,
+        "unit": "م.ص"
+      },
+      {
+        "key": "شاي",
+        "qty": 3.5,
+        "unit": "م.ص"
+      },
+      {
+        "key": "حليب مكثف",
+        "qty": 5,
+        "unit": "م.ص",
+        "allergen": "ألبان",
+        "subs": [
+          {
+            "name": "حليب جوز الهند المكثف",
+            "reason": "خالٍ من اللاكتوز ويعطي نفس الحلاوة والقوام الكثيف",
+            "impact": "نكهة جوز هند خفيفة · خالٍ من الألبان",
+            "kcal": 5,
+            "cost": 4
+          },
+          {
+            "name": "حليب الشوفان المحلّى",
+            "reason": "بديل نباتي أخف يحلّي الشاي دون ألبان",
+            "impact": "سعرات أقل · قوام أخف",
+            "kcal": -40,
+            "cost": 1
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "t": "ضع الحليب والماء في قدر على النار."
+      },
+      {
+        "t": "أضف الهيل والقرنفل والقرفة والزنجبيل إلى الحليب."
+      },
+      {
+        "t": "أضف مسحوق الشاي وحرك المزيج."
+      },
+      {
+        "t": "أضف الحليب المكثف واترك الشاي يغلي على نار هادئة.",
+        "min": 10
+      },
+      {
+        "t": "صفي الشاي وقدمه ساخناً."
+      }
+    ]
+  },
+  "en": {
+    "هيل": "Cardamom",
+    "قرنفل": "Cloves",
+    "قرفة": "Cinnamon",
+    "زنجبيل": "Crushed Ginger",
+    "شاي": "Tea powder",
+    "حليب مكثف": "Condensed milk",
+    "ضع الحليب والماء في قدر على النار.": "Place milk and water in a pot on the stove.",
+    "أضف الهيل والقرنفل والقرفة والزنجبيل إلى الحليب.": "Add cardamom, cloves, cinnamon, and ginger to the milk.",
+    "أضف مسحوق الشاي وحرك المزيج.": "Add tea powder and stir the mixture.",
+    "أضف الحليب المكثف واترك الشاي يغلي على نار هادئة.": "Add condensed milk and let the tea boil on low heat.",
+    "صفي الشاي وقدمه ساخناً.": "Strain the tea and serve hot.",
+    "شاي كرك": "Karak Tea"
+  },
+  "source": {
+    "videoId": "ElhIU-i2FJs",
+    "url": "https://www.youtube.com/watch?v=ElhIU-i2FJs",
+    "model": "gemini-3.1-flash-lite"
+  }
+}

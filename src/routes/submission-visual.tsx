@@ -41,7 +41,7 @@ function SubmissionVisual() {
 
       <div dir="ltr" className="relative mt-6 flex flex-1 items-center gap-10">
         <div dir="rtl" className="w-[440px] shrink-0">
-          <ImportFormCard url={importSamples[1]!.url} showNote={false} showRun={false} />
+          <ImportFormCard url={(importSamples.find((x) => x.videoId === "wHonhtAaXos") ?? importSamples[0])?.url ?? ""} showNote={false} showRun={false} />
         </div>
 
         <div className="flex w-[120px] shrink-0 flex-col items-center gap-3 text-olive">

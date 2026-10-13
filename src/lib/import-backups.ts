@@ -8,3 +8,5 @@ const backups = new Map(Object.values(files).map((b) => [b.source.videoId, b] as
 backups.forEach(registerImported);
 
 export const backupFor = (videoId: string) => backups.get(videoId);
+/** All bundled demo backups — they double as the Import screen's sample videos. */
+export const backupList = () => [...backups.values()];

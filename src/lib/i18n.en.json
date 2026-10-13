@@ -686,5 +686,13 @@
  "الاستخراج غير مُعدّ على الخادم.": "Extraction isn’t configured on the server.",
  "تعذّر استخراج الوصفة. حاول مرة أخرى.": "Couldn’t extract the recipe. Please try again.",
  "عرضنا نسخة محفوظة من هذه الوصفة": "Showing a saved copy of this recipe",
- "تعذّر الاستخراج المباشر الآن.": "Live extraction failed just now."
+ "تعذّر الاستخراج المباشر الآن.": "Live extraction failed just now.",
+ "حالياً ندعم روابط يوتيوب، تيك توك قريباً": "We currently support YouTube links — TikTok coming soon",
+ "الرابط غير مدعوم. الصق رابط فيديو من يوتيوب.": "Unsupported link. Paste a YouTube video link.",
+ "حليب جوز الهند المكثف": "Coconut condensed milk",
+ "خالٍ من اللاكتوز ويعطي نفس الحلاوة والقوام الكثيف": "Lactose-free with the same sweetness and thick texture",
+ "نكهة جوز هند خفيفة · خالٍ من الألبان": "Light coconut flavor · Dairy-free",
+ "حليب الشوفان المحلّى": "Sweetened oat milk",
+ "بديل نباتي أخف يحلّي الشاي دون ألبان": "A lighter plant-based option that sweetens the tea without dairy",
+ "سعرات أقل · قوام أخف": "Fewer calories · Lighter texture"
 }

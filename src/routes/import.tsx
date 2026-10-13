@@ -13,7 +13,7 @@ import { t } from "@/lib/i18n";
 export const Route = createFileRoute("/import")({
   head: () => ({
     meta: [
-      { title: "استيراد وصفة من تيك توك ويوتيوب — سُفرة" },
+      { title: "استيراد وصفة من يوتيوب — سُفرة" },
       { name: "description", content: "الصق رابط فيديو طبخ من يوتيوب واستخرج المقادير والخطوات والحساسية والتكلفة بالذكاء الاصطناعي." },
       { property: "og:title", content: "استيراد وصفة — سُفرة" },
       { property: "og:description", content: "حوّل فيديو الطبخ إلى وصفة مكتوبة بالذكاء الاصطناعي." },
@@ -77,28 +77,18 @@ function ImportPage() {
     toast(t("عرضنا نسخة محفوظة من هذه الوصفة"), { description: t("تعذّر الاستخراج المباشر الآن.") });
   };
 
-  // TikTok / Instagram stay a staged demo with a sample recipe.
-  const simulate = () => {
-    const n = importStages().length;
-    timers.current = [
-      ...Array.from({ length: n }, (_, i) => setTimeout(() => setStage(i + 1), 230 * (i + 1))),
-      setTimeout(() => finish("mutabbaq"), 230 * n + 120),
-    ];
-  };
-
   const run = () => {
     if (phase === "loading") return;
     const link = url.trim();
     const videoId = parseYouTubeId(link);
-    if (!videoId && !/^https?:\/\/(www\.)?(tiktok\.com|instagram\.com)\//i.test(link)) return fail();
+    if (!videoId) return fail(/^https?:\/\/([\w-]+\.)?(tiktok\.com|instagram\.com)\//i.test(link) ? t("حالياً ندعم روابط يوتيوب، تيك توك قريباً") : undefined);
     clear(); setErrorMsg(undefined); setPhase("loading"); setStage(0);
-    if (videoId) void live(videoId, link);
-    else simulate();
+    void live(videoId, link);
   };
 
   return (
     <AppShell>
-      <TopBar title={t("استيراد وصفة")} sub="TikTok · YouTube · Instagram" action={<DemoBadge label={t("استخراج بالذكاء الاصطناعي")} />} />
+      <TopBar title={t("استيراد وصفة")} sub="YouTube" action={<DemoBadge label={t("استخراج بالذكاء الاصطناعي")} />} />
       <div className="space-y-5 px-5 lg:px-8">
         <ImportFormCard url={url} error={phase === "error"} errorMsg={errorMsg} loading={phase === "loading"}
           onUrl={(v) => { setUrl(v); if (phase === "error") reset(); }}

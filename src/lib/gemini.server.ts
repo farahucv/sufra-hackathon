@@ -68,7 +68,7 @@ ${ingredientRules()}
 
 /** Field rules shared by the extraction and the backup consistency pass. */
 function ingredientRules() {
-  return `- key_ar: if the ingredient is the same thing as one of these KNOWN KEYS, use that exact Arabic string; otherwise write a short Arabic name (1-3 words, no quantities). The list is only for consistent naming — never add a known key the video doesn't use, and never drop an ingredient because it isn't listed. Mixed nuts are "مكسرات مشكلة", not a single nut.
+  return `- key_ar: if the ingredient is the same thing as one of these KNOWN KEYS, use that exact Arabic string; otherwise write a short Arabic name (1-3 words, no quantities). The list is only for consistent naming — never add a known key the video doesn't use, and never drop an ingredient because it isn't listed. Mixed nuts are "مكسرات مشكلة", not a single nut. key_ar names the exact item, never a unit or its base food: "ثوم" not "فص", "مرق لحم" not "لحم", "معجون طماطم" not "طماطم", "فلفل أسود" not "بهارات"; name_en must translate key_ar exactly.
   KNOWN KEYS: ${knownIngredientKeys.join("، ")}
 - unit: exactly one of: ${IMPORT_UNITS.join("، ")} (م.ك = tablespoon, م.ص = teaspoon, غ = grams, كغ = kg, مل = ml, حبة = piece, فص = clove, رشة = pinch).
 - allergen: exactly one of: ${allergensList.join("، ")} — or "${NO_ALLERGEN}". Nuts = tree nuts and peanuts; dairy (ألبان) = milk, butter, ghee (سمن), cheese, yogurt, cream; gluten (جلوتين) = wheat flour, bread, pasta, bulgur, freekeh, semolina, dough, vermicelli; seafood = fish and shellfish; sesame = seeds and tahini; soy = soy sauce, tofu.
