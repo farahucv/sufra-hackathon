@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ChevronRight, Clock, Minus, Plus, AlertTriangle, ShieldCheck, Sparkles, Bookmark, BadgeCheck, Refrigerator, ShoppingCart, ChefHat, Check, X, Timer, Gauge, Users } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, DemoBadge } from "@/components/AppShell";
@@ -7,7 +7,8 @@ import { JourneyCallout } from "@/components/Journey";
 import { z } from "zod";
 import { MAX_SERVINGS, MIN_SERVINGS, clampServings, isBoxEligible, scaledAmount } from "@/lib/box";
 import { Package } from "lucide-react";
-import { getRecipe, getChef, baseCost, cheapest, priceOf, safeSubs, sar, type Recipe } from "@/lib/data";
+import { getRecipe, getChef, safeSubs, type Recipe } from "@/lib/data";
+import { FridgeShopping } from "@/components/FridgeShopping";
 import { isImportedId } from "@/lib/import";
 import { ImportedRecipeFallback, ImportedSource } from "@/components/ImportParts";
 import { hasPantry, matchesAllergy, toggleIn, useStore , setStore } from "@/lib/store";
@@ -56,15 +57,11 @@ function RecipeView({ r }: { r: Recipe }) {
   const [tab, setTab] = useState<"ing" | "steps">("ing");
   const [pantryView, setPantryView] = useState(false);
   const [cooking, setCooking] = useState(false);
-  const k = serv / r.servings;
 
   const flagged = r.ingredients.filter((i) => i.allergen && matchesAllergy(i.allergen, s.allergies));
   const unresolved = flagged.filter((i) => chosen[i.key] === undefined);
   const applied = r.ingredients.map((i) => (chosen[i.key] !== undefined && i.subs ? i.subs[chosen[i.key]!] : undefined));
   const kcalDelta = applied.reduce((a, x) => a + (x?.kcal ?? 0), 0);
-  const costDelta = applied.reduce((a, x) => a + (x?.cost ?? 0), 0);
-  const cost = (baseCost(r) + costDelta) * Math.max(1, k * 0.85);
-  const missing = useMemo(() => r.ingredients.filter((i) => !hasPantry(s, i.key)), [r, s]);
 
   const applyAll = () => {
     const next = { ...chosen };
@@ -216,19 +213,7 @@ function RecipeView({ r }: { r: Recipe }) {
                 <span className="min-w-0 flex-1"><span className="block font-semibold">{t("اطلب صندوق الوصفة")}</span><span className="block text-xs opacity-75">{t("مكونات بالحصة الدقيقة · Ready-to-Cook")}</span></span>
               </Link>
             )}
-            <div className="rounded-2xl bg-card p-4 shadow-soft">
-              <div className="flex items-center justify-between"><p className="font-semibold">{t("تكلفة السلة التقديرية")}</p><DemoBadge /></div>
-              <p className="mt-2 font-display text-3xl text-primary">{sar(cost)}</p>
-              <p className="text-xs text-muted-foreground">≈ {sar(cost / serv)} {t("للحصة · بأقل الأسعار التجريبية")}</p>
-              <p className="mt-2 text-xs">{t("ينقصك من ثلاجتك:")} <b>{missing.length}</b> {t("من")} {r.ingredients.length} {t("مكونات")}</p>
-            </div>
-            {pantryView && (
-              <div className="animate-float-up rounded-2xl border border-olive/30 bg-accent/40 p-4 text-sm">
-                <p className="font-semibold">{t("مطابقة مع ثلاجتك")}</p>
-                <p className="mt-1 text-muted-foreground">{t("لديك")} {r.ingredients.length - missing.length} {t("مكونات. الناقص:")} {list(missing.map((m) => m.key)) || t("لا شيء 🎉")}</p>
-                {missing.length > 0 && <p className="mt-1 text-xs">{t("أرخص سعر للناقص يبدأ من")} {sar(missing.reduce((a, m) => { const c = cheapest(m.key); return a + (c >= 0 ? (priceOf(m.key, c) as number) : 0); }, 0))}</p>}
-              </div>
-            )}
+            <FridgeShopping r={r} serv={serv} subs={chosen} />
           </aside>
         </div>
       </div>

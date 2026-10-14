@@ -698,5 +698,17 @@
  "لا يوجد بديل آمن لملفك الغذائي": "No substitute fits your profile",
  "لكم شخص؟": "How many people?",
  "لـ {n} أشخاص": "for {n} people",
- "المجموع لـ {n} أشخاص: {x} سعرة": "Total for {n} people: {x} kcal"
+ "المجموع لـ {n} أشخاص: {x} سعرة": "Total for {n} people: {x} kcal",
+ "من ثلاجتك": "From your fridge",
+ "عندك ({n})": "You have ({n})",
+ "تحتاج تشتري ({n})": "To buy ({n})",
+ "سعر العبوة": "Pack price",
+ "السعر غير متوفر": "Price not available",
+ "التكلفة التقديرية للناقص": "Estimated cost of missing items",
+ "+{n} بدون سعر": "+{n} without a price",
+ "بأقل الأسعار التجريبية لكل مكوّن": "At the lowest demo price for each item",
+ "قارن أسعار الناقص": "Compare prices for missing items",
+ "بدل {x}": "instead of {x}",
+ "{n} مكوّن بدون سعر — غير محسوب في الإجمالي": "{n} item(s) without a price — not included in the total",
+ "الأسعار لكل عبوة؛ يزيد السعر فقط إذا احتجت عبوة إضافية.": "Prices are per pack; the price only goes up if you need another pack."
 }

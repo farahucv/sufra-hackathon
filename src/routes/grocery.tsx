@@ -4,8 +4,11 @@ import { z } from "zod";
 import { Trophy, X, Truck, Store, PiggyBank, Info, PartyPopper } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
-import { getRecipe, recipes, stores, priceOf, cheapest, sar } from "@/lib/data";
-import { MAX_SERVINGS, MIN_SERVINGS } from "@/lib/box";
+import { getRecipe, recipes, stores, priceOf, sar } from "@/lib/data";
+import { MAX_SERVINGS, MIN_SERVINGS, clampServings } from "@/lib/box";
+import { isImportedId } from "@/lib/import";
+import { shoppingList, type ShopLine } from "@/lib/shopping";
+import { ImportedRecipeFallback } from "@/components/ImportParts";
 import { hasPantry, useStore } from "@/lib/store";
 import { isEn, t } from "@/lib/i18n";
 
@@ -26,36 +29,46 @@ export const Route = createFileRoute("/grocery")({
 });
 
 function Grocery() {
-  const { recipe: rid } = Route.useSearch();
-  const r = getRecipe(rid ?? "kabsa") ?? recipes[0]!;
+  const { recipe: rid, servings } = Route.useSearch();
   const s = useStore();
   const [showAll, setShowAll] = useState(false);
   const [mode, setMode] = useState<"cheap" | "single">("cheap");
   const loading = false;
+  const found = getRecipe(rid ?? "kabsa");
+  // Imported recipes resolve after hydration — wait rather than silently showing another recipe.
+  if (!found && rid && isImportedId(rid)) return <ImportedRecipeFallback />;
+  const r = found ?? recipes[0]!;
+  const serv = clampServings(servings ?? r.servings);
+  const chips = [...recipes.slice(0, 6), ...s.imported.map((x) => x.recipe)];
+  if (!chips.some((x) => x.id === r.id)) chips.push(r);
 
-  const missing = r.ingredients.filter((i) => !hasPantry(s, i.key)).map((i) => i.key);
-  const items = showAll ? r.ingredients.map((i) => i.key) : missing;
+  // Missing items (or all, when toggled) at the chosen servings, priced per retail package.
+  const items = shoppingList(r, serv, {}, (name) => hasPantry(s, name), { includeOwned: showAll }).buy;
+  const priced = items.filter((l) => l.store >= 0); // items with no price data are shown but never break totals
+  const unpriced = items.length - priced.length;
+  const at = (l: ShopLine, si: number) => { const p = priceOf(l.key, si); return p === null ? null : p * l.packs; };
 
   const totals = stores.map((_, si) => ({
-    total: items.reduce((a, k) => a + (priceOf(k, si) ?? 0), 0),
-    missing: items.filter((k) => priceOf(k, si) === null).length,
+    total: priced.reduce((a, l) => a + (at(l, si) ?? 0), 0),
+    missing: priced.filter((l) => at(l, si) === null).length,
   }));
   const singleIdx = totals.map((t, i) => ({ ...t, i })).sort((a, b) => a.missing - b.missing || a.total - b.total)[0]?.i ?? 0;
-  const split = items.map((k) => ({ k, si: cheapest(k) }));
-  const splitTotal = split.reduce((a, x) => a + (x.si >= 0 ? (priceOf(x.k, x.si) as number) : 0), 0);
-  const splitStores = [...new Set(split.map((x) => x.si).filter((x) => x >= 0))];
+  const splitTotal = priced.reduce((a, l) => a + (at(l, l.store) ?? 0), 0);
+  const splitStores = [...new Set(priced.map((l) => l.store))];
   const worst = Math.max(...totals.map((t) => t.total));
 
-  const lines = mode === "cheap"
-    ? split.map((x) => ({ k: x.k, store: x.si, price: x.si >= 0 ? (priceOf(x.k, x.si) as number) : 0 }))
-    : items.map((k) => ({ k, store: priceOf(k, singleIdx) === null ? cheapest(k) : singleIdx, price: priceOf(k, singleIdx) ?? priceOf(k, cheapest(k)) ?? 0 }));
-  const usedStores = [...new Set(lines.map((l) => l.store).filter((x) => x >= 0))];
-  const subtotal = lines.reduce((a, l) => a + l.price, 0);
+  const lines = items.map((l) => {
+    if (l.store < 0) return { l, store: -1, price: null as number | null };
+    const single = mode === "single" ? at(l, singleIdx) : null;
+    return single !== null ? { l, store: singleIdx, price: single } : { l, store: l.store, price: at(l, l.store) };
+  });
+  const usedStores = [...new Set(lines.map((x) => x.store).filter((x) => x >= 0))];
+  const subtotal = lines.reduce((a, x) => a + (x.price ?? 0), 0);
   const delivery = usedStores.reduce((a, si) => a + stores[si]!.delivery, 0);
 
   return (
     <AppShell wide>
-      <TopBar title={t("مقارنة الأسعار")} sub={showAll ? t("كل مكونات {x} · الرياض", { x: t(r.title) }) : t("الناقص من {x} · الرياض", { x: t(r.title) })} action={<DemoBadge label={t("أسعار تجريبية")} />} />
+      <TopBar title={t("مقارنة الأسعار")} sub={(showAll ? t("كل مكونات {x} · الرياض", { x: t(r.title) }) : t("الناقص من {x} · الرياض", { x: t(r.title) })) + " · " + t("لـ {n} أشخاص", { n: serv })} action={<DemoBadge label={t("أسعار تجريبية")} />} />
 
       <div className="px-5 lg:px-8">
         <div className="flex items-start gap-2 rounded-2xl bg-gold/15 p-3 text-xs leading-relaxed">
@@ -63,7 +76,7 @@ function Grocery() {
           <p>{t("مقارنة توضيحية بأسعار")} <b>{t("تجريبية")}</b> {t("لمتاجر نموذجية، وليست أسعاراً حية أو موثّقة. الربط المباشر مع المتاجر ضمن المرحلة القادمة.")}</p>
         </div>
         <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto">
-          {recipes.slice(0, 6).map((x) => (
+          {chips.map((x) => (
             <Link key={x.id} to="/grocery" search={{ recipe: x.id }} className={`press shrink-0 rounded-full border px-3 py-1.5 text-xs ${x.id === r.id ? "border-primary bg-primary text-primary-foreground" : "bg-card"}`}>{t(x.title)}</Link>
           ))}
         </div>
@@ -98,13 +111,13 @@ function Grocery() {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((k) => {
-                    const min = cheapest(k);
+                  {items.map((l) => {
+                    const min = l.store;
                     return (
-                      <tr key={k} className="border-b last:border-0">
-                        <td className="p-3 font-medium">{t(k)}</td>
-                        {stores.map((_, i) => {
-                          const p = priceOf(k, i);
+                      <tr key={l.key} className="border-b last:border-0">
+                        <td className="p-3 font-medium">{t(l.name)}<span className="block text-[10px] font-normal text-muted-foreground">{l.amount}{l.pack ? ` · ${l.packs} × ${l.pack}` : ""}</span></td>
+                        {min < 0 ? <td colSpan={stores.length} className="p-2 text-center text-[11px] text-muted-foreground">{t("السعر غير متوفر")}</td> : stores.map((_, i) => {
+                          const p = at(l, i);
                           return (
                             <td key={i} className="p-2 text-center tabular-nums">
                               {p === null ? <span className="inline-flex items-center gap-0.5 text-[11px] text-terracotta"><X className="h-3.5 w-3.5" />{t("غير متوفر")}</span>
@@ -122,6 +135,8 @@ function Grocery() {
                 </tbody>
               </table>
             </div>
+            {unpriced > 0 && <p className="text-xs text-muted-foreground">{t("{n} مكوّن بدون سعر — غير محسوب في الإجمالي", { n: unpriced })}</p>}
+            <p className="text-xs text-muted-foreground">{t("الأسعار لكل عبوة؛ يزيد السعر فقط إذا احتجت عبوة إضافية.")}</p>
           </div>
 
           {/* Receipt */}
@@ -133,12 +148,12 @@ function Grocery() {
               <p className="mt-1 text-xs text-muted-foreground">{mode === "cheap" ? t("أقل سعر إجمالي") : t("أقل عدد متاجر")} · {t(r.title)}</p>
               <div className="my-4 border-t border-dashed" />
               <ul className="space-y-2 text-sm">
-                {lines.map((l) => (
-                  <li key={l.k} className="flex items-baseline gap-2">
-                    <span>{t(l.k)}</span>
+                {lines.map((x) => (
+                  <li key={x.l.key} className="flex items-baseline gap-2">
+                    <span>{t(x.l.name)}</span>
                     <span className="flex-1 border-b border-dotted border-muted-foreground/30" />
-                    <span className="text-[10px] text-muted-foreground">{l.store >= 0 ? t(stores[l.store]!.name) : "—"}</span>
-                    <span className="tabular-nums">{l.price.toFixed(2)}</span>
+                    <span className="text-[10px] text-muted-foreground">{x.store >= 0 ? t(stores[x.store]!.name) : "—"}</span>
+                    <span className="tabular-nums">{x.price === null ? <span className="text-[10px] text-muted-foreground">{t("السعر غير متوفر")}</span> : x.price.toFixed(2)}</span>
                   </li>
                 ))}
               </ul>
