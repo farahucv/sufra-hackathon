@@ -33,7 +33,7 @@ function Profile() {
             <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gold font-display text-2xl text-ink">{t("س")}</div>
             <div className="min-w-0 flex-1">
               <p className="text-lg font-semibold">{t(s.name)}</p>
-              <p className="text-xs opacity-75">{saved.length} {t("وصفة محفوظة ·")} {s.pantry.length} {t("مكوّن في المخزن")}</p>
+              <p className="text-xs opacity-75">{saved.length} {t("وصفة محفوظة ·")} {s.pantry.length} {t("مكوّن في الثلاجة")}</p>
             </div>
           </div>
 
@@ -76,7 +76,7 @@ function Profile() {
 
         <div className="space-y-4">
           <Link to="/pantry" className="press flex items-center gap-3 rounded-2xl bg-card p-4">
-            <Refrigerator className="h-5 w-5 text-olive" /><span className="flex-1">{t("مخزني")}</span><span className="text-xs text-muted-foreground">{s.pantry.length} {t("مكوّن")}</span><ChevronLeft className="h-4 w-4 ltr:rotate-180" />
+            <Refrigerator className="h-5 w-5 text-olive" /><span className="flex-1">{t("ثلاجتي")}</span><span className="text-xs text-muted-foreground">{s.pantry.length} {t("مكوّن")}</span><ChevronLeft className="h-4 w-4 ltr:rotate-180" />
           </Link>
           <Link to="/order" className="press flex items-center gap-3 rounded-2xl bg-card p-4">
             <Package className="h-5 w-5 text-olive" /><span className="flex-1">{t("طلباتي · صناديق الوصفات")}</span><span className="text-xs text-muted-foreground">{s.order ? s.order.id : t("لا توجد")}</span><ChevronLeft className="h-4 w-4 ltr:rotate-180" />
@@ -94,7 +94,7 @@ function Profile() {
 
           <div className="rounded-2xl bg-card p-4">
             <p className="flex items-center gap-2 font-semibold"><Cloud className={`h-5 w-5 ${s.synced ? "text-olive" : "text-muted-foreground"}`} /> {t("الحساب التجريبي")}</p>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{t("بدون تسجيل: تفضيلاتك ومحفوظاتك ومخزنك تُحفظ تلقائياً على هذا الجهاز وفي السحابة كملف تجريبي مجهول الهوية.")}</p>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{t("بدون تسجيل: تفضيلاتك ومحفوظاتك وثلاجتك تُحفظ تلقائياً على هذا الجهاز وفي السحابة كملف تجريبي مجهول الهوية.")}</p>
             <p className="mt-2 text-xs">{s.synced ? t("✓ متزامن مع السحابة") : t("جارِ المزامنة…")}</p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               <button onClick={() => startJourney()} className="press flex items-center justify-center gap-1 rounded-xl border py-2 text-xs"><RouteIcon className="h-3.5 w-3.5" /> {t("رحلة العرض")}</button>

@@ -78,7 +78,7 @@ function HomePage() {
         </Link>
         <Link to="/pantry" className="press hidden items-center gap-3 rounded-2xl bg-secondary p-4 lg:flex">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-olive text-olive-foreground font-display">{s.pantry.length}</span>
-          <div className="min-w-0 flex-1"><p className="font-semibold">{t("مكوّن في مخزنك")}</p><p className="text-xs text-muted-foreground">{t("شوف وش تقدر تطبخ الحين")}</p></div>
+          <div className="min-w-0 flex-1"><p className="font-semibold">{t("مكوّن في ثلاجتك")}</p><p className="text-xs text-muted-foreground">{t("شوف وش تقدر تطبخ الحين")}</p></div>
         </Link>
       </div>
 

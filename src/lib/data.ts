@@ -155,7 +155,7 @@ export const cheapest = (key: string) => {
 
 export type Loc = "pantry" | "fridge" | "freezer";
 export const locations: { id: Loc; ar: string; en: string }[] = [
-  { id: "pantry", ar: "المخزن", en: "Pantry" }, { id: "fridge", ar: "الثلاجة", en: "Fridge" }, { id: "freezer", ar: "الفريزر", en: "Freezer" },
+  { id: "pantry", ar: "رف المؤونة", en: "Cupboard" }, { id: "fridge", ar: "الثلاجة", en: "Fridge" }, { id: "freezer", ar: "الفريزر", en: "Freezer" },
 ];
 export const ingredientLoc: Record<string, Loc> = {
   "دجاج": "freezer", "لحم": "freezer", "لحم مفروم": "freezer",

@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "سُفرة — منصة الطبخ السعودي الذكية" },
-      { name: "description", content: "ريلز طهاة سعوديين، وصفات تتكيف مع حساسيتك، اقتراحات من مخزنك، ومقارنة أسعار السوبرماركت المحلية." },
+      { name: "description", content: "ريلز طهاة سعوديين، وصفات تتكيف مع حساسيتك، اقتراحات من ثلاجتك، ومقارنة أسعار السوبرماركت المحلية." },
       { property: "og:title", content: "سُفرة — منصة الطبخ السعودي الذكية" },
       { property: "og:description", content: "من ريل إلى سلة مشتريات مخصصة لحساسيتك وميزانيتك." },
     ],
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
 const slides = () => [
   { img: kabsa, icon: PlayCircle, title: t("اكتشف من طهاة سعوديين"), body: t("ريلز قصيرة تتحول إلى وصفات واضحة بالمقادير والخطوات.") },
   { img: veggie, icon: ShieldCheck, title: t("وصفات تناسب جسمك"), body: t("نكشف الحساسية تلقائياً ونقترح بدائل آمنة بذكاء.") },
-  { img: haneeth, icon: ShoppingBasket, title: t("اطبخ بالموجود… واشترِ الأوفر"), body: t("نقترح من مخزنك ونقارن أسعار الناقص بين المتاجر.") },
+  { img: haneeth, icon: ShoppingBasket, title: t("اطبخ بالموجود… واشترِ الأوفر"), body: t("نقترح من ثلاجتك ونقارن أسعار الناقص بين المتاجر.") },
 ];
 
 function Onboarding() {

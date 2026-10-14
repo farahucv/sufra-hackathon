@@ -215,11 +215,11 @@ function RecipeView({ r }: { r: Recipe }) {
               <div className="flex items-center justify-between"><p className="font-semibold">{t("تكلفة السلة التقديرية")}</p><DemoBadge /></div>
               <p className="mt-2 font-display text-3xl text-primary">{sar(cost)}</p>
               <p className="text-xs text-muted-foreground">≈ {sar(cost / serv)} {t("للحصة · بأقل الأسعار التجريبية")}</p>
-              <p className="mt-2 text-xs">{t("ينقصك من مخزنك:")} <b>{missing.length}</b> {t("من")} {r.ingredients.length} {t("مكونات")}</p>
+              <p className="mt-2 text-xs">{t("ينقصك من ثلاجتك:")} <b>{missing.length}</b> {t("من")} {r.ingredients.length} {t("مكونات")}</p>
             </div>
             {pantryView && (
               <div className="animate-float-up rounded-2xl border border-olive/30 bg-accent/40 p-4 text-sm">
-                <p className="font-semibold">{t("مطابقة مع مخزنك")}</p>
+                <p className="font-semibold">{t("مطابقة مع ثلاجتك")}</p>
                 <p className="mt-1 text-muted-foreground">{t("لديك")} {r.ingredients.length - missing.length} {t("مكونات. الناقص:")} {list(missing.map((m) => m.key)) || t("لا شيء 🎉")}</p>
                 {missing.length > 0 && <p className="mt-1 text-xs">{t("أرخص سعر للناقص يبدأ من")} {sar(missing.reduce((a, m) => { const c = cheapest(m.key); return a + (c >= 0 ? (priceOf(m.key, c) as number) : 0); }, 0))}</p>}
               </div>

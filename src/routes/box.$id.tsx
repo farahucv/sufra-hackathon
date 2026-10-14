@@ -50,7 +50,7 @@ function packTag(key: string) {
   const loc = ingredientLoc[key];
   if (loc === "freezer" || loc === "fridge") return { ar: t("مبرّد"), en: "Chilled", Icon: Snowflake, cls: "bg-accent text-accent-foreground" };
   if (FRESH.includes(key)) return { ar: t("طازج"), en: "Fresh", Icon: Leaf, cls: "bg-accent text-accent-foreground" };
-  return { ar: t("مخزن"), en: "Pantry", Icon: Package, cls: "bg-secondary text-secondary-foreground" };
+  return { ar: t("مؤونة"), en: "Dry goods", Icon: Package, cls: "bg-secondary text-secondary-foreground" };
 }
 
 function BoxPage() {

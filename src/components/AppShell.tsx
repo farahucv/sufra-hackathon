@@ -23,7 +23,7 @@ export function Wordmark({ size = "md", tone = "default" }: { size?: "sm" | "md"
 const nav = [
   { to: "/home", ar: t("الرئيسية"), en: "Home", icon: Home },
   { to: "/explore", ar: t("التراث"), en: "Heritage", icon: Compass },
-  { to: "/pantry", ar: t("مخزني"), en: "Pantry", icon: Refrigerator },
+  { to: "/pantry", ar: t("ثلاجتي"), en: "My fridge", icon: Refrigerator },
   { to: "/grocery", ar: t("الأسعار"), en: "Prices", icon: ShoppingBasket },
   { to: "/profile", ar: t("حسابي"), en: "Profile", icon: User },
 ] as const;

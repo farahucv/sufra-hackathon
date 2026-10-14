@@ -10,9 +10,9 @@ import { list, t } from "@/lib/i18n";
 export const Route = createFileRoute("/pantry")({
   head: () => ({
     meta: [
-      { title: "مخزني — اطبخ بالموجود | سُفرة" },
-      { name: "description", content: "أضف مكونات المخزن والثلاجة والفريزر واحصل على وصفات تستخدمها فقط." },
-      { property: "og:title", content: "مخزني — اطبخ بالموجود" },
+      { title: "ثلاجتي — اطبخ بالموجود | سُفرة" },
+      { name: "description", content: "أضف ما في ثلاجتك وفريزرك ورف المؤونة واحصل على وصفات تستخدمها فقط." },
+      { property: "og:title", content: "ثلاجتي — اطبخ بالموجود" },
       { property: "og:description", content: "وصفات من المكونات الموجودة في بيتك." },
     ],
   }),
@@ -30,7 +30,7 @@ function Pantry() {
   const add = () => {
     const v = input.trim();
     if (!v) return;
-    if (hasPantry(s, v)) toast(t("موجود مسبقاً في مخزنك"));
+    if (hasPantry(s, v)) toast(t("موجود مسبقاً في ثلاجتك"));
     else { togglePantry(v, loc); toast.success(t("أُضيف «{x}»", { x: t(v) })); }
     setInput("");
   };
@@ -50,7 +50,7 @@ function Pantry() {
 
   return (
     <AppShell wide>
-      <TopBar back={false} title={t("مخزني")} sub={t("أضف ما عندك ونقترح وصفات بالموجود فقط")} action={<span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold">{s.pantry.length} {t("مكوّن")}</span>} />
+      <TopBar back={false} title={t("ثلاجتي")} sub={t("أضف ما عندك ونقترح وصفات بالموجود فقط")} action={<span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold">{s.pantry.length} {t("مكوّن")}</span>} />
       <div className="space-y-6 px-5 lg:grid lg:grid-cols-[1fr_380px] lg:gap-8 lg:space-y-0 lg:px-8">
         <div className="space-y-5">
           <div className="rounded-2xl bg-card p-4 shadow-soft">
@@ -77,7 +77,7 @@ function Pantry() {
           </div>
 
           {s.pantry.length === 0 ? (
-            <EmptyState icon={<PackageOpen className="h-6 w-6" />} title={t("مخزنك فاضي")} body={t("أضف مكوناتك أو جرّب المسح السريع لنقترح عليك وصفات فوراً.")} />
+            <EmptyState icon={<PackageOpen className="h-6 w-6" />} title={t("ثلاجتك فاضية")} body={t("أضف مكوناتك أو جرّب المسح السريع لنقترح عليك وصفات فوراً.")} />
           ) : (
             <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
               {locations.map((l) => {
@@ -110,7 +110,7 @@ function Pantry() {
               {ready.map(({ r }) => (
                 <Link key={r.id} to="/recipe/$id" params={{ id: r.id }} className="lift overflow-hidden rounded-2xl bg-card shadow-soft">
                   <img src={r.img} alt={t(r.title)} className="h-28 w-full object-cover" loading="lazy" />
-                  <div className="p-3"><p className="font-semibold">{t(r.title)}</p><p className="text-xs text-olive">{t("١٠٠٪ من مخزنك ·")} {r.time} {t("د")}</p></div>
+                  <div className="p-3"><p className="font-semibold">{t(r.title)}</p><p className="text-xs text-olive">{t("١٠٠٪ من ثلاجتك ·")} {r.time} {t("د")}</p></div>
                 </Link>
               ))}
             </div>
