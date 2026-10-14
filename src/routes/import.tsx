@@ -45,12 +45,13 @@ function ImportPage() {
   const [errorMsg, setErrorMsg] = useState<string>();
   const [stage, setStage] = useState(0);
   const [rid, setRid] = useState("mutabbaq");
+  const [serv, setServ] = useState<number>(); // undefined = the recipe's own servings
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const request = useRef(0); // bumping it makes in-flight responses stale
   const clear = () => { timers.current.forEach(clearTimeout); timers.current = []; };
   useEffect(() => () => { clear(); request.current++; }, []);
 
-  const finish = (id: string) => { clear(); setStage(importStages().length); setRid(id); setPhase("done"); };
+  const finish = (id: string) => { clear(); setStage(importStages().length); setRid(id); setServ(undefined); setPhase("done"); };
   const fail = (msg?: string) => { clear(); setErrorMsg(msg); setPhase("error"); };
   const reset = () => { clear(); request.current++; setPhase("idle"); setErrorMsg(undefined); };
 
@@ -98,9 +99,9 @@ function ImportPage() {
           onSample={(u) => { setUrl(u); reset(); }} onRun={run} />
         {phase === "loading" && <ImportAnalysisState stage={stage} />}
         {phase === "done" && (
-          <ImportResultCard rid={rid} allergies={s.allergies} actions={
+          <ImportResultCard rid={rid} allergies={s.allergies} serv={serv} onServ={setServ} actions={
             <div className="flex gap-2">
-              <ImportPrimaryAction rid={rid} />
+              <ImportPrimaryAction rid={rid} servings={serv} />
               <button onClick={() => { if (!s.saved.includes(rid)) toggleIn("saved", rid); toast.success(t("حُفظت في وصفاتك")); }} className="press grid w-12 place-items-center rounded-2xl border" aria-label={t("حفظ")}><Bookmark className="h-5 w-5" /></button>
               <button onClick={() => { reset(); setUrl(""); }} className="press grid w-12 place-items-center rounded-2xl border" aria-label={t("استيراد آخر")}><RotateCcw className="h-5 w-5" /></button>
             </div>

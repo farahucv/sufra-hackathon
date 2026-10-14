@@ -5,11 +5,15 @@ import { Trophy, X, Truck, Store, PiggyBank, Info, PartyPopper } from "lucide-re
 import { toast } from "sonner";
 import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
 import { getRecipe, recipes, stores, priceOf, cheapest, sar } from "@/lib/data";
+import { MAX_SERVINGS, MIN_SERVINGS } from "@/lib/box";
 import { hasPantry, useStore } from "@/lib/store";
 import { isEn, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/grocery")({
-  validateSearch: (s) => z.object({ recipe: z.string().optional() }).parse(s),
+  validateSearch: (s) => z.object({
+    recipe: z.string().optional(),
+    servings: z.coerce.number().int().min(MIN_SERVINGS).max(MAX_SERVINGS).optional().catch(undefined),
+  }).parse(s),
   head: () => ({
     meta: [
       { title: "مقارنة أسعار السوبرماركت — سُفرة" },

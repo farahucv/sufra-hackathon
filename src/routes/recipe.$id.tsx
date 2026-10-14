@@ -4,7 +4,8 @@ import { ChevronRight, Clock, Minus, Plus, AlertTriangle, ShieldCheck, Sparkles,
 import { toast } from "sonner";
 import { AppShell, DemoBadge } from "@/components/AppShell";
 import { JourneyCallout } from "@/components/Journey";
-import { isBoxEligible } from "@/lib/box";
+import { z } from "zod";
+import { MAX_SERVINGS, MIN_SERVINGS, clampServings, isBoxEligible, scaledAmount } from "@/lib/box";
 import { Package } from "lucide-react";
 import { getRecipe, getChef, baseCost, cheapest, priceOf, safeSubs, sar, type Recipe } from "@/lib/data";
 import { isImportedId } from "@/lib/import";
@@ -13,6 +14,7 @@ import { hasPantry, matchesAllergy, toggleIn, useStore , setStore } from "@/lib/
 import { isEn, list, t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/recipe/$id")({
+  validateSearch: (s) => z.object({ servings: z.coerce.number().int().min(MIN_SERVINGS).max(MAX_SERVINGS).optional().catch(undefined) }).parse(s),
   loader: ({ params }) => {
     const r = getRecipe(params.id);
     // Imported recipes live in this device's localStorage, so the server can't resolve them — the page does after hydration.
@@ -47,7 +49,9 @@ function RecipePage() {
 function RecipeView({ r }: { r: Recipe }) {
   const chef = getChef(r.chefId);
   const s = useStore();
-  const [serv, setServ] = useState(s.household || r.servings);
+  const { servings } = Route.useSearch();
+  const [serv, setServRaw] = useState(clampServings(servings ?? r.servings));
+  const setServ = (n: number) => setServRaw(clampServings(n));
   const [chosen, setChosen] = useState<Record<string, number>>({});
   const [tab, setTab] = useState<"ing" | "steps">("ing");
   const [pantryView, setPantryView] = useState(false);
@@ -148,11 +152,11 @@ function RecipeView({ r }: { r: Recipe }) {
 
             {/* Servings */}
             <div className="flex items-center justify-between rounded-2xl bg-card p-3 shadow-soft">
-              <div><p className="text-sm font-medium">{t("عدد الحصص")}</p><p className="text-[11px] text-muted-foreground">{t("الكميات والتكلفة تتعدّل تلقائياً")}</p></div>
+              <div><p className="text-sm font-medium">{t("لكم شخص؟")}</p><p className="text-[11px] text-muted-foreground">{t("الكميات والتكلفة تتعدّل تلقائياً")}</p></div>
               <div className="flex items-center gap-4">
-                <button aria-label={t("إنقاص")} onClick={() => setServ(Math.max(1, serv - 1))} className="press grid h-9 w-9 place-items-center rounded-full bg-muted"><Minus className="h-4 w-4" /></button>
-                <span className="w-6 text-center text-lg font-semibold">{serv}</span>
-                <button aria-label={t("زيادة")} onClick={() => setServ(serv + 1)} className="press grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground"><Plus className="h-4 w-4" /></button>
+                <button aria-label={t("إنقاص")} disabled={serv <= MIN_SERVINGS} onClick={() => setServ(serv - 1)} className="press grid h-9 w-9 place-items-center rounded-full bg-muted disabled:opacity-40"><Minus className="h-4 w-4" /></button>
+                <span className="w-6 text-center text-lg font-semibold tabular-nums">{serv}</span>
+                <button aria-label={t("زيادة")} disabled={serv >= MAX_SERVINGS} onClick={() => setServ(serv + 1)} className="press grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground disabled:opacity-40"><Plus className="h-4 w-4" /></button>
               </div>
             </div>
 
@@ -178,7 +182,7 @@ function RecipeView({ r }: { r: Recipe }) {
                         {sub && <p className="text-xs text-muted-foreground line-through">{t(i.key)}</p>}
                         {bad && !sub && <p className="text-xs text-terracotta">{t("يحتوي")} {t(i.allergen)}</p>}
                       </div>
-                      <span className="text-sm text-muted-foreground">{+(i.qty * k).toFixed(2)} {t(i.unit)}</span>
+                      <span className="text-sm text-muted-foreground tabular-nums">{scaledAmount(i.qty, i.unit, serv, r.servings)}</span>
                     </li>
                   );
                 })}
@@ -204,6 +208,7 @@ function RecipeView({ r }: { r: Recipe }) {
                 ))}
               </div>
               {kcalDelta !== 0 && <p className="mt-2 text-[11px] text-olive">{t("البدائل غيّرت السعرات بـ")} {Math.round(kcalDelta / r.servings)} {t("سعرة/حصة")}</p>}
+              <p className="mt-2 text-xs text-muted-foreground">{t("المجموع لـ {n} أشخاص: {x} سعرة", { n: serv, x: (r.nutrition.kcal + Math.round(kcalDelta / r.servings)) * serv })}</p>
             </div>
             {isBoxEligible(r) && (
               <Link to="/box/$id" params={{ id: r.id }} onClick={() => { if (s.journey === 2) setStore(() => ({ journey: 3 })); }} className="press flex items-center gap-3 rounded-2xl bg-primary p-4 text-primary-foreground">
@@ -233,7 +238,7 @@ function RecipeView({ r }: { r: Recipe }) {
           <button onClick={() => { setPantryView((v) => !v); setTab("ing"); }} className={`press flex flex-col items-center gap-1 rounded-2xl border py-2.5 text-[11px] font-medium ${pantryView ? "border-olive bg-accent text-accent-foreground" : ""}`}>
             <Refrigerator className="h-5 w-5" /> {t("استخدم الموجود عندي")}
           </button>
-          <Link to="/grocery" search={{ recipe: r.id }} className="press flex flex-col items-center gap-1 rounded-2xl border py-2.5 text-[11px] font-medium">
+          <Link to="/grocery" search={{ recipe: r.id, servings: serv }} className="press flex flex-col items-center gap-1 rounded-2xl border py-2.5 text-[11px] font-medium">
             <ShoppingCart className="h-5 w-5" /> {t("قارن الأسعار")}
           </Link>
           <button onClick={() => setCooking(true)} className="press flex items-center justify-center gap-2 rounded-2xl bg-primary font-semibold text-primary-foreground">
@@ -242,24 +247,29 @@ function RecipeView({ r }: { r: Recipe }) {
         </div>
       </div>
 
-      {cooking && <CookMode steps={r.steps} title={t(r.title)} onClose={() => setCooking(false)} />}
+      {cooking && <CookMode steps={r.steps} title={t(r.title)} serv={serv} onClose={() => setCooking(false)}
+        items={r.ingredients.map((i, n) => ({ key: i.key, label: t(applied[n]?.name ?? i.key), qty: scaledAmount(i.qty, i.unit, serv, r.servings) }))} />}
     </AppShell>
   );
 }
 
-function CookMode({ steps, title, onClose }: { steps: { t: string; min?: number }[]; title: string; onClose: () => void }) {
+function CookMode({ steps, title, serv, items, onClose }: {
+  steps: { t: string; min?: number }[]; title: string; serv: number; items: { key: string; label: string; qty: string }[]; onClose: () => void;
+}) {
   const [i, setI] = useState(0);
   const st = steps[i]!;
+  const used = items.filter((x) => st.t.includes(x.key)); // ingredients this step mentions, at the chosen servings
   return (
     <div className="animate-in fade-in fixed inset-0 z-50 flex flex-col bg-ink p-6 text-ink-foreground duration-300" role="dialog" aria-label={t("وضع الطبخ")}>
       <div className="mx-auto flex w-full max-w-2xl items-center justify-between">
-        <p className="text-sm opacity-70">{t("وضع الطبخ ·")} {title}</p>
+        <p className="text-sm opacity-70">{t("وضع الطبخ ·")} {title} · {t("لـ {n} أشخاص", { n: serv })}</p>
         <button onClick={onClose} aria-label={t("إغلاق")} className="press grid h-10 w-10 place-items-center rounded-full bg-ink-foreground/10"><X className="h-5 w-5" /></button>
       </div>
       <div className="mx-auto mt-6 flex w-full max-w-2xl gap-1.5">{steps.map((_, n) => <span key={n} className={`h-1 flex-1 rounded-full ${n <= i ? "bg-gold" : "bg-ink-foreground/15"}`} />)}</div>
       <div key={i} className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center">
         <p className="font-display text-7xl text-gold">{i + 1}</p>
         <p className="mt-6 text-3xl leading-relaxed">{t(st.t)}</p>
+        {used.length > 0 && <div className="mt-6 flex flex-wrap gap-2">{used.map((x) => <span key={x.key} className="rounded-full bg-ink-foreground/10 px-3 py-1.5 text-sm">{x.label} · <b className="tabular-nums">{x.qty}</b></span>)}</div>}
         {st.min && <p className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-ink-foreground/10 px-4 py-2 text-sm"><Timer className="h-4 w-4" /> {t("مؤقّت مقترح:")} {st.min} {t("دقيقة")}</p>}
       </div>
       <div className="mx-auto flex w-full max-w-2xl gap-3">

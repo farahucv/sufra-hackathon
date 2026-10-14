@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Sparkles, Loader2, CheckCircle2, Clipboard, AlertTriangle, Youtube } from "lucide-react";
+import { Sparkles, Loader2, CheckCircle2, Clipboard, AlertTriangle, Youtube, Minus, Plus } from "lucide-react";
+import { MAX_SERVINGS, MIN_SERVINGS, clampServings, scaledAmount } from "@/lib/box";
 import { getRecipe, recipeAllergens, baseCost, safeSubs, sar } from "@/lib/data";
 import { importSourceUrl, isImportedId } from "@/lib/import";
 import { backupList } from "@/lib/import-backups";
@@ -68,17 +69,30 @@ export function ImportAnalysisState({ stage, skeleton = true }: { stage: number;
   );
 }
 
-export function ImportResultCard({ rid, allergies, actions, layout = "stack", imgEager, showCost = true }: {
+export function ImportResultCard({ rid, allergies, actions, layout = "stack", imgEager, showCost = true, serv: servProp, onServ }: {
   rid: string; allergies: string[]; actions?: ReactNode; layout?: "stack" | "wide"; imgEager?: boolean; showCost?: boolean;
+  /** Optional servings stepper; amounts scale when set. */
+  serv?: number | undefined; onServ?: ((n: number) => void) | undefined;
 }) {
   const r = getRecipe(rid)!;
   const warn = recipeAllergens(r).filter((a) => matchesAllergy(a, allergies));
   const wide = layout === "wide";
+  const serv = servProp ?? r.servings;
   const ingredients = (
     <div>
+      {onServ && (
+        <div className="mb-3 flex items-center justify-between rounded-xl bg-secondary px-3 py-2">
+          <span className="text-sm font-medium">{t("لكم شخص؟")}</span>
+          <span className="flex items-center gap-3">
+            <button aria-label={t("إنقاص")} disabled={serv <= MIN_SERVINGS} onClick={() => onServ(clampServings(serv - 1))} className="press grid h-8 w-8 place-items-center rounded-full bg-card disabled:opacity-40"><Minus className="h-4 w-4" /></button>
+            <span className="w-5 text-center font-semibold tabular-nums">{serv}</span>
+            <button aria-label={t("زيادة")} disabled={serv >= MAX_SERVINGS} onClick={() => onServ(clampServings(serv + 1))} className="press grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground disabled:opacity-40"><Plus className="h-4 w-4" /></button>
+          </span>
+        </div>
+      )}
       <p className="mb-2 text-sm font-semibold">{t("المقادير المستخرجة (")}{r.ingredients.length})</p>
       <div className="flex flex-wrap gap-2 text-xs">
-        {r.ingredients.map((i) => <span key={i.key} className={`rounded-full px-3 py-1.5 ${i.allergen && matchesAllergy(i.allergen, allergies) ? "bg-terracotta-soft text-terracotta" : "bg-secondary"}`}>{t(i.key)} · {i.qty} {t(i.unit)}</span>)}
+        {r.ingredients.map((i) => <span key={i.key} className={`rounded-full px-3 py-1.5 ${i.allergen && matchesAllergy(i.allergen, allergies) ? "bg-terracotta-soft text-terracotta" : "bg-secondary"}`}>{t(i.key)} · {scaledAmount(i.qty, i.unit, serv, r.servings)}</span>)}
       </div>
     </div>
   );
@@ -153,6 +167,6 @@ export function ImportedRecipeFallback() {
   );
 }
 
-export function ImportPrimaryAction({ rid }: { rid: string }) {
-  return <Link to="/recipe/$id" params={{ id: rid }} className="press flex-1 rounded-2xl bg-primary py-3 text-center font-semibold text-primary-foreground">{t("خصّص وابدأ")}</Link>;
+export function ImportPrimaryAction({ rid, servings }: { rid: string; servings?: number | undefined }) {
+  return <Link to="/recipe/$id" params={{ id: rid }} search={{ servings }} className="press flex-1 rounded-2xl bg-primary py-3 text-center font-semibold text-primary-foreground">{t("خصّص وابدأ")}</Link>;
 }

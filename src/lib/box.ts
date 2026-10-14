@@ -15,7 +15,25 @@ export const DELIVERY_FEE = 9;
 
 export type BoxLine = { key: string; name: string; qty: string; price: number; swapped?: { from: string; reason: string } | undefined; allergen?: string | undefined };
 
-const fmt = (n: number) => (Number.isInteger(n) ? `${n}` : n < 1 ? (Math.abs(n - 0.25) < 0.01 ? "¼" : Math.abs(n - 0.5) < 0.01 ? "½" : n.toFixed(2)) : n.toFixed(1).replace(/\.0$/, ""));
+export const MIN_SERVINGS = 1;
+export const MAX_SERVINGS = 12;
+export const clampServings = (n: number) => Math.min(MAX_SERVINGS, Math.max(MIN_SERVINGS, Math.round(n)));
+
+/** Kitchen-friendly rounding of a scaled amount: grams/ml to 5–25, everything else to ¼ (small), ½ (medium) or whole. */
+export function niceQty(n: number, unit: string) {
+  if (n <= 0) return 0;
+  if (unit === "غ" || unit === "مل") return n < 50 ? Math.max(5, Math.round(n / 5) * 5) : n < 250 ? Math.round(n / 10) * 10 : Math.round(n / 25) * 25;
+  const step = n < 3 ? 0.25 : n < 10 ? 0.5 : 1;
+  return Math.max(0.25, Math.round(n / step) * step);
+}
+const FRACTIONS: Record<string, string> = { "0.25": "¼", "0.5": "½", "0.75": "¾" };
+/** 1.5 → "1½", 0.25 → "¼", 3 → "3". */
+export function fmtQty(n: number) {
+  const whole = Math.floor(n), frac = FRACTIONS[String(Math.round((n - whole) * 100) / 100)] ?? "";
+  return whole ? `${whole}${frac}` : frac || "0";
+}
+/** Ingredient amount scaled from the recipe's servings to serv, rounded and formatted with its unit. */
+export const scaledAmount = (qty: number, unit: string, serv: number, base: number) => `${fmtQty(niceQty((qty * serv) / base, unit))} ${t(unit)}`;
 
 /** Build the box contents for a serving count, with chosen substitutions (ingredient key → sub index). */
 export function buildBox(r: Recipe, serv: number, subs: Record<string, number>) {
@@ -27,7 +45,7 @@ export function buildBox(r: Recipe, serv: number, subs: Record<string, number>) 
     // portion price scales with servings; packs never go below 40% of a retail unit
     const price = Math.max(unitPrice * 0.4, unitPrice * k * 0.8) + (sub ? sub.cost * k : 0);
     return {
-      key: i.key, name: sub ? sub.name : i.key, qty: `${fmt(i.qty * k)} ${t(i.unit)}`, price,
+      key: i.key, name: sub ? sub.name : i.key, qty: scaledAmount(i.qty, i.unit, serv, r.servings), price,
       swapped: sub ? { from: i.key, reason: sub.reason } : undefined,
       allergen: sub ? undefined : i.allergen,
     };

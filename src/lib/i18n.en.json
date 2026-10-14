@@ -695,5 +695,8 @@
  "حليب الشوفان المحلّى": "Sweetened oat milk",
  "بديل نباتي أخف يحلّي الشاي دون ألبان": "A lighter plant-based option that sweetens the tea without dairy",
  "سعرات أقل · قوام أخف": "Fewer calories · Lighter texture",
- "لا يوجد بديل آمن لملفك الغذائي": "No substitute fits your profile"
+ "لا يوجد بديل آمن لملفك الغذائي": "No substitute fits your profile",
+ "لكم شخص؟": "How many people?",
+ "لـ {n} أشخاص": "for {n} people",
+ "المجموع لـ {n} أشخاص: {x} سعرة": "Total for {n} people: {x} kcal"
 }
