@@ -710,5 +710,7 @@
  "قارن أسعار الناقص": "Compare prices for missing items",
  "بدل {x}": "instead of {x}",
  "{n} مكوّن بدون سعر — غير محسوب في الإجمالي": "{n} item(s) without a price — not included in the total",
- "الأسعار لكل عبوة؛ يزيد السعر فقط إذا احتجت عبوة إضافية.": "Prices are per pack; the price only goes up if you need another pack."
+ "الأسعار لكل عبوة؛ يزيد السعر فقط إذا احتجت عبوة إضافية.": "Prices are per pack; the price only goes up if you need another pack.",
+ "تقديري": "Estimate",
+ "بعد البدائل: {x} سعرة بدل {y}": "After substitutes: {x} kcal instead of {y}"
 }

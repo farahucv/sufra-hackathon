@@ -9,6 +9,7 @@ import { MAX_SERVINGS, MIN_SERVINGS, clampServings, isBoxEligible, scaledAmount 
 import { Package } from "lucide-react";
 import { getRecipe, getChef, safeSubs, type Recipe } from "@/lib/data";
 import { FridgeShopping } from "@/components/FridgeShopping";
+import { NutritionPanel } from "@/components/Nutrition";
 import { isImportedId } from "@/lib/import";
 import { ImportedRecipeFallback, ImportedSource } from "@/components/ImportParts";
 import { hasPantry, matchesAllergy, toggleIn, useStore , setStore } from "@/lib/store";
@@ -197,16 +198,7 @@ function RecipeView({ r }: { r: Recipe }) {
           </div>
 
           <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
-            <div className="rounded-2xl bg-card p-4 shadow-soft">
-              <p className="font-semibold">{t("القيمة الغذائية")} <span className="text-xs font-normal text-muted-foreground">{t("/ حصة")}</span></p>
-              <div className="mt-3 grid grid-cols-4 gap-2 text-center">
-                {[[t("سعرات"), r.nutrition.kcal + Math.round(kcalDelta / r.servings)], [t("بروتين"), t("{n}غ", { n: r.nutrition.protein })], [t("كارب"), t("{n}غ", { n: r.nutrition.carbs })], [t("دهون"), t("{n}غ", { n: r.nutrition.fat })]].map(([l, v]) => (
-                  <div key={l} className="rounded-xl bg-secondary py-2"><p className="text-sm font-bold">{v}</p><p className="text-[10px] text-muted-foreground">{l}</p></div>
-                ))}
-              </div>
-              {kcalDelta !== 0 && <p className="mt-2 text-[11px] text-olive">{t("البدائل غيّرت السعرات بـ")} {Math.round(kcalDelta / r.servings)} {t("سعرة/حصة")}</p>}
-              <p className="mt-2 text-xs text-muted-foreground">{t("المجموع لـ {n} أشخاص: {x} سعرة", { n: serv, x: (r.nutrition.kcal + Math.round(kcalDelta / r.servings)) * serv })}</p>
-            </div>
+            <NutritionPanel r={r} kcalDelta={kcalDelta} serv={serv} />
             {isBoxEligible(r) && (
               <Link to="/box/$id" params={{ id: r.id }} onClick={() => { if (s.journey === 2) setStore(() => ({ journey: 3 })); }} className="press flex items-center gap-3 rounded-2xl bg-primary p-4 text-primary-foreground">
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gold text-ink"><Package className="h-5 w-5" /></span>

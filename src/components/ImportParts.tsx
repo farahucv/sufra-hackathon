@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Sparkles, Loader2, CheckCircle2, Clipboard, AlertTriangle, Youtube, Minus, Plus } from "lucide-react";
 import { MAX_SERVINGS, MIN_SERVINGS, clampServings, scaledAmount } from "@/lib/box";
+import { NutritionPanel } from "@/components/Nutrition";
 import { getRecipe, recipeAllergens, baseCost, safeSubs, sar } from "@/lib/data";
 import { importSourceUrl, isImportedId } from "@/lib/import";
 import { backupList } from "@/lib/import-backups";
@@ -104,6 +105,7 @@ export function ImportResultCard({ rid, allergies, actions, layout = "stack", im
   );
   const panels = (
     <div className={`grid gap-3 ${showCost ? "sm:grid-cols-2" : ""}`}>
+      <div className={showCost ? "sm:col-span-2" : ""}><NutritionPanel r={r} serv={onServ ? serv : undefined} compact /></div>
       <div className={`rounded-2xl p-3 text-sm ${warn.length ? "bg-terracotta-soft" : "bg-accent/50"}`}>
         <p className="font-semibold">{warn.length ? t("⚠ حساسية مكتشفة") : t("✓ لا حساسية من قائمتك")}</p>
         <p className="mt-1 text-xs text-muted-foreground">{t("يحتوي:")} {list(recipeAllergens(r)) || "—"}</p>
