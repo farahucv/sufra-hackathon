@@ -74,7 +74,6 @@
  "استخراج تجريبي بالذكاء الاصطناعي": "Demo AI extraction",
  "استخرج الوصفة": "Extract Recipe",
  "استشارة طاهٍ مباشرة": "Live chef consultation",
- "استورد وصفة من تيك توك أو يوتيوب": "Import a recipe from TikTok or YouTube",
  "استيراد آخر": "Import another",
  "استيراد وصفة": "Import recipe",
  "اسلق الدجاج مع اللومي.": "Boil the chicken with dried lime.",
@@ -712,5 +711,18 @@
  "{n} مكوّن بدون سعر — غير محسوب في الإجمالي": "{n} item(s) without a price — not included in the total",
  "الأسعار لكل عبوة؛ يزيد السعر فقط إذا احتجت عبوة إضافية.": "Prices are per pack; the price only goes up if you need another pack.",
  "تقديري": "Estimate",
- "بعد البدائل: {x} سعرة بدل {y}": "After substitutes: {x} kcal instead of {y}"
+ "بعد البدائل: {x} سعرة بدل {y}": "After substitutes: {x} kcal instead of {y}",
+ "استيراد": "Import",
+ "استورد وصفة من يوتيوب": "Import a recipe from YouTube",
+ "إلغاء": "Cancel",
+ "تفريغ الثلاجة": "Clear fridge",
+ "تفريغ الثلاجة؟": "Clear your fridge?",
+ "سنحذف كل المكونات ({n}) من الثلاجة والفريزر ورف المؤونة.": "This removes all {n} ingredients from the fridge, freezer and cupboard.",
+ "تفريغ": "Clear",
+ "فُرّغت الثلاجة": "Fridge cleared",
+ "بدء من جديد": "Start over",
+ "بدء من جديد؟": "Start over?",
+ "سنمسح الحساسية والثلاجة والمحفوظات والوصفات المستوردة، وتبدأ كمستخدم جديد.": "This clears your allergies, fridge, saved and imported recipes, and starts you as a new user.",
+ "ابدأ من جديد": "Start over",
+ "بدأت من جديد": "Started over"
 }

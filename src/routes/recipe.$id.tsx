@@ -215,7 +215,7 @@ function RecipeView({ r }: { r: Recipe }) {
           <button onClick={() => { setPantryView((v) => !v); setTab("ing"); }} className={`press flex flex-col items-center gap-1 rounded-2xl border py-2.5 text-[11px] font-medium ${pantryView ? "border-olive bg-accent text-accent-foreground" : ""}`}>
             <Refrigerator className="h-5 w-5" /> {t("استخدم الموجود عندي")}
           </button>
-          <Link to="/grocery" search={{ recipe: r.id, servings: serv }} className="press flex flex-col items-center gap-1 rounded-2xl border py-2.5 text-[11px] font-medium">
+          <Link to="/grocery" search={{ recipe: r.id, servings: serv, subs: chosen }} className="press flex flex-col items-center gap-1 rounded-2xl border py-2.5 text-[11px] font-medium">
             <ShoppingCart className="h-5 w-5" /> {t("قارن الأسعار")}
           </Link>
           <button onClick={() => setCooking(true)} className="press flex items-center justify-center gap-2 rounded-2xl bg-primary font-semibold text-primary-foreground">

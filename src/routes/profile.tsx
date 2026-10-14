@@ -1,11 +1,12 @@
 import { Package } from "lucide-react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ConfirmAction } from "@/components/ConfirmAction";
 import { Bookmark, ChevronLeft, Rocket, Refrigerator, Languages, Cloud, RotateCcw, Minus, Plus, Route as RouteIcon } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, Chip, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
 import { startJourney } from "@/components/Journey";
 import { allergensList, diets, dislikesList, getRecipe } from "@/lib/data";
-import { defaults, setStore, toggleIn, useStore, useTr } from "@/lib/store";
+import { defaults, resetToNewUser, setStore, toggleIn, useStore, useTr } from "@/lib/store";
 import { t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/profile")({
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/profile")({
 
 function Profile() {
   const s = useStore();
+  const navigate = useNavigate();
   const saved = s.saved.map(getRecipe).filter((x): x is NonNullable<typeof x> => !!x);
 
   return (
@@ -108,6 +110,10 @@ function Profile() {
             <ChevronLeft className="h-4 w-4 ltr:rotate-180" />
           </Link>
           <Link to="/" className="block text-center text-xs text-muted-foreground">{t("إعادة مشاهدة شاشات الترحيب")}</Link>
+          <ConfirmAction
+            trigger={<button className="press w-full rounded-2xl border border-terracotta/40 py-3 text-sm font-medium text-terracotta">{t("بدء من جديد")}</button>}
+            title={t("بدء من جديد؟")} body={t("سنمسح الحساسية والثلاجة والمحفوظات والوصفات المستوردة، وتبدأ كمستخدم جديد.")} confirm={t("ابدأ من جديد")}
+            onConfirm={() => { resetToNewUser(); toast.success(t("بدأت من جديد")); navigate({ to: "/" }); }} />
         </div>
       </div>
     </AppShell>

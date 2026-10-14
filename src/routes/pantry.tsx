@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus, CheckCircle2, ScanLine, Loader2, Refrigerator, Snowflake, Archive, X, ShoppingCart, PackageOpen } from "lucide-react";
+import { Plus, CheckCircle2, ScanLine, Loader2, Refrigerator, Snowflake, Archive, X, ShoppingCart, PackageOpen, Trash2 } from "lucide-react";
+import { ConfirmAction } from "@/components/ConfirmAction";
 import { toast } from "sonner";
 import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
 import { locations, quickAdd, type Loc } from "@/lib/data";
@@ -62,7 +63,7 @@ function Pantry() {
                 {scanning ? <Loader2 className="h-5 w-5 animate-spin" /> : <ScanLine className="h-5 w-5" />}
               </button>
             </div>
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 flex flex-wrap items-center gap-2">
               {locations.map((l) => (
                 <button key={l.id} onClick={() => setLoc(l.id)} className={`press rounded-full px-3 py-1 text-xs ${loc === l.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{t(l.ar)}</button>
               ))}
@@ -76,6 +77,14 @@ function Pantry() {
             </div>
           </div>
 
+          {s.pantry.length > 0 && (
+            <div className="flex justify-end">
+              <ConfirmAction
+                trigger={<button className="press inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs text-terracotta"><Trash2 className="h-3.5 w-3.5" />{t("تفريغ الثلاجة")}</button>}
+                title={t("تفريغ الثلاجة؟")} body={t("سنحذف كل المكونات ({n}) من الثلاجة والفريزر ورف المؤونة.", { n: s.pantry.length })} confirm={t("تفريغ")}
+                onConfirm={() => { setStore(() => ({ pantry: [] })); toast.success(t("فُرّغت الثلاجة")); }} />
+            </div>
+          )}
           {s.pantry.length === 0 ? (
             <EmptyState icon={<PackageOpen className="h-6 w-6" />} title={t("ثلاجتك فاضية")} body={t("أضف مكوناتك أو جرّب المسح السريع لنقترح عليك وصفات فوراً.")} />
           ) : (

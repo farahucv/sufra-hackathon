@@ -69,6 +69,13 @@ export const togglePantry = (name: string, loc?: Loc) =>
     pantry: hasPantry(s, name) ? s.pantry.filter((p) => p.name !== name) : [...s.pantry, { name, loc: loc ?? ingredientLoc[name] ?? "pantry" }],
   }));
 
+/** Empty new-user state for a clean demo: no allergies, empty fridge, nothing saved or imported. Keeps the language. */
+export const resetToNewUser = () =>
+  setStore((s) => ({
+    ...defaults, lang: s.lang, onboarded: false,
+    allergies: [], dislikes: [], saved: [], liked: [], pantry: [], imported: [], box: null, order: null, journey: 0,
+  }));
+
 /** Keep an imported recipe on this device (newest first, capped) and make it resolvable right away. */
 export const addImported = (x: ImportedRecipe) => {
   registerImported(x);

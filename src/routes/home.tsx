@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Heart, Bookmark, Clock, Link2, Play, Sparkles, AlertTriangle, BadgeCheck, Share2, Flame, Gauge, Route as RouteIcon, SearchX } from "lucide-react";
+import { Heart, Bookmark, ChevronLeft, Clock, Link2, Play, Sparkles, AlertTriangle, BadgeCheck, Share2, Flame, Gauge, Route as RouteIcon, SearchX } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, Chip, EmptyState, Wordmark } from "@/components/AppShell";
 import { JourneyCallout, startJourney } from "@/components/Journey";
@@ -71,10 +71,10 @@ function HomePage() {
         <Link to="/import" className="press flex min-w-0 items-center gap-3 rounded-2xl bg-ink p-4 text-ink-foreground">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gold text-ink"><Link2 className="h-5 w-5" /></span>
           <div className="min-w-0 flex-1">
-            <p className="font-semibold">{t("استورد وصفة من تيك توك أو يوتيوب")}</p>
+            <p className="font-semibold">{t("استورد وصفة من يوتيوب")}</p>
             <p className="truncate text-xs opacity-70">{t("الصق الرابط ونستخرج المقادير والخطوات")}</p>
           </div>
-          <Sparkles className="h-5 w-5 text-gold" />
+          <ChevronLeft className="h-5 w-5 text-gold ltr:rotate-180" />
         </Link>
         <Link to="/pantry" className="press hidden items-center gap-3 rounded-2xl bg-secondary p-4 lg:flex">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-olive text-olive-foreground font-display">{s.pantry.length}</span>

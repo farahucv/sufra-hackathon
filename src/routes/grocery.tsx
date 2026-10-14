@@ -7,7 +7,7 @@ import { AppShell, DemoBadge, EmptyState, TopBar } from "@/components/AppShell";
 import { getRecipe, recipes, stores, priceOf, sar } from "@/lib/data";
 import { MAX_SERVINGS, MIN_SERVINGS, clampServings } from "@/lib/box";
 import { isImportedId } from "@/lib/import";
-import { shoppingList, type ShopLine } from "@/lib/shopping";
+import { linePriceAt, shoppingList, type ShopLine } from "@/lib/shopping";
 import { ImportedRecipeFallback } from "@/components/ImportParts";
 import { hasPantry, useStore } from "@/lib/store";
 import { isEn, t } from "@/lib/i18n";
@@ -16,6 +16,8 @@ export const Route = createFileRoute("/grocery")({
   validateSearch: (s) => z.object({
     recipe: z.string().optional(),
     servings: z.coerce.number().int().min(MIN_SERVINGS).max(MAX_SERVINGS).optional().catch(undefined),
+    /** Substitutes applied on the recipe page (ingredient key → index in its subs). */
+    subs: z.record(z.string(), z.number().int().min(0)).optional().catch(undefined),
   }).parse(s),
   head: () => ({
     meta: [
@@ -29,7 +31,7 @@ export const Route = createFileRoute("/grocery")({
 });
 
 function Grocery() {
-  const { recipe: rid, servings } = Route.useSearch();
+  const { recipe: rid, servings, subs } = Route.useSearch();
   const s = useStore();
   const [showAll, setShowAll] = useState(false);
   const [mode, setMode] = useState<"cheap" | "single">("cheap");
@@ -43,10 +45,10 @@ function Grocery() {
   if (!chips.some((x) => x.id === r.id)) chips.push(r);
 
   // Missing items (or all, when toggled) at the chosen servings, priced per retail package.
-  const items = shoppingList(r, serv, {}, (name) => hasPantry(s, name), { includeOwned: showAll }).buy;
+  const items = shoppingList(r, serv, subs ?? {}, (name) => hasPantry(s, name), { includeOwned: showAll }).buy;
   const priced = items.filter((l) => l.store >= 0); // items with no price data are shown but never break totals
   const unpriced = items.length - priced.length;
-  const at = (l: ShopLine, si: number) => { const p = priceOf(l.key, si); return p === null ? null : p * l.packs; };
+  const at = (l: ShopLine, si: number) => linePriceAt(l, priceOf(l.key, si));
 
   const totals = stores.map((_, si) => ({
     total: priced.reduce((a, l) => a + (at(l, si) ?? 0), 0),
@@ -115,7 +117,7 @@ function Grocery() {
                     const min = l.store;
                     return (
                       <tr key={l.key} className="border-b last:border-0">
-                        <td className="p-3 font-medium">{t(l.name)}<span className="block text-[10px] font-normal text-muted-foreground">{l.amount}{l.pack ? ` · ${l.packs} × ${l.pack}` : ""}</span></td>
+                        <td className="p-3 font-medium">{t(l.name)}{l.swappedFrom && <span className="block text-[10px] font-normal text-olive">{t("بدل {x}", { x: t(l.swappedFrom) })}</span>}<span className="block text-[10px] font-normal text-muted-foreground">{l.amount}{l.pack ? ` · ${l.packs} × ${l.pack}` : ""}</span></td>
                         {min < 0 ? <td colSpan={stores.length} className="p-2 text-center text-[11px] text-muted-foreground">{t("السعر غير متوفر")}</td> : stores.map((_, i) => {
                           const p = at(l, i);
                           return (

@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Sparkles, Loader2, CheckCircle2, Clipboard, AlertTriangle, Youtube, Minus, Plus } from "lucide-react";
+import { ArrowLeft, Info, Loader2, CheckCircle2, Clipboard, AlertTriangle, Youtube, Minus, Plus } from "lucide-react";
 import { MAX_SERVINGS, MIN_SERVINGS, clampServings, scaledAmount } from "@/lib/box";
 import { NutritionPanel } from "@/components/Nutrition";
 import { getRecipe, recipeAllergens, baseCost, safeSubs, sar } from "@/lib/data";
@@ -44,8 +44,9 @@ export function ImportFormCard({ url, error, errorMsg, loading, onUrl, onSample,
         ))}
       </div>
       {showRun && <button onClick={onRun} disabled={loading || !url} className="press mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-ink py-4 font-semibold text-ink-foreground disabled:opacity-50">
-        {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5 text-gold" />}
+        {loading && <Loader2 className="h-5 w-5 animate-spin" />}
         {t("استخرج الوصفة")}
+        {!loading && <ArrowLeft className="h-5 w-5 ltr:rotate-180" />}
       </button>}
       {showNote && <p className="mt-3 text-center text-[11px] text-muted-foreground">{t("حالياً ندعم روابط يوتيوب، تيك توك قريباً")}</p>}
     </div>
@@ -141,7 +142,7 @@ export function ImportResultCard({ rid, allergies, actions, layout = "stack", im
 
 /** Shown wherever an AI-imported recipe is displayed. */
 export function ImportedNote() {
-  return <p className="flex items-center gap-1.5 rounded-xl bg-gold/15 px-3 py-2 text-xs"><Sparkles className="h-3.5 w-3.5 shrink-0 text-gold" />{t("مستخرجة بالذكاء الاصطناعي، راجع المقادير")}</p>;
+  return <p className="flex items-center gap-1.5 rounded-xl bg-gold/15 px-3 py-2 text-xs"><Info className="h-3.5 w-3.5 shrink-0 text-primary" />{t("مستخرجة بالذكاء الاصطناعي، راجع المقادير")}</p>;
 }
 
 /** Source row shown instead of the chef on imported recipes. */

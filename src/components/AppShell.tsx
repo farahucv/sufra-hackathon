@@ -20,13 +20,16 @@ export function Wordmark({ size = "md", tone = "default" }: { size?: "sm" | "md"
   );
 }
 
+/** Main sections, in bottom-nav order; import is the emphasised centre item. */
 const nav = [
-  { to: "/home", ar: t("الرئيسية"), en: "Home", icon: Home },
-  { to: "/explore", ar: t("التراث"), en: "Heritage", icon: Compass },
-  { to: "/pantry", ar: t("ثلاجتي"), en: "My fridge", icon: Refrigerator },
-  { to: "/grocery", ar: t("الأسعار"), en: "Prices", icon: ShoppingBasket },
-  { to: "/profile", ar: t("حسابي"), en: "Profile", icon: User },
+  { to: "/home", ar: t("الرئيسية"), en: "Home", icon: Home, primary: false },
+  { to: "/explore", ar: t("التراث"), en: "Heritage", icon: Compass, primary: false },
+  { to: "/import", ar: t("استيراد"), en: "Import", icon: Link2, primary: true },
+  { to: "/pantry", ar: t("ثلاجتي"), en: "My fridge", icon: Refrigerator, primary: false },
+  { to: "/profile", ar: t("حسابي"), en: "Profile", icon: User, primary: false },
 ] as const;
+/** Desktop-only extra: prices. On phones it's reached from recipes and the fridge. */
+const sidebarNav = [...nav, { to: "/grocery", ar: t("الأسعار"), en: "Prices", icon: ShoppingBasket, primary: false }] as const;
 
 export function AppShell({ children, nav: showNav = true, wide = false }: { children: ReactNode; nav?: boolean; wide?: boolean }) {
   const s = useStore();
@@ -37,16 +40,12 @@ export function AppShell({ children, nav: showNav = true, wide = false }: { chil
         <Link to="/home"><Wordmark /></Link>
         <p className="mt-2 text-xs text-muted-foreground">{t("وش نطبخ اليوم؟ بذكاء.")}</p>
         <nav className="mt-10 space-y-1">
-          {nav.map(({ to, ar, en, icon: Icon }) => (
+          {sidebarNav.map(({ to, ar, icon: Icon, primary }) => (
             <Link key={to} to={to} className="press flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
               activeProps={{ className: "bg-secondary text-primary font-semibold" }}>
-              <Icon className="h-5 w-5" strokeWidth={1.8} /> {t(ar)}
+              <span className={primary ? "grid h-7 w-7 place-items-center rounded-full bg-primary text-primary-foreground" : ""}><Icon className={primary ? "h-4 w-4" : "h-5 w-5"} strokeWidth={1.8} /></span> {t(ar)}
             </Link>
           ))}
-          <Link to="/import" className="press flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
-            activeProps={{ className: "bg-secondary text-primary font-semibold" }}>
-            <Link2 className="h-5 w-5" strokeWidth={1.8} /> {t("استيراد وصفة")}
-          </Link>
         </nav>
         <div className="mt-auto space-y-3">
           <Link to="/future" className="block rounded-2xl border border-dashed border-gold/60 bg-gold/10 p-3 text-xs">
@@ -66,13 +65,20 @@ export function AppShell({ children, nav: showNav = true, wide = false }: { chil
       {showNav && (
         <nav className="fixed inset-x-0 bottom-0 z-30 border-t bg-card px-2 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-2 lg:hidden">
           <ul className="mx-auto grid max-w-md grid-cols-5">
-            {nav.map(({ to, ar, en, icon: Icon }) => (
+            {nav.map(({ to, ar, icon: Icon, primary }) => (
               <li key={to}>
-                <Link to={to} className="press flex flex-col items-center gap-1 rounded-xl py-1.5 text-[11px] text-muted-foreground"
-                  activeProps={{ className: "text-primary font-semibold" }}>
-                  <Icon className="h-5 w-5" strokeWidth={1.8} />
-                  {t(ar)}
-                </Link>
+                {primary ? (
+                  <Link to={to} className="press -mt-7 flex flex-col items-center gap-1 text-[11px] font-semibold text-primary" aria-label={t("استيراد وصفة")}>
+                    <span className="grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-lg ring-4 ring-card"><Icon className="h-6 w-6" strokeWidth={2} /></span>
+                    {t(ar)}
+                  </Link>
+                ) : (
+                  <Link to={to} className="press flex flex-col items-center gap-1 rounded-xl py-1.5 text-[11px] text-muted-foreground"
+                    activeProps={{ className: "text-primary font-semibold" }}>
+                    <Icon className="h-5 w-5" strokeWidth={1.8} />
+                    {t(ar)}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

@@ -40,7 +40,12 @@ export const packLabel = (key: string) => { const p = packs[key]; return p ? `${
 export type ShopLine = {
   key: string; name: string; amount: string; packs: number; pack: string | null;
   packPrice: number | null; store: number; price: number | null; swappedFrom?: string;
+  /** Substitute's cost difference at these servings (0 when none) — add it to any store's package total. */
+  extra: number;
 };
+
+/** Price of a line at a given store: its packages plus any substitute difference; null if that store lacks it. */
+export const linePriceAt = (l: ShopLine, storePrice: number | null) => (storePrice === null ? null : Math.max(0, storePrice * l.packs + l.extra));
 
 /**
  * Split a recipe at a serving count into what the user already has (fridge + household basics)
@@ -60,8 +65,9 @@ export function shoppingList(r: Recipe, serv: number, subs: Record<string, numbe
     const store = cheapest(i.key);
     const packPrice = store >= 0 ? priceOf(i.key, store) : null;
     // A substitute is priced from the original's package plus its cost difference (sub.cost is per recipe at base servings).
-    const price = packPrice === null ? null : Math.max(0, packPrice * n + (sub ? (sub.cost * serv) / r.servings : 0));
-    const line: ShopLine = { key: i.key, name, amount, packs: n, pack: packLabel(i.key), packPrice, store, price };
+    const extra = sub ? (sub.cost * serv) / r.servings : 0;
+    const line: ShopLine = { key: i.key, name, amount, packs: n, pack: packLabel(i.key), packPrice, store, price: null, extra };
+    line.price = linePriceAt(line, packPrice);
     if (sub) line.swappedFrom = i.key;
     buy.push(line);
   }

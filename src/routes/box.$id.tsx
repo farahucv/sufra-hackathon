@@ -208,6 +208,13 @@ function BoxPage() {
             <p className="mt-6 text-center font-display text-lg leading-relaxed text-primary">{t("«من الإلهام إلى المائدة: وصفة مخصصة، مكونات مجهزة، وتوصيل في تجربة واحدة.»")}</p>
             {!isEn() && <p className="mt-1 text-center text-xs text-muted-foreground" dir="ltr">From inspiration to the table: a personalized recipe, prepared ingredients, and delivery in one seamless experience.</p>}
           </section>
+          {/* Delivery details (mobile) — the desktop summary aside shows these */}
+          <div className="space-y-2 rounded-2xl bg-card p-4 text-sm lg:hidden">
+            <p className="flex items-center gap-2"><Truck className="h-4 w-4 text-olive" />{t("التوصيل المتوقع: خلال ٩٠ دقيقة")}</p>
+            <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-olive" />{t("الرياض — ضمن نطاق التوصيل")}</p>
+            <p className="flex items-center gap-2"><Check className="h-4 w-4 text-olive" />{t("عبوات مقسّمة بدقة")}</p>
+            <p className="text-[11px] text-muted-foreground">{t("الأسعار والتوصيل بيانات تجريبية")}</p>
+          </div>
         </div>
 
         {/* Summary (desktop) */}

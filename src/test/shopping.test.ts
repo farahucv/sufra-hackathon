@@ -50,3 +50,13 @@ describe("fridge → shopping", () => {
     expect(line.price).toBeCloseTo(priceOf("لوز", cheapest("لوز"))! + sub.cost);
   });
 });
+
+describe("grocery uses applied substitutes", () => {
+  it("adds the substitute's cost difference at every store", async () => {
+    const { linePriceAt } = await import("@/lib/shopping");
+    const line = shoppingList(kabsa, 4, { "لوز": 0 }, nothing).buy.find((b) => b.key === "لوز")!;
+    expect(line.extra).toBe(-2);                         // pumpkin seeds: cost -2 per recipe at 4 servings
+    expect(linePriceAt(line, 20)).toBe(18);              // one pack at 20 SAR, minus 2
+    expect(linePriceAt(line, null)).toBeNull();          // store doesn't stock it
+  });
+});

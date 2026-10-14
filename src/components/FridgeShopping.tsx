@@ -49,7 +49,7 @@ export function FridgeShopping({ r, serv, subs }: { r: Recipe; serv: number; sub
         <p className="mt-1 text-[11px] text-muted-foreground">{t("بأقل الأسعار التجريبية لكل مكوّن")}</p>
       </>}
 
-      <Link to="/grocery" search={{ recipe: r.id, servings: serv }} className="press mt-3 flex items-center justify-center gap-2 rounded-xl border py-2.5 text-sm font-medium">
+      <Link to="/grocery" search={{ recipe: r.id, servings: serv, subs }} className="press mt-3 flex items-center justify-center gap-2 rounded-xl border py-2.5 text-sm font-medium">
         <ShoppingCart className="h-4 w-4" />{t("قارن أسعار الناقص")}
       </Link>
     </section>
